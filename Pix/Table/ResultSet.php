@@ -370,19 +370,33 @@ class Pix_Table_ResultSet extends Pix_Array // implements Pix_Array_Volumable
 
 	$this->_rowset = array();
         foreach ($this->getResultSetDb()->fetch($this->getTable(), $this->_search_object, $select_columns) as $row) {
-	    $this->_rowset[] = $row;
-
-	    if (!Pix_Table::$_save_memory) {
-		if (count($pcs) == 1 and '*' == $select_columns) {
-		    $this->getTable()->_cache_rows[$row[$pcs[0]]] = $row;
-		}
-	    }
+            $this->_rowset[] = $row;
+            // 如果 SELECT * 的話，就可以把這個 row 給 cache 起來了
+            if ('*' == $select_columns) {
+                $this->_cacheRow($row);
+            }
 	}
         $this->_pointer = 0;
         if ($this->valid() and !$this->filterRow()) {
             $this->next();
         }
 	return $this;
+    }
+
+    /**
+     * _cacheRow 將 rewind 時取到的資料 cache 到 Pix_Table 的 memory cache
+     *
+     * @param array $data 
+     * @access protected
+     * @return void
+     */
+    protected function _cacheRow($data)
+    {
+        $primary_values = array();
+        foreach ($this->getTable()->getPrimaryColumns() as $column) {
+            $primary_values[] = $data[$column];
+        }
+        $this->getTable()->cacheRow($primary_values, $data);
     }
 
     public function current()
