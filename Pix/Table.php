@@ -364,7 +364,7 @@ abstract class Pix_Table
 
     static public function setDb($db)
     {
-        $table = self::getTable($this);
+        $table = self::getTable();
         $table->_db = $db;
     }
 
@@ -429,7 +429,7 @@ abstract class Pix_Table
      */
     static public function createTable()
     {
-	$table = self::getTable($this);
+	$table = self::getTable();
         return $table->getDb()->createTable($table);
     }
 
@@ -442,7 +442,7 @@ abstract class Pix_Table
      */
     static public function checkTable()
     {
-	$table = self::getTable($this);
+	$table = self::getTable();
 	return $table->getDb()->checkTable($table);
     }
 
@@ -458,7 +458,7 @@ abstract class Pix_Table
         if (!Pix_Setting::get('Table:DropTableEnable')) {
             throw new Pix_Table_Exception("要 DROP TABLE 前請加上 Pix_Setting::set('Table:DropTableEnable', true);");
         }
-	$table = self::getTable($this);
+	$table = self::getTable();
 	return $table->getDb()->dropTable($table);
     }
 
@@ -472,7 +472,7 @@ abstract class Pix_Table
      */
     static public function search($where)
     {
-	$table = self::getTable($this);
+	$table = self::getTable();
 	$conf = array();
 	$conf['tableClass'] = $table->getClass();
 	$conf['where'] = $where;
@@ -669,7 +669,7 @@ abstract class Pix_Table
 
     static public function __callStatic($name, $args)
     {
-	$table = self::getTable($this);
+	$table = self::getTable();
 	return $table->__call($name, $args);
     }
 
@@ -691,7 +691,7 @@ abstract class Pix_Table
      */
     static public function getPlugins()
     {
-	$table = self::getTable($this);
+	$table = self::getTable();
 	return $table->_plugins;
     }
 
@@ -838,13 +838,13 @@ abstract class Pix_Table
      */
     static public function addIndex($name, $columns, $type = 'index')
     {
-	$table = self::getTable($this);
+	$table = self::getTable();
 	$table->_index_datas[$name] = array('columns' => $columns, 'type' => $type);
     }
 
     static public function getIndexColumns($name)
     {
-	$table = self::getTable($this);
+	$table = self::getTable();
 	if ('PRIMARY' == $name) {
 	    return $table->getPrimaryColumns();
 	}
@@ -861,7 +861,7 @@ abstract class Pix_Table
      */
     static public function getRelationForeignTable($relation)
     {
-        $table = self::getTable($this);
+        $table = self::getTable();
 
         if (!$relation_data = $table->_relations[$relation]) {
             throw new Pix_Table_Exception("{$table->getClass()} 找不到 {$relation} 這個 relation");
@@ -884,7 +884,7 @@ abstract class Pix_Table
      */
     static public function getRelationForeignKeys($relation)
     {
-        $table = self::getTable($this);
+        $table = self::getTable();
         if (!$relation_data = $table->_relations[$relation]) {
             throw new Pix_Table_Exception("{$table->getClass()} 找不到 {$relation} 這個 relation");
         }
@@ -914,7 +914,7 @@ abstract class Pix_Table
      */
     static public function findUniqueKey($columns)
     {
-	$table = self::getTable($this);
+	$table = self::getTable();
 	$primary_columns = $table->getPrimaryColumns();
 	if (array_intersect($primary_columns, $columns) == $primary_columns) {
 	    return 'PRIMARY';
@@ -942,7 +942,7 @@ abstract class Pix_Table
      */
     static public function getTableName()
     {
-	$table = self::getTable($this);
+	$table = self::getTable();
         return $table->_name;
     }
 
