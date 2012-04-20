@@ -38,6 +38,14 @@ abstract class Pix_Table
     public $_relations = array(); 
 
     /**
+     * _aliases 建立 relation 的 aliases
+     *
+     * @var array key: string relation: relation 名稱, string/array where: search 條件, string order
+     * @access public
+     */
+    public $_aliases = array();
+
+    /**
      * _rowClass 這個 Table 的 Row class 
      * 
      * @var string
