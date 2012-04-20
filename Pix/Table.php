@@ -201,7 +201,7 @@ abstract class Pix_Table
     public static function setCache($cache)
     {
 	if (!is_null($cache) and !($cache instanceof Pix_Cache)) {
-	    throw new Exception('不正確的 Cache');
+	    throw new Pix_Table_Exception('不正確的 Cache');
 	}
 	self::$_cache = $cache;
     }
@@ -355,7 +355,7 @@ abstract class Pix_Table
         } elseif ($db = Pix_Table::getDefaultDb()) {
             // 預設 Db
         } else {
-            throw new Exception("你必需實作 protected " . $table->getClass() . "::_getDb();");
+            throw new Pix_Table_Exception("你必需實作 protected " . $table->getClass() . "::_getDb();");
         }
         $table->_db = Pix_Table_Db::factory($db);
 
@@ -416,7 +416,7 @@ abstract class Pix_Table
 	}
 
         // @codeCoverageIgnoreStart
-	throw new Exception('PHP 5.3.0 以上才支援這功能喔');
+	throw new Pix_Table_Exception('PHP 5.3.0 以上才支援這功能喔');
         // @codeCoverageIgnoreEnd
     }
 
