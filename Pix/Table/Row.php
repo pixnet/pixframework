@@ -597,7 +597,11 @@ class Pix_Table_Row
     {
 	$table = $this->getTable();
         if (preg_match('#create_(.+)#', $name, $ret)) {
-            return $this->createRelation($ret[1], $args[0]);
+            if (count($args) > 0) {
+                return $this->createRelation($ret[1], $args[0]);
+            } else {
+                return $this->createRelation($ret[1]);
+            }
         } elseif ($plugin = $table->getPlugin($name)) {
 	    return $plugin->call($table->getPluginMap($name), $this, $args);
 	} else {
