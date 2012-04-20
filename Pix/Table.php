@@ -859,7 +859,7 @@ abstract class Pix_Table
     }
 
     /**
-     * getRelationForeignTable 取得 relaton 對應的 table
+     * getRelationForeignTable 取得 relation 對應的 table
      *
      * @param string $relation relation 名稱
      * @static
