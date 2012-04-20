@@ -188,7 +188,7 @@ class Pix_Array_Array extends Pix_Array
 
     public function valid()
     {
-        $valid = isset($this->_cur_data[key($this->_cur_data)]);
+        $valid = array_key_exists(key($this->_cur_data), $this->_cur_data);
 
         if (count($this->getFilters()) and is_numeric($this->_limit)) {
             $valid = ($valid and ($this->_row_count < $this->_limit));
@@ -226,7 +226,7 @@ class Pix_Array_Array extends Pix_Array
 
     public function offsetExists($pos)
     {
-	return isset($this->_data[$pos]);
+        return array_key_exists($pos, $this->_data);
     }
 
     public function offsetGet($pos)
