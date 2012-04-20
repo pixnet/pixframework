@@ -405,8 +405,9 @@ class Pix_Table_ResultSet extends Pix_Array // implements Pix_Array_Volumable
 	    $this->rewind();
 	}
 
-	if (!$this->_rowset[$this->_pointer])
-	    return null;
+        if (!array_key_exists($this->_pointer, $this->_rowset)) {
+            return null;
+        }
 
 	$conf = array();
 	$conf['tableClass'] = $this->_tableClass;

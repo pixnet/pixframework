@@ -247,7 +247,10 @@ abstract class Pix_Table
      */
     static public function getLogStatus($group)
     {
-        return self::$_log_groups[$group];
+        if (array_key_exists($group, self::$_log_groups)) {
+            return self::$_log_groups[$group];
+        }
+        return null;
     }
 
     /**
@@ -286,7 +289,10 @@ abstract class Pix_Table
      */
     static public function getCacheStatus($group)
     {
-        return self::$_cache_groups[$group];
+        if (array_key_exists($group, self::$_cache_groups)) {
+            return self::$_cache_groups[$group];
+        }
+        return null;
     }
 
     // @codeCoverageIgnoreStart
@@ -863,13 +869,15 @@ abstract class Pix_Table
     {
         $table = self::getTable();
 
-        if (!$relation_data = $table->_relations[$relation]) {
+        if (!array_key_exists($relation, $table->_relations)) {
             throw new Pix_Table_Exception("{$table->getClass()} 找不到 {$relation} 這個 relation");
         }
+        $relation_data = $table->_relations[$relation];
 
-        if (!$table_name = $relation_data['type']) {
+        if (!array_key_exists('type', $relation_data)) {
             throw new Pix_Table_Exception("{$table->getClass()}->{$relation} 沒有指定 Table Type");
         }
+        $table_name = $relation_data['type'];
 
         return Pix_Table::getTable($table_name);
     }
@@ -885,12 +893,15 @@ abstract class Pix_Table
     static public function getRelationForeignKeys($relation)
     {
         $table = self::getTable();
-        if (!$relation_data = $table->_relations[$relation]) {
+        if (!array_key_exists($relation, $table->_relations)) {
             throw new Pix_Table_Exception("{$table->getClass()} 找不到 {$relation} 這個 relation");
         }
+        $relation_data = $table->_relations[$relation];
 
         // 有指定 foreign key 就直接回傳
-        if ($keys = $relation_data['foreign_key']) {
+        if (array_key_exists('foreign_key', $relation_data)) {
+            $keys = $relation_data['foreign_key'];
+
             return is_array($keys) ? $keys : array($keys);
         }
 
@@ -957,15 +968,15 @@ abstract class Pix_Table
     static public function isEditableKey($key)
     {
         $table = self::getTable();
-        if ($table->_columns[$key]) {
+        if (array_key_exists($key, $table->_columns) and $table->_columns[$key]) {
             return true;
         }
 
-        if ($table->_relations[$key]) {
+        if (array_key_exists($key, $table->_relations) and $table->_relations[$key]) {
             return true;
         }
 
-        if ($table->_hooks[$key]['set']) {
+        if (array_key_exists($key, $table->_hooks) and $table->_hooks[$key]['set']) {
             return true;
         }
 
