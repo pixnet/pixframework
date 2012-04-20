@@ -35,6 +35,9 @@ class Pix_Setting
      */
     static public function get($key)
     {
-	return self::$_settings[$key];
+        if (array_key_exists($key, self::$_settings)) {
+            return self::$_settings[$key];
+        }
+        return null;
     }
 }
