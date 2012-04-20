@@ -17,7 +17,7 @@ class Pix_Table_Search
     protected $_offset = null;
     protected $_table = null;
     protected $_search_conditions = array();
-    protected $_search_condition_types = array();
+    protected $_search_condition_types = array('string' => 0, 'map' => 0);
 
     static public function factory($data = null, $table = null)
     {
