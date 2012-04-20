@@ -740,8 +740,10 @@ abstract class Pix_Table
 	    $primary_values = array($primary_values);
 	}
 
-	if ( count($primary_values) == 1 and isset($this->_cache_rows[$primary_values[0]])) {
-	    $data = $this->_cache_rows[$primary_values[0]];
+        $data = null;
+        $cache_key = json_encode($primary_values);
+        if (array_key_exists($cache_key, $this->_cache_rows)) {
+            $data = $this->_cache_rows[$cache_key];
 	}
 
 	if (is_null($data)) {
@@ -790,10 +792,9 @@ abstract class Pix_Table
 	}
 
 	// memory cache
-	if (!self::$_save_memory) {
-	    if (count($primary_values) == 1) {
-		$this->_cache_rows[$primary_values[0]] = $data;
-	    }
+        if (!self::$_save_memory) {
+            $cache_key = json_encode($primary_values);
+            $this->_cache_rows[$cache_key] = $data;
 	}
 
 	// table cache
