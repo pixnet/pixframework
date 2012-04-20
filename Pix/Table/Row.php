@@ -173,7 +173,7 @@ class Pix_Table_Row
     public function save()
     {
 	try {
-	    $this->preSave($ret);
+	    $this->preSave();
 	} catch (Pix_Table_Row_Stop $e) {
 	    return;
 	}
