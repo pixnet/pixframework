@@ -259,7 +259,11 @@ class Pix_Table_Row
 
     public function getColumn($name)
     {
-	return $this->_data[$name];
+        if (array_key_exists($name, $this->_data)) {
+            return $this->_data[$name];
+        } else {
+            return null;
+        }
     }
 
     public function setColumn($name, $value)
@@ -279,7 +283,7 @@ class Pix_Table_Row
                         throw new Pix_Table_Row_InvalidFormatException($name, $column, $this);
                     }
 
-                    if ($column['unsigned'] && $value < 0) {
+                    if (array_key_exists('unsigned', $column) and $column['unsigned'] and $value < 0) {
                         throw new Pix_Table_Row_InvalidFormatException($name, $column, $this);
                     }
                     break;
@@ -302,9 +306,10 @@ class Pix_Table_Row
 
     public function getHook($name)
     {
-        if (!$get = $this->getTable()->_hooks[$name]['get']) {
+        if (!array_key_exists('get', $this->getTable()->_hooks[$name])) {
             throw new Pix_Table_Exception("沒有指定 {$name} 的 get 變數");
         }
+        $get = $this->getTable()->_hooks[$name]['get'];
 
         if (is_scalar($get)) {
             return $this->{$get}();
@@ -319,9 +324,10 @@ class Pix_Table_Row
 
     public function setHook($name, $value)
     {
-        if (!$set = $this->getTable()->_hooks[$name]['set']) {
+        if (!array_key_exists('set', $this->getTable()->_hooks[$name])) {
             throw new Pix_Table_Exception("沒有指定 {$name} 的 set 變數");
         }
+        $set = $this->getTable()->_hooks[$name]['set'];
 
         if (is_scalar($set)) {
             return $this->{$set}($value);
@@ -425,7 +431,8 @@ class Pix_Table_Row
 	}
 
 	// State5. Aliases 資料
-	if ($aliases = $table->_aliases[$name]) {
+        if (array_key_exists($name, $table->_aliases)) {
+            $aliases = $table->_aliases[$name];
 	    $rel = $this->getRelation($aliases['relation']);
 	    if ($aliases['where']) {
 		$rel = $rel->search($aliases['where']);

@@ -631,7 +631,8 @@ abstract class Pix_Table
 
     public function getResultSetPlugin($func)
     {
-	if ($plugin = self::$_static_result_set_plugins[strtolower($func)]) {
+        if (array_key_exists(strtolower($func), self::$_static_result_set_plugins)) {
+            $plugin = self::$_static_result_set_plugins[strtolower($func)];
 	    return $plugin;
 	}
 	return null;
@@ -659,17 +660,21 @@ abstract class Pix_Table
     public function getPluginMap($method)
     {
         $plugins = $this->getPlugins();
-        return $plugins[$method]['plugin_method'] ? $plugins[$method]['plugin_method'] : $method;
+        if (array_key_exists('plugin_method', $plugins[$method])) {
+            return $plugins[$method]['plugin_method'];
+        }
+        return $method;
     }
 
     public function getPlugin($method)
     {
         $plugins = $this->getPlugins();
-        if (!$plugin = $plugins[$method]) {
+        if (!array_key_exists($method, $plugins)) {
             return null;
         }
+        $plugin = $plugins[$method];
 	$class = $plugin['class'];
-	if (!$plugin = $this->_plugin_pools[$class]) {
+        if (!array_key_exists($class, $this->_plugin_pools)) {
 	    if (!class_exists($class)) {
 		throw new Pix_Table_Exception("在取得 " . $this->getClass() . " 的 {$method} plugins 時，找不到 {$class} class");
 	    }
@@ -677,7 +682,9 @@ abstract class Pix_Table
 	    if (!($plugin instanceof Pix_Table_Plugin)) {
 		throw new Pix_Table_Exception("{$class} 不是 Pix_Table_Plugin");
 	    }
-	}
+	} else {
+            $plugin = $this->_plugin_pools[$class];
+        }
 	return $plugin;
     }
 
