@@ -165,7 +165,10 @@ abstract class Pix_Table
      */
     public static function getLongQueryTime()
     {
-	return self::$_log_groups[self::LOG_SLOWQUERY];
+        if (array_key_exists(self::LOG_SLOWQUERY, self::$_log_groups)) {
+            return self::$_log_groups[self::LOG_SLOWQUERY];
+        }
+        return 0;
     }
 
     public function addFilter($filter, $funcname = '')
