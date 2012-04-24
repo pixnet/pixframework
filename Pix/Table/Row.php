@@ -118,7 +118,7 @@ class Pix_Table_Row
 
 	if ($follow_relation) {
 	    foreach ($table->_relations as $name => $relation) {
-		if ($relation['delete']) {
+                if (array_key_exists('delete', $relation) and $relation['delete']) {
                     if ($relation['rel'] == 'belongs_to' || $relation['rel'] == 'has_one') {
                         if ($this->{$name}) {
                             $this->{$name}->delete();
