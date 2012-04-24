@@ -10,7 +10,7 @@
 class Pix_Table_Row
 {
     protected $_tableClass;
-    protected $_primary_value = null;
+    protected $_primary_values = null;
 
     protected $_data = array();
     protected $_orig_data = array();
@@ -74,13 +74,15 @@ class Pix_Table_Row
 	$this->save();
     }
 
+    /**
+     * getPrimaryValues 取得這個 row 的 primary value
+     *
+     * @access public
+     * @return array|null 若是 null 表示這個 row 還沒被存入 db 中
+     */
     public function getPrimaryValues()
     {
-        if (is_array($this->_primary_value)) {
-            return $this->_primary_value;
-        }
-
-        return array($this->_primary_value);
+        return $this->_primary_values;
     }
 
     public function getTableClass()
@@ -102,7 +104,7 @@ class Pix_Table_Row
      */
     public function delete($follow_relation = true)
     {
-	if (!$this->_primary_value) { 
+	if (is_null($this->_primary_values)) {
 	    throw new Pix_Table_Exception('這個 Row 還不存在在 DB 上面，不能刪除');
         }
 
@@ -135,7 +137,7 @@ class Pix_Table_Row
 	$this->cacheRow(null);
 	$this->_orig_data = array();
 	$this->_data = array();
-	$this->_primary_value = null;
+        $this->_primary_values = null;
 
         return;
     }
@@ -178,7 +180,7 @@ class Pix_Table_Row
 	    return;
 	}
 
-	if ($this->_primary_value) { // UPDATE
+        if (!is_null($this->_primary_values)) { // UPDATE
 	    try {
                 $changed_fields = array_diff_assoc($this->_orig_data, $this->_data);
 		$this->preUpdate($changed_fields);
@@ -197,7 +199,7 @@ class Pix_Table_Row
 	    $this->cacheRow($this->_data);
 	    $this->postUpdate($changed_fields);
 	    $this->postSave();
-	    return $this->_primary_value;
+            return $this->_primary_values;
 	} else { // INSERT
 	    try {
 		$this->preInsert();
@@ -206,19 +208,20 @@ class Pix_Table_Row
 	    }
 
 	    // 先清空 cache ，以免在資料庫下完 INSERT 和之後更新 cache 之間的空檔會有問題。
-	    if ($primary_values = $this->findPrimaryValues()) {
+            if ($primary_values = $this->findPrimaryValues()) {
 		$this->cacheRow(false);
 	    }
 
             $insert_id = $this->getRowDb()->insertOne($this->getTable(), $this->_data);
 
-            if ($this->_primary_value = $insert_id) {
+            if ($insert_id) {
+                $this->_primary_values = array($insert_id);
 		$primary_columns = $this->getTable()->getPrimaryColumns();
-		$this->_data[$primary_columns[0]] = $this->_primary_value;
+                $this->_data[$primary_columns[0]] = $insert_id;
 	    } else {
-		$this->_primary_value = array();
+                $this->_primary_values = array();
 		foreach ($this->getTable()->getPrimaryColumns() as $col) {
-		    $this->_primary_value[] = $this->_data[$col];
+                    $this->_primary_values[] = $this->_data[$col];
 		}
 	    }
 
@@ -226,7 +229,7 @@ class Pix_Table_Row
 	    $this->cacheRow($this->_data);
 	    $this->postInsert();
 	    $this->postSave();
-	    return $this->_primary_value;
+            return $insert_id;
 	}
     }
 
@@ -238,12 +241,12 @@ class Pix_Table_Row
 	$this->_tableClass = $conf['tableClass'];
 
 	if (isset($conf['data'])) {
-	    $this->_primary_value = array();
+            $this->_primary_values = array();
 	    foreach ($this->getTable()->getPrimaryColumns() as $column) {
 		if (!isset($conf['data'][$column])) {
                     throw new Pix_Table_Exception("{$this->_tableClass} Row 的資料抓的不完整(缺少 column: {$column})");
 		}
-		$this->_primary_value[] = $conf['data'][$column];
+                $this->_primary_values[] = $conf['data'][$column];
 	    }
 	    $this->_data = $conf['data'];
 	    $this->_orig_data = $conf['data'];
@@ -350,7 +353,7 @@ class Pix_Table_Row
         if (!in_array($table->_relations[$name]['rel'], array('has_one', 'belongs_to'))) {
             $foreign_table = $this->getTable()->getRelationForeignTable($name);
             $foreign_keys = $this->getTable()->getRelationForeignKeys($name);
-	    $primary_values = $this->getPrimaryValues();
+            $primary_values = $this->getPrimaryValues();
             $where = array_combine($foreign_keys, $primary_values);
 
             return $foreign_table->search($where, $this);
