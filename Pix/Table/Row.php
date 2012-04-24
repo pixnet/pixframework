@@ -531,37 +531,6 @@ class Pix_Table_Row
 	}
     }
 
-    /**
-     * _addRow 
-     * 
-     * @deprecated 已經不再使用
-     * @param mixed $row 
-     * @param array $arr 
-     * @static
-     * @access protected
-     * @return void
-     * @codeCoverageIgnoreStart
-     */
-    protected static function _addRow($row, array $arr = array())
-    {
-	foreach ($row->getTable()->_relations as $key => $value) {
-	    if (!$value['delete']) {
-		continue;
-	    }
-
-	    if ($value['rel'] == 'has_one' or $value['rel'] == 'belongs_to') {
-		if ($crow = $row->{$key}) {
-		    $arr[] = $crow;
-		}
-	    } else {
-		foreach ($row->{$key} as $crow) {
-		    $arr = self::_addRow($crow, $arr);
-		}
-	    }
-	}
-	return $arr;
-    }
-
     public function createRelation($relation, $values = array())
     {
         $table = $this->getTable();
