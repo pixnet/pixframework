@@ -46,6 +46,14 @@ abstract class Pix_Table
     public $_aliases = array();
 
     /**
+     * _hooks 這個 Table 有哪些 hook
+     *
+     * @var array key: hook name, value: array('get' => 'getName', 'set' => 'setName')
+     * @access public
+     */
+    public $_hooks = array();
+
+    /**
      * _rowClass 這個 Table 的 Row class 
      * 
      * @var string
