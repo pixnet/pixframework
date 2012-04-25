@@ -9,9 +9,12 @@ class Pix_Table_TableRelationTest_Table extends Pix_Table
 
         $this->_columns['t1_id'] = array('type' => 'int', 'auto_increment' => true, 'unsigned' => true);
         $this->_columns['value'] = array('type' => 'text', 'default' => 'default');
+        $this->_columns['t1_t3_id'] = array('type' => 'int', 'default' => 0);
 
         $this->_relations['table2'] = array('rel' => 'has_one', 'type' => 'Pix_Table_TableRelationTest_Table2', 'delete' => true, 'foreign_key' => 't1_id');
         $this->_relations['table3s'] = array('rel' => 'has_many', 'type' => 'Pix_Table_TableRelationTest_Table3', 'delete' => true, 'foreign_key' => 't3_t1id');
+        $this->_relations['table3'] = array('rel' => 'has_one', 'type' => 'Pix_Table_TableRelationTest_Table3', 'foreign_key' => 't1_t3_id');
+        $this->_relations['wrong_rel'] = array('rel' => 'wrong_rel', 'type' => 'Pix_Table_TableRelationTest_Table3', 'foreign_key' => 't1_t3_id');
     }
 }
 
@@ -160,5 +163,138 @@ class Pix_Table_TableRelationTest extends PHPUnit_Framework_TestCase
         Pix_Table_TableRelationTest_Table2::setDb($db);
 
         $this->assertEquals($row->table2, null);
+    }
+
+    public function testSetRelation()
+    {
+        $table1_row = new Pix_Table_Row(array(
+            'tableClass' => 'Pix_Table_TableRelationTest_Table',
+            'data' => array('t1_id' => 1001, 'value' => 'delete_me')
+        ));
+
+        $db = $this->getMock('Pix_Table_Db_Adapter_Abstract', array('fetchOne', 'updateOne'));
+
+        $db->expects($this->once())
+            ->method('fetchOne')
+            ->with($this->isInstanceOf('Pix_Table_TableRelationTest_Table3'), array(3))
+            ->will($this->returnValue(array('t3_id' => 3, 't3_t1id' => 1, 'value' => 'value')));
+
+        $db->expects($this->once())
+            ->method('updateOne')
+            ->with($this->isInstanceOf('Pix_Table_Row'), array('t1_t3_id' => 3))
+            ->will($this->returnValue(null));
+
+        Pix_Table_TableRelationTest_Table::setDb($db);
+        Pix_Table_TableRelationTest_Table3::setDb($db);
+
+        $table1_row->table3 = 3;
+        $table1_row->save();
+
+        $this->assertTrue($table1_row->table3 instanceof Pix_Table_Row);
+        $this->assertEquals($table1_row->table3->getTableClass(), 'Pix_Table_TableRelationTest_Table3');
+        $this->assertEquals($table1_row->table3->t3_id, 3);
+        $this->assertEquals($table1_row->t1_t3_id, 3);
+    }
+
+    public function testSetRelation2()
+    {
+        $table1_row = new Pix_Table_Row(array(
+            'tableClass' => 'Pix_Table_TableRelationTest_Table',
+            'data' => array('t1_id' => 1001, 'value' => 'delete_me')
+        ));
+        $table3_row = new Pix_Table_Row(array(
+            'tableClass' => 'Pix_Table_TableRelationTest_Table3',
+            'data' => array('t3_id' => 4567, 't3_t1id' => 1, 'value' => 'delete_me')
+        ));
+
+        $db = $this->getMock('Pix_Table_Db_Adapter_Abstract', array('fetchOne', 'updateOne'));
+
+        $db->expects($this->once())
+            ->method('fetchOne')
+            ->with($this->isInstanceOf('Pix_Table_TableRelationTest_Table3'), array(4567))
+            ->will($this->returnValue(array('t3_id' => 4567, 't3_t1id' => 1, 'value' => 'value')));
+
+        $db->expects($this->once())
+            ->method('updateOne')
+            ->with($this->isInstanceOf('Pix_Table_Row'), array('t1_t3_id' => 4567))
+            ->will($this->returnValue(null));
+
+        Pix_Table_TableRelationTest_Table::setDb($db);
+        Pix_Table_TableRelationTest_Table3::setDb($db);
+
+        $table1_row->table3 = $table3_row;
+        $table1_row->save();
+
+        $this->assertTrue($table1_row->table3 instanceof Pix_Table_Row);
+        $this->assertEquals($table1_row->table3->getTableClass(), 'Pix_Table_TableRelationTest_Table3');
+        $this->assertEquals($table1_row->table3->t3_id, 4567);
+        $this->assertEquals($table1_row->t1_t3_id, 4567);
+    }
+
+    /**
+     * 測試 has_many 用 setRelation 會丟 Pix_Table_Exception
+     * @expectedException           Pix_Table_Exception
+     */
+    public function testHasManySetRelationException()
+    {
+        $table1_row = new Pix_Table_Row(array(
+            'tableClass' => 'Pix_Table_TableRelationTest_Table',
+            'data' => array('t1_id' => 1001, 'value' => 'delete_me')
+        ));
+
+        $table1_row->table3s = 3;
+    }
+
+    public function testSetRelationNull()
+    {
+        $table1_row = new Pix_Table_Row(array(
+            'tableClass' => 'Pix_Table_TableRelationTest_Table',
+            'data' => array('t1_id' => 1001, 'value' => 'delete_me')
+        ));
+
+        $table1_row->table3 = null;
+        $this->assertEquals($table1_row->t1_t3_id, 0);
+    }
+
+    /**
+     * 測試給的值與 Priamry Key 數量不符
+     * @expectedException           Pix_Table_Exception
+     */
+    public function testSetRelationValueCountException()
+    {
+        $table1_row = new Pix_Table_Row(array(
+            'tableClass' => 'Pix_Table_TableRelationTest_Table',
+            'data' => array('t1_id' => 1001, 'value' => 'delete_me')
+        ));
+
+        $table1_row->table3 = array(1,2,3);
+    }
+
+    /**
+     * 測試給的值不是合法的值
+     * @expectedException           Pix_Table_Exception
+     */
+    public function testSetRelationValueWrongTypeException()
+    {
+        $table1_row = new Pix_Table_Row(array(
+            'tableClass' => 'Pix_Table_TableRelationTest_Table',
+            'data' => array('t1_id' => 1001, 'value' => 'delete_me')
+        ));
+
+        $table1_row->table3 = new StdClass;
+    }
+
+    /**
+     * 測試 relation 設定錯誤
+     * @expectedException           Pix_Table_Exception
+     */
+    public function testSetRelationWrongRelationException()
+    {
+        $table1_row = new Pix_Table_Row(array(
+            'tableClass' => 'Pix_Table_TableRelationTest_Table',
+            'data' => array('t1_id' => 1001, 'value' => 'delete_me')
+        ));
+
+        $table1_row->wrong_rel = 123;
     }
 }
