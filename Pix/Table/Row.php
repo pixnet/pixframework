@@ -398,11 +398,11 @@ class Pix_Table_Row
 	    } elseif ($value == null) {
 		$value = array(null);
 	    } elseif (!is_array($value)) {
-                throw new Exception(' = 右邊的東西只能是 Row 或是 PK' . $type . get_class($value));
+                throw new Pix_Table_Exception(' = 右邊的東西只能是 Row 或是 PK' . $type . get_class($value));
 	    }
 
 	    if (count($value) != count($foreign_keys)) {
-		throw new Exception('參數不夠');
+                throw new Pix_Table_Exception('參數不夠');
 	    }
 
 	    $column_values = array_combine($foreign_keys, $value);
@@ -411,7 +411,7 @@ class Pix_Table_Row
 	    }
 	    return;
 	} else {
-	    throw new Exception('relation 的 rel 只能是 has_many, has_one 或是 belongs_to 喔');
+            throw new Pix_Table_Exception('relation 的 rel 只能是 has_many, has_one 或是 belongs_to 喔');
 	}
     }
 
