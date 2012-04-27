@@ -104,6 +104,14 @@ class Pix_Table_TableTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * 未設定過 LongQueryTime 時，應該要傳回 0
+     */
+    public function testGetLongQueryTimeInitialValue()
+    {
+        $this->assertEquals(0, Pix_Table::getLongQueryTime());
+    }
+
+    /**
      * 測試 LongQueryTime 是否能正常讀取寫入
      */
     public function testSetLongQueryTime()
