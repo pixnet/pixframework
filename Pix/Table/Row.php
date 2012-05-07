@@ -143,6 +143,17 @@ class Pix_Table_Row
     }
 
     /**
+     * getOriginalData 取得 save 之前的資料內容
+     *
+     * @access public
+     * @return array
+     */
+    public function getOriginalData()
+    {
+        return $this->_orig_data;
+    }
+
+    /**
      * findPrimaryValues 尋找這個 Row 的 PrimaryValues，與 getPrimaryValues 不同的是，getPrimaryValues要已經存在資料庫
      * 內才能得到資料
      *
