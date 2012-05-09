@@ -365,6 +365,9 @@ class Pix_Table_Row
             $foreign_table = $this->getTable()->getRelationForeignTable($name);
             $foreign_keys = $this->getTable()->getRelationForeignKeys($name);
             $primary_values = $this->getPrimaryValues();
+            if (count($foreign_keys) !== count($primary_values)) {
+                throw new Pix_Table_Exception($this->getTableClass() . ' 在拉 ' . $name . ' relation 時， foreign key 數量不正確');
+            }
             $where = array_combine($foreign_keys, $primary_values);
 
             return $foreign_table->search($where, $this);
