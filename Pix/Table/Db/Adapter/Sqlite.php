@@ -127,7 +127,7 @@ class Pix_Table_Db_Adapter_Sqlite extends Pix_Table_Db_Adapter_SQL
             $s = 'PRIMARY KEY ' ;
             $index_columns = array();
             foreach ((is_array($table->_primary) ? $table->_primary : array($table->_primary)) as $pk) {
-                $index_columns[] = $pk;
+                $index_columns[] = $this->column_quote($pk);
             }
             $s .= '(' . implode(', ', $index_columns) . ")\n";
             $column_sql[] = $s;
