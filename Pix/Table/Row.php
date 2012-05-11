@@ -143,6 +143,17 @@ class Pix_Table_Row
     }
 
     /**
+     * getOriginalData 取得 save 之前的資料內容
+     *
+     * @access public
+     * @return array
+     */
+    public function getOriginalData()
+    {
+        return $this->_orig_data;
+    }
+
+    /**
      * findPrimaryValues 尋找這個 Row 的 PrimaryValues，與 getPrimaryValues 不同的是，getPrimaryValues要已經存在資料庫
      * 內才能得到資料
      *
@@ -354,6 +365,9 @@ class Pix_Table_Row
             $foreign_table = $this->getTable()->getRelationForeignTable($name);
             $foreign_keys = $this->getTable()->getRelationForeignKeys($name);
             $primary_values = $this->getPrimaryValues();
+            if (count($foreign_keys) !== count($primary_values)) {
+                throw new Pix_Table_Exception($this->getTableClass() . ' 在拉 ' . $name . ' relation 時， foreign key 數量不正確');
+            }
             $where = array_combine($foreign_keys, $primary_values);
 
             return $foreign_table->search($where, $this);
