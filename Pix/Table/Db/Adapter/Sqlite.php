@@ -50,7 +50,7 @@ class Pix_Table_Db_Adapter_Sqlite extends Pix_Table_Db_Adapter_SQL
         }
         $res = $statement->execute();
 	if (($t = Pix_Table::getLongQueryTime()) and ($delta = (microtime(true) - $starttime)) > $t) {
-            Pix_Table::debug(sprintf("[%s]\t%s\t%40s", $this->_pdo->getAttribute(PDO::ATTR_SERVER_INFO), $delta, $sql));
+            Pix_Table::debug(sprintf("[%s]\t%s\t%40s", $this->_path, $delta, $sql));
 	}
 
 	if ($res === false) {
