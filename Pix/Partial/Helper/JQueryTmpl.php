@@ -126,7 +126,7 @@ class Pix_Partial_Helper_JQueryTmpl extends Pix_Partial_Helper
 		$t = $t->{$term};
 	    }
 	}
-	return $t;
+        return htmlspecialchars($t);
     }
 
     protected function _walkToken($tokens, $start, $end, $data)
