@@ -175,7 +175,7 @@ class Pix_Partial_Helper_JQueryTmpl extends Pix_Partial_Helper
 	ob_start();
         echo '<script id="', htmlspecialchars($id), '" type="text/html">';
         echo file_get_contents($path);
-	echo '</scrpit>';
+	echo '</script>';
 	return ob_get_clean();
 
     }
