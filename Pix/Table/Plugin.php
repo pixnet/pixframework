@@ -7,7 +7,7 @@
  * @copyright 2003-2012 PIXNET Digital Media Corporation
  * @license http://framework.pixnet.net/license BSD License
  */
-class Pix_Table_Plugin
+class Pix_Table_Plugin extends Pix_Helper
 {
     protected $_options = array();
 

@@ -33,11 +33,10 @@ class Pix_Table_AllTests
 	// Start remaining tests...
 	$suite->addTestSuite('Pix_Table_TableTest');
 	$suite->addTestSuite('Pix_Table_TableIndexTest');
-	$suite->addTestSuite('Pix_Table_TableResultSetPluginTest');
-	$suite->addTestSuite('Pix_Table_TableRowPluginTest');
 	$suite->addTestSuite('Pix_Table_TableCacheTest');
 	$suite->addTestSuite('Pix_Table_TableRowTest');
 	$suite->addTestSuite('Pix_Table_TableRelationTest');
+	$suite->addTestSuite('Pix_Table_TableHelperTest');
 
         return $suite;
     }
