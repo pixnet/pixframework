@@ -11,6 +11,11 @@ class Pix_Helper_HelperTest_Helper1 extends Pix_Helper
     {
         return 'test1 returned';
     }
+
+    public function testOption($name)
+    {
+        return $this->getOption($name) . ':test';
+    }
 }
 
 class Pix_Helper_HelperTest_NotPixHelper
@@ -29,6 +34,17 @@ class Pix_Helper_HelperTest extends PHPUnit_Framework_TestCase
         $this->assertEquals($manager->getMethods(), array('test1'));
 
         $this->assertEquals($manager->callHelper('test1', array()), 'test1 returned');
+    }
+
+    public function testOption()
+    {
+        $manager = new Pix_Helper_Manager();
+        $manager->addHelper('Pix_Helper_HelperTest_Helper1', array('testOption'), array('test1' => 'value1', 'test2' => 'value2'));
+
+        $this->assertEquals($manager->callHelper('testOption', array('test1')), 'value1:test');
+        $this->assertEquals($manager->callHelper('testOption', array('test2')), 'value2:test');
+        $this->assertEquals($manager->callHelper('testOption', array('not_exists_option')), ':test');
+
     }
 
     /**
