@@ -588,8 +588,16 @@ class Pix_Table_Row
             } else {
                 return $this->createRelation($ret[1]);
             }
+        } elseif ($table->getHelperManager('row')->hasMethod($name)) {
+            $new_args = $args;
+            array_unshift($new_args, $this);
+            return $table->getHelperManager('row')->callHelper($name, $new_args);
+        } elseif (Pix_Table::getStaticHelperManager('row')->hasMethod($name)) {
+            $new_args = $args;
+            array_unshift($new_args, $this);
+            return Pix_Table::getStaticHelperManager('row')->callHelper($name, $new_args);
         } elseif ($plugin = $table->getPlugin($name)) {
-	    return $plugin->call($table->getPluginMap($name), $this, $args);
+            return $plugin->call($table->getPluginMap($name), $this, $args);
 	} else {
 	    throw new Pix_Table_Exception(get_class($this) . " 沒有 $name 這個 function 喔");
 	}

@@ -682,9 +682,15 @@ class Pix_Table_ResultSet extends Pix_Array // implements Pix_Array_Volumable
 
     public function __call($func, $args)
     {
-	if ($plugin = $this->getTable()->getResultSetPlugin($func)) {
-	    array_unshift($args, $this);
-	    return call_user_func_array(array($plugin, $func), $args);
+        if ($this->getTable()->getHelperManager('resultset')->hasMethod($func)) {
+            array_unshift($args, $this);
+            return $this->getTable()->getHelperManager('resultset')->callHelper($func, $args);
+        } elseif (Pix_Table::getStaticHelperManager('resultset')->hasMethod($func)) {
+            array_unshift($args, $this);
+            return Pix_Table::getStaticHelperManager('resultset')->callHelper($func, $args);
+        } elseif ($plugin = $this->getTable()->getResultSetPlugin($func)) {
+            array_unshift($args, $this);
+            return call_user_func_array(array($plugin, $func), $args);
 	}
 
 	throw new Pix_Table_Exception("找不到 function {$func}");
