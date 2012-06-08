@@ -727,6 +727,128 @@ abstract class Pix_Table
 	return $table->_plugins;
     }
 
+    protected $_helper_managers = array();
+    protected static $_static_helper_managers = array();
+
+    /**
+     * getHelperManager get Pix_Helper_Manager from this table
+     *
+     * @param string $type
+     * @access public
+     * @return Pix_Helper_Manager
+     */
+    public static function getHelperManager($type)
+    {
+        $table = self::getTable();
+        if (!array_key_exists($type, $table->_helper_managers)) {
+            $table->_helper_managers[$type] = new Pix_Helper_Manager();
+        }
+        return $table->_helper_managers[$type];
+    }
+
+    /**
+     * getStaticHelperManager get Pix_Helper_Manager from static Pix_Table
+     *
+     * @param string $type
+     * @static
+     * @access public
+     * @return Pix_Helper_Manager
+     */
+    public static function getStaticHelperManager($type)
+    {
+        if (!array_key_exists($type, self::$_static_helper_managers)) {
+            self::$_static_helper_managers[$type] = new Pix_Helper_Manager();
+        }
+        return self::$_static_helper_managers[$type];
+    }
+
+    /**
+     * addRowHelper add Row Helper to this Table
+     *
+     * @param string $helper
+     * @param array $methods
+     * @param array $options
+     * @access public
+     * @return void
+     */
+    public static function addRowHelper($helper, $methods = null, $options = array())
+    {
+        $table = self::getTable();
+        $table->getHelperManager('row')->addHelper($helper, $methods, $options);
+    }
+
+    /**
+     * addResultSetHelper add ResultSet Helper to this Table
+     *
+     * @param string $helper
+     * @param array $methods
+     * @param array $options
+     * @access public
+     * @return void
+     */
+    public static function addResultSetHelper($helper, $methods = null, $options = array())
+    {
+        $table = self::getTable();
+        $table->getHelperManager('resultset')->addHelper($helper, $methods, $options);
+    }
+
+    /**
+     * addTableHelper add Table Helper to this Table
+     *
+     * @param string $helper
+     * @param array $methods
+     * @param array $options
+     * @access public
+     * @return void
+     */
+    public static function addTableHelper($helper, $methods = null, $options = array())
+    {
+        $table = self::getTable();
+        $table->getHelperManager('table')->addHelper($helper, $methods, $options);
+    }
+
+    /**
+     * addStaticRowHelper add Row Helper to all Table
+     *
+     * @param string $helper
+     * @param array $methods
+     * @param array $options
+     * @access public
+     * @return void
+     */
+    public static function addStaticRowHelper($helper, $methods = null, $options = array())
+    {
+        self::getStaticHelperManager('row')->addHelper($helper, $methods, $options);
+    }
+
+    /**
+     * addStaticResultSetHelper add ResuletSet Helper to all Table
+     *
+     * @param string $helper
+     * @param array $methods
+     * @param array $options
+     * @access public
+     * @return void
+     */
+    public static function addStaticResultSetHelper($helper, $methods = null, $options = array())
+    {
+        self::getStaticHelperManager('resultset')->addHelper($helper, $methods, $options);
+    }
+
+    /**
+     * addStaticTableHelper add Table Helper to all Table
+     *
+     * @param string $helper
+     * @param array $methods
+     * @param array $options
+     * @access public
+     * @return void
+     */
+    public static function addStaticTableHelper($helper, $methods = null, $options = array())
+    {
+        self::getStaticHelperManager('table')->addHelper($helper, $methods, $options);
+    }
+
     protected $_table_cache = false;
     protected $_table_cache_prefix = '';
 
