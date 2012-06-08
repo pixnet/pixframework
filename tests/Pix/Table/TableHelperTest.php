@@ -21,7 +21,7 @@ class Pix_Table_TableHelperTest_Table extends Pix_Table
     {
         $this->_resultSetClass = 'Pix_Table_TableHelperTest_TableResultSet';
 
-        $this->_columns['id'] = array('type' => 'int');
+        $this->_columns['id'] = array('type' => 'varchar', 'size' => 32);
     }
 
     protected static $_value;
