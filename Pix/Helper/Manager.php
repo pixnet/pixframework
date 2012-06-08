@@ -93,9 +93,11 @@ class Pix_Helper_Manager
 
         $id = $this->_method_to_helper_map[strtolower($method)];
 
+        /* XXX: this is impossible
         if (!array_key_exists($id, $this->_helper_infos)) {
             throw new Pix_Helper_Exception("There is no {$method} in Helper");
         }
+         */
 
         $helper_info = $this->_helper_infos[$id];
 
