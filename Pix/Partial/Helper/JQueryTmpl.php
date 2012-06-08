@@ -126,7 +126,7 @@ class Pix_Partial_Helper_JQueryTmpl extends Pix_Partial_Helper
 		$t = $t->{$term};
 	    }
 	}
-	return $t;
+        return htmlspecialchars($t);
     }
 
     protected function _walkToken($tokens, $start, $end, $data)
@@ -159,7 +159,7 @@ class Pix_Partial_Helper_JQueryTmpl extends Pix_Partial_Helper
 
     public function jQueryTmpl($me, $path, $data)
     {
-	$content = file_get_contents($path);
+        $content = file_get_contents($me->getPath() . '/' . $path);
 	$tokens = $this->_getTokens($content);
 
 	$this->_walkToken($tokens, 0, count($tokens), $data);
@@ -168,14 +168,14 @@ class Pix_Partial_Helper_JQueryTmpl extends Pix_Partial_Helper
     public function addJQueryTmpl($me, $path, $id)
     {
 	if ($me->getPath()) {
-            $path = $me->getPath() . ltrim($path, '/');
+            $path = $me->getPath() . '/' . ltrim($path, '/');
 	} else {
 	    $path = $path;
 	}
 	ob_start();
         echo '<script id="', htmlspecialchars($id), '" type="text/html">';
-	echo file_get_contents($path);
-	echo '</scrpit>';
+        echo file_get_contents($path);
+	echo '</script>';
 	return ob_get_clean();
 
     }
