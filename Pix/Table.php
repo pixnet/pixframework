@@ -709,7 +709,13 @@ abstract class Pix_Table
     {
 	if (preg_match('#find_by_(.+)#', $name, $ret)) {
 	    $column = explode('_and_', $ret[1]);
-	    return $this->find_by($column, $args);
+            return $this->find_by($column, $args);
+        } elseif ($this->getHelperManager('table')->hasMethod($name)) {
+            array_unshift($args, $this);
+            return $this->getHelperManager('table')->callHelper($name, $args);
+        } elseif (self::getStaticHelperManager('table')->hasMethod($name)) {
+            array_unshift($args, $this);
+            return self::getStaticHelperManager('table')->callHelper($name, $args);
 	}
 	throw new Pix_Table_Exception("找不到這個函式喔: {$name}");
     }
