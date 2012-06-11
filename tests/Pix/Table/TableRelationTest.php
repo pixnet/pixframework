@@ -32,7 +32,7 @@ class Pix_Table_TableRelationTest_Table2 extends Pix_Table
 
 class Pix_Table_TableRelationTest_Table3 extends Pix_Table
 {
-    public function __construct()
+    public function init()
     {
         $this->_name = 'table3';
         $this->_primary = array('t3_id');

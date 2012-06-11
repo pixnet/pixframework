@@ -30,7 +30,7 @@ class Pix_Table_TableTest_Table extends Pix_Table
 
 class Pix_Table_TableTest_Table2 extends Pix_Table
 {
-    public function __construct()
+    public function init()
     {
         $this->_name = 'table2';
         $this->_primary = 't2_id';
@@ -44,7 +44,7 @@ class Pix_Table_TableTest_Table2 extends Pix_Table
 
 class Pix_Table_TableTest_Table3 extends Pix_Table
 {
-    public function __construct()
+    public function init()
     {
         $this->_name = 'table3';
         $this->_primary = array('t3_id', 't3_id2');
