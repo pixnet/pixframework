@@ -33,7 +33,7 @@ class Pix_Helper_Manager
                 throw new Pix_Helper_Exception("{$helper} is not a class");
             }
 
-            if (!is_a($helper, 'Pix_Helper', true)) {
+            if (!is_scalar($helper) or !is_subclass_of($helper, 'Pix_Helper')) {
                 throw new Pix_Helper_Exception("{$helper} is not a Pix_Helper");
             }
 
@@ -108,7 +108,7 @@ class Pix_Helper_Manager
                 throw new Pix_Helper_Exception("{$helper} is not a class");
             }
 
-            if (!is_a($helper, 'Pix_Helper', true)) {
+            if (!is_scalar($helper) or !is_subclass_of($helper, 'Pix_Helper')) {
                 throw new Pix_Helper_Exception("{$helper} is not a Pix_Helper");
             }
 
