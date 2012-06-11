@@ -93,9 +93,6 @@ abstract class Pix_Table
      */
     public $_indexes;
 
-    protected $_plugin_pools = array();
-    protected $_plugins = array();
-    protected $_plugin_class_options = array();
     protected $_filters = array();
     public static $_verify = true;
     public static $_save_memory = false;
@@ -619,85 +616,26 @@ abstract class Pix_Table
 	return false;
     }
 
-    static protected $_static_result_set_plugins = array();
 
-    static public function addResultSetStaticPlugins($plugin, $funcs = array())
+    // @codeCoverageIgnoreStart
+    static public function addResultSetStaticPlugins($plugin, $funcs = null)
     {
-	if (@class_exists('Pix_Table_ResultSet_Plugin_' . ucfirst($plugin))) {
-	    $plugin = 'Pix_Table_ResultSet_Plugin_' . ucfirst($plugin);
-	}
-
-	if (!class_exists($plugin)) {
-	    throw new Pix_Table_Exception("Plugin {" . $plugin . "} is not found");
-	}
-
-	if (!$funcs) {
-	    $funcs = call_user_func(array($plugin, 'getFuncs'));
-	}
-
-	foreach ($funcs as $func) {
-	    self::$_static_result_set_plugins[strtolower($func)] = $plugin;
-	}
+        // TODO: Mark as deprecated
+        return self::addStaticResultSetHelper($plugin, $funcs, array());
     }
+    // @codeCoverageIgnoreEnd
 
-    public function getResultSetPlugin($func)
-    {
-        if (array_key_exists(strtolower($func), self::$_static_result_set_plugins)) {
-            $plugin = self::$_static_result_set_plugins[strtolower($func)];
-	    return $plugin;
-	}
-	return null;
-    }
-
+    // @codeCoverageIgnoreStart
     public function addPlugins($methods, $class, $options = array())
     {
+        // TODO: Mark as deprecated
 	if (!is_array($methods)) {
 	    $methods = array($methods);
-	}
-
-	foreach ($methods as $call_method => $plugin_method) {
-	    $conf = array('class' => $class);
-	    if (!preg_match('#^[0-9]*$#', $call_method)) {
-		$conf['plugin_method'] = $plugin_method;
-	    } else {
-		$call_method = $plugin_method;
-	    }
-	    $this->_plugins[$call_method] = $conf;
-	}
-
-	$this->_plugin_class_options[$class] = $options;
-    }
-
-    public function getPluginMap($method)
-    {
-        $plugins = $this->getPlugins();
-        if (array_key_exists('plugin_method', $plugins[$method])) {
-            return $plugins[$method]['plugin_method'];
         }
-        return $method;
-    }
 
-    public function getPlugin($method)
-    {
-        $plugins = $this->getPlugins();
-        if (!array_key_exists($method, $plugins)) {
-            return null;
-        }
-        $plugin = $plugins[$method];
-	$class = $plugin['class'];
-        if (!array_key_exists($class, $this->_plugin_pools)) {
-	    if (!class_exists($class)) {
-		throw new Pix_Table_Exception("在取得 " . $this->getClass() . " 的 {$method} plugins 時，找不到 {$class} class");
-	    }
-	    $this->_plugin_pools[$class] = $plugin = new $class($this->_plugin_class_options[$class]);
-	    if (!($plugin instanceof Pix_Table_Plugin)) {
-		throw new Pix_Table_Exception("{$class} 不是 Pix_Table_Plugin");
-	    }
-	} else {
-            $plugin = $this->_plugin_pools[$class];
-        }
-	return $plugin;
+        return $this->addRowHelper($class, $methods, $options);
     }
+    // @codeCoverageIgnoreEnd
 
     static public function __callStatic($name, $args)
     {
@@ -727,11 +665,14 @@ abstract class Pix_Table
      * @access public
      * @return array
      */
+    // @codeCoverageIgnoreStart
     static public function getPlugins()
     {
-	$table = self::getTable();
-	return $table->_plugins;
+        // TODO: Mark as deprecated
+        $table = self::getTable();
+        return $table->getHelperManager('row')->getMethods();
     }
+    // @codeCoverageIgnoreEnd
 
     protected $_helper_managers = array();
     protected static $_static_helper_managers = array();
