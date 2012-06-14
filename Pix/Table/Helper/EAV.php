@@ -4,7 +4,7 @@
  * Pix_Table_Helper_EAV 
  * 
  * @uses Pix
- * @options cache => Pix_Cache object(default null), relation => relation name (default eavs), cache_expire => cache expire time(default 3600)
+ * @options relation => relation name (default eavs)
  * @package Table
  * @copyright 2003-2012 PIXNET Digital Media Corporation
  * @license http://framework.pixnet.net/license BSD License
@@ -16,11 +16,6 @@ class Pix_Table_Helper_EAV extends Pix_Helper
 	return ($relation = $this->getOption('relation')) ? $relation : 'eavs';
     }
 
-    protected function _getCacheExpire()
-    {
-	return ($expire = $this->getOption('cache_expire')) ? $expire : 3600;
-    }
-
     protected function _getKeyColumn()
     {
 	return ($column = $this->getOption('key_column')) ? $column : 'key';
@@ -29,11 +24,6 @@ class Pix_Table_Helper_EAV extends Pix_Helper
     protected function _getValueColumn()
     {
 	return ($column = $this->getOption('value_column')) ? $column : 'value';
-    }
-
-    protected function _getCacheKey($row, $key)
-    {
-	return 'Pix_Table_Helper_EAV::' . $row->getTableClass() . '::' . implode('::', $row->getPrimaryValues()) . '::' . crc32($key);
     }
 
     public function incEAV($row, $key, $delta = 1, $max = null)
@@ -58,35 +48,15 @@ class Pix_Table_Helper_EAV extends Pix_Helper
 
     public function getEAV($row, $key)
     {
-	if ($cache = $this->getOption('cache')) {
-	    $cache_key = $this->_getCacheKey($row, $key);
-	}
-
-	if ($cache and false !== ($data = $cache->get($cache_key))) {
-	    return $data;
-	}
-
 	$key_column = $this->_getKeyColumn();
 	$value_column = $this->_getValueColumn();
 	$data = ($eav = $row->{$this->_getRelation()}->search(array($key_column => $key))->first()) ? $eav->{$value_column} : null;
 
-	if ($cache) {
-	    $cache->set($cache_key, $data, $this->_getCacheExpire());
-	}
 	return $data;
     }
 
     public function setEAV($row, $key, $value)
     {
-	if ($cache = $this->getOption('cache')) {
-	    $cache_key = $this->_getCacheKey($row, $key);
-	    if (is_null($value)) {
-		$cache->delete($cache_key);
-	    } else {
-		$cache->set($cache_key, $value, $this->_getCacheExpire());
-	    }
-	}
-
 	$key_column = $this->_getKeyColumn();
 	$value_column = $this->_getValueColumn();
 	if (is_null($value)) {
