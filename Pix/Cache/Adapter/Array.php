@@ -197,6 +197,9 @@ class Pix_Cache_Adapter_Array extends Pix_Cache_Adapter
      */
     public function get($key)
     {
+        if (!array_key_exists($key, $this->_big_array)) {
+            return false;
+        }
         $result = $this->_big_array[$key];
         if ($result['end_at'] && (time() > $result['end_at'])) {
             self::delete($key);
