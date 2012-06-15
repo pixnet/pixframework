@@ -1,5 +1,7 @@
 <?php
 
+trigger_error("Pix_Table_Plugin is deprecated, use Pix_Helper instead", E_USER_DEPRECATED);
+
 /**
  * Pix_Table_Plugin_EAV 
  * 
@@ -7,6 +9,7 @@
  * @uses _Table_Plugin
  * @options cache => Pix_Cache object(default null), relation => relation name (default eavs), cache_expire => cache expire time(default 3600)
  * @package Table
+ * @deprecated Pix_Table_Plugin is deprecated, use Pix_Helper instead
  * @copyright 2003-2012 PIXNET Digital Media Corporation
  * @license http://framework.pixnet.net/license BSD License
  */
