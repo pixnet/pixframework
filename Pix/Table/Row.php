@@ -596,8 +596,6 @@ class Pix_Table_Row
             $new_args = $args;
             array_unshift($new_args, $this);
             return Pix_Table::getStaticHelperManager('row')->callHelper($name, $new_args);
-        } elseif ($plugin = $table->getPlugin($name)) {
-            return $plugin->call($table->getPluginMap($name), $this, $args);
 	} else {
 	    throw new Pix_Table_Exception(get_class($this) . " 沒有 $name 這個 function 喔");
 	}
