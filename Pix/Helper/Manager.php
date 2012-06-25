@@ -10,6 +10,7 @@
 class Pix_Helper_Manager
 {
     protected $_method_to_helper_map = array();
+    protected $_wildcard_helpers = array();
 
     protected $_helper_infos = array();
 
@@ -50,7 +51,11 @@ class Pix_Helper_Manager
         )) - 1;
 
         foreach ($methods as $method) {
-            $this->_method_to_helper_map[strtolower($method)] = $id;
+            if ('*' == $method) {
+                $this->_wildcard_helpers[] = $id;
+            } else {
+                $this->_method_to_helper_map[strtolower($method)] = $id;
+            }
         }
     }
 
@@ -62,6 +67,7 @@ class Pix_Helper_Manager
      */
     public function getMethods()
     {
+        // TODO: wildcard helper support
         return array_keys($this->_method_to_helper_map);
     }
 
@@ -74,32 +80,43 @@ class Pix_Helper_Manager
      */
     public function hasMethod($method)
     {
-        return array_key_exists(strtolower($method), $this->_method_to_helper_map);
+        return !is_null($this->_getHelperIdByMethodName($method));
     }
 
     /**
-     * callHelper call a helper method
+     * _getHelperIdByMethodName get Helper ID by method name
      *
-     * @param string $method method name (case insensitive)
-     * @param array $args arguments
-     * @access public
-     * @return mixed helper method return value
+     * @param string $method
+     * @access protected
+     * @return null-not found, int-helper id
      */
-    public function callHelper($method, $args)
+    protected function _getHelperIdByMethodName($method)
     {
-        if (!$this->hasMethod($method)) {
-            throw new Pix_Helper_Exception("There is no {$method} in Helper");
+        if (array_key_exists(strtolower($method), $this->_method_to_helper_map)) {
+            return $this->_method_to_helper_map[strtolower($method)];
         }
 
-        $id = $this->_method_to_helper_map[strtolower($method)];
-
-        /* XXX: this is impossible
-        if (!array_key_exists($id, $this->_helper_infos)) {
-            throw new Pix_Helper_Exception("There is no {$method} in Helper");
+        foreach ($this->_wildcard_helpers as $helper_id) {
+            $helper_info = $this->_getHelperInfo($helper_id);
+            if ($helper_info['object']->hasMethod($method)) {
+                $this->_method_to_helper_map[strtolower($method)] = $helper_id;
+                return $helper_id;
+            }
         }
-         */
 
-        $helper_info = $this->_helper_infos[$id];
+        return null;
+    }
+
+    /**
+     * _getHelperInfo get Helper info by Id
+     *
+     * @param int $helper_id
+     * @access protected
+     * @return array array(object-helper object, helper-helper class name, options-helper options)
+     */
+    protected function _getHelperInfo($helper_id)
+    {
+        $helper_info = $this->_helper_infos[$helper_id];
 
         if (!array_key_exists('object', $helper_info)) {
             $helper = $helper_info['helper'];
@@ -113,7 +130,27 @@ class Pix_Helper_Manager
             }
 
             $helper_info['object'] = new $helper($helper_info['options']);
+            $this->_helper_infos[$helper_id] = $helper_info;
         }
+
+        return $helper_info;
+    }
+
+    /**
+     * callHelper call a helper method
+     *
+     * @param string $method method name (case insensitive)
+     * @param array $args arguments
+     * @access public
+     * @return mixed helper method return value
+     */
+    public function callHelper($method, $args)
+    {
+        $helper_id = $this->_getHelperIdByMethodName($method);
+        if (is_null($helper_id)) {
+            throw new Pix_Helper_Exception("There is no {$method} in Helper");
+        }
+        $helper_info = $this->_getHelperInfo($helper_id);
 
         return call_user_func_array(array($helper_info['object'], $method), $args);
     }
