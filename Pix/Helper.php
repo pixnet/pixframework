@@ -25,4 +25,31 @@ abstract class Pix_Helper
 
         return $this->_options[$key];
     }
+
+    /**
+     * hasOption
+     *
+     * @param string $key
+     * @access protected
+     * @return boolean
+     */
+    protected function hasOption($key)
+    {
+        return array_key_exists($key, $this->_options);
+    }
+
+    /**
+     * setOption
+     *
+     * @param string $key
+     * @param mixed $value
+     * @access protected
+     * @return void
+     */
+    protected function setOption($key, $value)
+    {
+        $this->_options[$key] = $value;
+    }
+
+
 }
