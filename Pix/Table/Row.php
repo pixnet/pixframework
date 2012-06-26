@@ -379,7 +379,7 @@ class Pix_Table_Row
             }
             $where = array_combine($foreign_keys, $primary_values);
 
-            return $foreign_table->search($where, $this);
+            return $this->_relation_data[$name] = $foreign_table->search($where, $this);
 	}
 
         // A has_one B, A: $this->_table B: $type_Table
