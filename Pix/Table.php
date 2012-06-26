@@ -411,35 +411,35 @@ abstract class Pix_Table
 
     public static function getTable($table = null)
     {
-	//	require_once($table . '.php');
-	if (!is_null($table)) {
-	    if (!is_scalar($table) and is_a($table, 'Pix_Table')) {
-		return $table;
-	    }
-	    if (!isset(self::$_table_pool[$table])) {
-		if (!is_scalar($table) or !class_exists($table)) {
-		    throw new Pix_Table_Exception("找不到 {$table} 這個 class ，請確認是否有 link 到 classes 或者是有打錯字");
-		}
-		self::$_table_pool[$table] = true;
-		self::$_table_pool[$table] = $t = new $table();
-		$t->init();
-	    }
+        // SomeTable::getTable()
+        if (is_null($table)) {
+            // @codeCoverageIgnoreStart
+            if (!function_exists('get_called_class')) {
+                throw new Pix_Table_Exception('PHP 5.3.0 以上才支援這功能喔');
+            }
+            // @codeCoverageIgnoreEnd
+            $table = get_called_class();
+        }
 
-	    if (true === self::$_table_pool[$table]) {
-		throw new Pix_Table_Exception("在 __contstruct 內呼叫 static function 會炸，請將動作搬到 init 內 ");
-	    }
+        // Pix_Table::getTable(TableObject)
+        if (!is_scalar($table) and is_a($table, 'Pix_Table')) {
+            return $table;
+        }
 
-	    return self::$_table_pool[$table];
-	}
+        if (!array_key_exists($table, self::$_table_pool)) {
+            if (!is_scalar($table) or !class_exists($table)) {
+                throw new Pix_Table_Exception("找不到 {$table} 這個 class ，請確認是否有 link 到 classes 或者是有打錯字");
+            }
+            self::$_table_pool[$table] = true; // initialing
+            self::$_table_pool[$table] = $t = new $table();
+            $t->init();
+        }
 
-	if (function_exists('get_called_class')) {
-	    $tableName = get_called_class();
-	    return self::getTable($tableName);
-	}
+        if (true === self::$_table_pool[$table]) {
+            throw new Pix_Table_Exception("在 __contstruct 內呼叫 static function 會炸，請將動作搬到 init 內 ");
+        }
 
-        // @codeCoverageIgnoreStart
-	throw new Pix_Table_Exception('PHP 5.3.0 以上才支援這功能喔');
-        // @codeCoverageIgnoreEnd
+        return self::$_table_pool[$table];
     }
 
     /**
