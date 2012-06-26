@@ -269,11 +269,6 @@ class Pix_Partial
 	return $this->_path;
     }
 
-    public function test()
-    {
-	var_dump($this->_data);
-    }
-
     public function escape($var)
     {
 	return call_user_func($this->_escape, $var);
