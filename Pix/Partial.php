@@ -295,51 +295,59 @@ class Pix_Partial
     }
 
     public static function getCapture($name)
+    /**
+     * addCommonHelpers add common helpers
+     *
+     * @static
+     * @access public
+     * @return void
+     */
+    public static function addCommonHelpers()
     {
 	return self::$_capture_data[$name];
-    }
-
-    static protected $_helpers = array();
-    static protected $_helperfuncs = array();
-
-    public static function addCommonHelper()
-    {
 	self::addHelper('Pix_Partial_Helper_Html');
 	self::addHelper('Pix_Partial_Helper_JQueryTmpl');
     }
 
-    public static function addHelper($helper, array $funcs = array())
+    /**
+     *  Pix_Helper_Manager
+     */
+    protected static $_helper_manager = null;
+
+    /**
+     * getHelperManager get Helper Manager
+     *
+     * @static
+     * @access public
+     * @return Pix_Helper_Manager
+     */
+    public static function getHelperManager()
     {
-	if (!is_scalar($helper)) {
-	    throw new Pix_Exception('helper name must be string');
-	}
+        if (is_null(self::$_helper_manager)) {
+            self::$_helper_manager = new Pix_Helper_Manager();
+        }
+        return self::$_helper_manager;
+    }
 
-	if (!class_exists($helper)) {
-	    throw new Pix_Exception("helper class '{$helper}' dose not exist");
-	}
-
-	self::$_helpers[$helper] = $h = new $helper();
-	if (!is_a($h, 'Pix_Partial_Helper')) {
-	    throw new Pix_Exception("class '{$helper}' is not a Pix_Partial_Helper");
-	}
-	if (!$funcs) {
-	    $funcs = $h->getFuncs();
-	}
-	foreach ($funcs as $func) {
-	    self::$_helperfuncs[strtolower($func)] = $helper;
-	}
+    /**
+     * addHelper add static helper in Pix_Controller
+     *
+     * @param string $helper Helper name
+     * @param array $methods
+     * @param array $options
+     * @static
+     * @access public
+     * @return void
+     */
+    public static function addHelper($helper, $methods = null, $options = array())
+    {
+        $manager = self::getHelperManager();
+        $manager->addHelper($helper, $methods, $options);
     }
 
     public function __call($func, $args)
     {
-	if (!$helper = self::$_helperfuncs[strtolower($func)]) {
-	    throw new Pix_Exception("method {$func} is not found");
-	}
-	if (!$helper = self::$_helpers[$helper]) {
-	    throw new Pix_Exception("see the ghost");
-	}
-	array_unshift($args, $this);
-        return call_user_func_array(array($helper, $func), $args);
+        array_unshift($args, $this);
+        return self::getHelperManager()->callHelper($func, $args);
     }
 }
-
