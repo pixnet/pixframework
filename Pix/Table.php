@@ -531,7 +531,6 @@ abstract class Pix_Table
 
 	$conf = array();
 	$conf['tableClass'] = $table->getClass();
-	$conf['primary_value'] = $primary_value;
 
         if (!$row = $table->getDb()->fetchOne($table, $primary_value)) {
 	    $table->cacheRow($primary_value, null);
@@ -838,7 +837,6 @@ abstract class Pix_Table
 
 	$conf = array();
 	$conf['tableClass'] = $this->getClass();
-	$conf['primary_value'] = $primary_values;
 	$conf['data'] = $data;
 
 	$rowClass = $this->_rowClass;
