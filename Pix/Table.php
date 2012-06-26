@@ -803,12 +803,13 @@ abstract class Pix_Table
 	}
 
         $data = null;
-        $cache_key = json_encode($primary_values);
-        if (array_key_exists($cache_key, $this->_cache_rows)) {
-            $data = $this->_cache_rows[$cache_key];
-	}
-
-	if (is_null($data)) {
+        $array_cache_key = implode('&', array_map('urlencode', $primary_values));
+        if (array_key_exists($array_cache_key, $this->_cache_rows)) {
+            $data = $this->_cache_rows[$array_cache_key];
+            if (is_null($data)) {
+                return null;
+            }
+	} else {
 	    if (!$this->_table_cache) return false;
 	    if (!$cache = $this->getCache()) return false;
 
@@ -816,7 +817,9 @@ abstract class Pix_Table
 	    $cache_key = "Pix_Table_Cache:{$table_class}:{$this->_table_cache_prefix}:" . implode('-', $primary_values);
 
 	    $data = $cache->load($cache_key);
-	    if (is_null($data)) {
+            if (is_null($data)) {
+                // write to array cache
+                $this->_cache_rows[$array_cache_key] = null;
 		return null;
             }
             if (false === $data) {
@@ -824,6 +827,9 @@ abstract class Pix_Table
 	    }
             $data = unserialize($data);
             $data = $data['data'];
+
+            // write to array cache
+            $this->_cache_rows[$array_cache_key] = $data;
 	}
 
 	if (false === $data) {
@@ -849,14 +855,18 @@ abstract class Pix_Table
      */
     public function cacheRow($primary_values, $data)
     {
+        if (is_null($primary_values)) {
+            return;
+        }
+
 	if (is_scalar($primary_values)) {
 	    $primary_values = array($primary_values);
 	}
 
 	// memory cache
         if (!self::$_save_memory) {
-            $cache_key = json_encode($primary_values);
-            $this->_cache_rows[$cache_key] = $data;
+            $array_cache_key = implode('&', array_map('urlencode', $primary_values));
+            $this->_cache_rows[$array_cache_key] = $data;
 	}
 
 	// table cache
