@@ -7,7 +7,7 @@
  * @copyright 2003-2012 PIXNET Digital Media Corporation
  * @license http://framework.pixnet.net/license BSD License
  */
-class Pix_Partial_Helper_JQueryTmpl extends Pix_Partial_Helper
+class Pix_Partial_Helper_JQueryTmpl extends Pix_Helper
 {
     public function getFuncs()
     {
