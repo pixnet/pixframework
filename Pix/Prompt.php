@@ -179,8 +179,15 @@ class Pix_Prompt
                     }
                 }
 
-                // plugin
-                foreach (array_keys($obj->getTable()->getPlugins()) as $name) {
+                // Table Row Helper
+                foreach (array_keys($obj->getTable()->getHelperManager('row')->getMethods()) as $name) {
+                    if (($matches[2] === '') or (stripos($name, $matches[2]) === 0)) {
+                        $res[] = $name . '()';
+                    }
+                }
+
+                // Table Static Helper
+                foreach (array_keys(Pix_Table::getStaticHelperManager('row')->getMethods()) as $name) {
                     if (($matches[2] === '') or (stripos($name, $matches[2]) === 0)) {
                         $res[] = $name . '()';
                     }

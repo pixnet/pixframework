@@ -620,27 +620,6 @@ abstract class Pix_Table
 	return false;
     }
 
-
-    // @codeCoverageIgnoreStart
-    static public function addResultSetStaticPlugins($plugin, $funcs = null)
-    {
-        // TODO: Mark as deprecated
-        return self::addStaticResultSetHelper($plugin, $funcs, array());
-    }
-    // @codeCoverageIgnoreEnd
-
-    // @codeCoverageIgnoreStart
-    public function addPlugins($methods, $class, $options = array())
-    {
-        // TODO: Mark as deprecated
-	if (!is_array($methods)) {
-	    $methods = array($methods);
-        }
-
-        return $this->addRowHelper($class, $methods, $options);
-    }
-    // @codeCoverageIgnoreEnd
-
     static public function __callStatic($name, $args)
     {
 	$table = self::getTable();
@@ -661,22 +640,6 @@ abstract class Pix_Table
 	}
 	throw new Pix_Table_Exception("找不到這個函式喔: {$name}");
     }
-
-    /**
-     * getPlugins 回傳目前這個 Model 所有的 Plugins
-     * 
-     * @static
-     * @access public
-     * @return array
-     */
-    // @codeCoverageIgnoreStart
-    static public function getPlugins()
-    {
-        // TODO: Mark as deprecated
-        $table = self::getTable();
-        return $table->getHelperManager('row')->getMethods();
-    }
-    // @codeCoverageIgnoreEnd
 
     protected $_helper_managers = array();
     protected static $_static_helper_managers = array();
