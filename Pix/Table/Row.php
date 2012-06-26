@@ -90,9 +90,17 @@ class Pix_Table_Row
 	return $this->_tableClass;
     }
 
+    protected $_table = null;
+
+    /**
+     * getTable get the Pix_Table of this row
+     *
+     * @access public
+     * @return Pix_Table
+     */
     public function getTable()
     {
-	return Pix_Table::getTable($this->_tableClass);
+        return $this->_table;
     }
 
     /**
@@ -250,6 +258,7 @@ class Pix_Table_Row
 	    throw new Pix_Table_Exception('建立 Row 必需要指定 tableClass');
 	}
 	$this->_tableClass = $conf['tableClass'];
+        $this->_table = Pix_Table::getTable($this->_tableClass);
 
 	if (isset($conf['data'])) {
             $this->_primary_values = array();
@@ -370,7 +379,7 @@ class Pix_Table_Row
             }
             $where = array_combine($foreign_keys, $primary_values);
 
-            return $foreign_table->search($where, $this);
+            return $this->_relation_data[$name] = $foreign_table->search($where, $this);
 	}
 
         // A has_one B, A: $this->_table B: $type_Table
