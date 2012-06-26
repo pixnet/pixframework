@@ -285,10 +285,15 @@ class Pix_Table_TableTest extends PHPUnit_Framework_TestCase
 
     public function testCheckTable()
     {
-        $db = $this->getMock('Pix_Table_Db_Adapter_Abstract', array('checkTable'));
+        $db = $this->getMock('Pix_Table_Db_Adapter_Abstract', array('checkTable', 'support'));
         Pix_Table_TableTest_Table::setDb($db);
         $db->expects($this->once())
             ->method('checkTable')
+            ->will($this->returnValue(true));
+
+        $db->expects($this->any())
+            ->method('support')
+            ->with($this->logicalOr('check_table'))
             ->will($this->returnValue(true));
         $this->assertEquals(Pix_Table_TableTest_Table::checkTable(), true);
     }
