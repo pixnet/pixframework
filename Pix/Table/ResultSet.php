@@ -27,7 +27,8 @@ class Pix_Table_ResultSet extends Pix_Array // implements Pix_Array_Volumable
         if (!isset($conf['tableClass'])) {
 	    throw new Exception('new ResultSet 時必需要指定 tableClass');
 	}
-	$this->_tableClass = $conf['tableClass'];
+        $this->_tableClass = $conf['tableClass'];
+        $this->_table = Pix_Table::getTable($this->_tableClass);
 
 	if (isset($conf['belongs_row'])) {
 	    $this->_belongs_row = $conf['belongs_row'];
@@ -279,9 +280,17 @@ class Pix_Table_ResultSet extends Pix_Array // implements Pix_Array_Volumable
 	return $this->_tableClass;
     }
 
+    protected $_table = null;
+
+    /**
+     * getTable get the Pix_Table of this result set
+     *
+     * @access public
+     * @return Pix_Table
+     */
     public function getTable()
     {
-	return Pix_Table::getTable($this->_tableClass);
+        return $this->_table;
     }
 
     public function update($data)

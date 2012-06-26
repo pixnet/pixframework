@@ -411,35 +411,35 @@ abstract class Pix_Table
 
     public static function getTable($table = null)
     {
-	//	require_once($table . '.php');
-	if (!is_null($table)) {
-	    if (!is_scalar($table) and is_a($table, 'Pix_Table')) {
-		return $table;
-	    }
-	    if (!isset(self::$_table_pool[$table])) {
-		if (!is_scalar($table) or !class_exists($table)) {
-		    throw new Pix_Table_Exception("找不到 {$table} 這個 class ，請確認是否有 link 到 classes 或者是有打錯字");
-		}
-		self::$_table_pool[$table] = true;
-		self::$_table_pool[$table] = $t = new $table();
-		$t->init();
-	    }
+        // SomeTable::getTable()
+        if (is_null($table)) {
+            // @codeCoverageIgnoreStart
+            if (!function_exists('get_called_class')) {
+                throw new Pix_Table_Exception('PHP 5.3.0 以上才支援這功能喔');
+            }
+            // @codeCoverageIgnoreEnd
+            $table = get_called_class();
+        }
 
-	    if (true === self::$_table_pool[$table]) {
-		throw new Pix_Table_Exception("在 __contstruct 內呼叫 static function 會炸，請將動作搬到 init 內 ");
-	    }
+        // Pix_Table::getTable(TableObject)
+        if (!is_scalar($table) and is_a($table, 'Pix_Table')) {
+            return $table;
+        }
 
-	    return self::$_table_pool[$table];
-	}
+        if (!array_key_exists($table, self::$_table_pool)) {
+            if (!is_scalar($table) or !class_exists($table)) {
+                throw new Pix_Table_Exception("找不到 {$table} 這個 class ，請確認是否有 link 到 classes 或者是有打錯字");
+            }
+            self::$_table_pool[$table] = true; // initialing
+            self::$_table_pool[$table] = $t = new $table();
+            $t->init();
+        }
 
-	if (function_exists('get_called_class')) {
-	    $tableName = get_called_class();
-	    return self::getTable($tableName);
-	}
+        if (true === self::$_table_pool[$table]) {
+            throw new Pix_Table_Exception("在 __contstruct 內呼叫 static function 會炸，請將動作搬到 init 內 ");
+        }
 
-        // @codeCoverageIgnoreStart
-	throw new Pix_Table_Exception('PHP 5.3.0 以上才支援這功能喔');
-        // @codeCoverageIgnoreEnd
+        return self::$_table_pool[$table];
     }
 
     /**
@@ -531,7 +531,6 @@ abstract class Pix_Table
 
 	$conf = array();
 	$conf['tableClass'] = $table->getClass();
-	$conf['primary_value'] = $primary_value;
 
         if (!$row = $table->getDb()->fetchOne($table, $primary_value)) {
 	    $table->cacheRow($primary_value, null);
@@ -803,12 +802,13 @@ abstract class Pix_Table
 	}
 
         $data = null;
-        $cache_key = json_encode($primary_values);
-        if (array_key_exists($cache_key, $this->_cache_rows)) {
-            $data = $this->_cache_rows[$cache_key];
-	}
-
-	if (is_null($data)) {
+        $array_cache_key = implode('&', array_map('urlencode', $primary_values));
+        if (array_key_exists($array_cache_key, $this->_cache_rows)) {
+            $data = $this->_cache_rows[$array_cache_key];
+            if (is_null($data)) {
+                return null;
+            }
+	} else {
 	    if (!$this->_table_cache) return false;
 	    if (!$cache = $this->getCache()) return false;
 
@@ -816,7 +816,9 @@ abstract class Pix_Table
 	    $cache_key = "Pix_Table_Cache:{$table_class}:{$this->_table_cache_prefix}:" . implode('-', $primary_values);
 
 	    $data = $cache->load($cache_key);
-	    if (is_null($data)) {
+            if (is_null($data)) {
+                // write to array cache
+                $this->_cache_rows[$array_cache_key] = null;
 		return null;
             }
             if (false === $data) {
@@ -824,6 +826,9 @@ abstract class Pix_Table
 	    }
             $data = unserialize($data);
             $data = $data['data'];
+
+            // write to array cache
+            $this->_cache_rows[$array_cache_key] = $data;
 	}
 
 	if (false === $data) {
@@ -832,7 +837,6 @@ abstract class Pix_Table
 
 	$conf = array();
 	$conf['tableClass'] = $this->getClass();
-	$conf['primary_value'] = $primary_values;
 	$conf['data'] = $data;
 
 	$rowClass = $this->_rowClass;
@@ -849,14 +853,18 @@ abstract class Pix_Table
      */
     public function cacheRow($primary_values, $data)
     {
+        if (is_null($primary_values)) {
+            return;
+        }
+
 	if (is_scalar($primary_values)) {
 	    $primary_values = array($primary_values);
 	}
 
 	// memory cache
         if (!self::$_save_memory) {
-            $cache_key = json_encode($primary_values);
-            $this->_cache_rows[$cache_key] = $data;
+            $array_cache_key = implode('&', array_map('urlencode', $primary_values));
+            $this->_cache_rows[$array_cache_key] = $data;
 	}
 
 	// table cache
