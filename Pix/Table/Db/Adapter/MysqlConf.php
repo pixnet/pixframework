@@ -27,7 +27,7 @@ class Pix_Table_Db_Adapter_MysqlConf extends Pix_Table_Db_Adapter_SQL
 
     public function getSupportFeatures()
     {
-        return array('force_master', 'immediate_consistency');
+        return array('force_master', 'immediate_consistency', 'check_table');
     }
 
     protected function _getLink($type = 'master')

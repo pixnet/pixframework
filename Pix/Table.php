@@ -462,10 +462,14 @@ abstract class Pix_Table
      * @access public
      * @return array 不同點
      */
-    static public function checkTable()
+    public static function checkTable()
     {
-	$table = self::getTable();
-	return $table->getDb()->checkTable($table);
+        $table = self::getTable();
+        $db = $table->getDb();
+        if (!$db->support('check_table')) {
+            return null;
+        }
+        return $db->checkTable($table);
     }
 
     /**
