@@ -3,13 +3,11 @@
 /**
  * Pix_Partial_Helper_Html 
  * 
- * @uses Pix
- * @uses _Partial_Helper
  * @package Partial
  * @copyright 2003-2012 PIXNET Digital Media Corporation
  * @license http://framework.pixnet.net/license BSD License
  */
-class Pix_Partial_Helper_Html extends Pix_Partial_Helper
+class Pix_Partial_Helper_Html extends Pix_Helper
 {
     public function getFuncs()
     {
