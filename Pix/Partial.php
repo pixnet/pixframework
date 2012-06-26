@@ -274,27 +274,6 @@ class Pix_Partial
 	return call_user_func($this->_escape, $var);
     }
 
-    protected static $_capture_data = array();
-
-    public static function captureStart()
-    {
-	ob_start();
-    }
-
-    public static function captureSet($name)
-    {
-	self::$_capture_data[$name] = ob_get_clean();
-    }
-
-    public static function captureAppend($name)
-    {
-	if (!isset(self::$_capture_data[$name])) {
-	    self::$_capture_data[$name] = '';
-	}
-	self::$_capture_data[$name] .= ob_get_clean();
-    }
-
-    public static function getCapture($name)
     /**
      * addCommonHelpers add common helpers
      *
@@ -304,8 +283,8 @@ class Pix_Partial
      */
     public static function addCommonHelpers()
     {
-	return self::$_capture_data[$name];
 	self::addHelper('Pix_Partial_Helper_Html');
+        self::addHelper('Pix_Partial_Helper_Capture');
 	self::addHelper('Pix_Partial_Helper_JQueryTmpl');
     }
 
