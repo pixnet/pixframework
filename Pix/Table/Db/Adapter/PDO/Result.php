@@ -26,6 +26,11 @@ class Pix_Table_Db_Adapter_PDO_Result
         return $ret;
     }
 
+    public function fetch_object()
+    {
+        return $this->_res->fetch(PDO::FETCH_OBJ);
+    }
+
     public function free_result()
     {
     }
