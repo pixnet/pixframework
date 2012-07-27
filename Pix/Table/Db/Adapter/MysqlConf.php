@@ -152,21 +152,23 @@ class Pix_Table_Db_Adapter_MysqlConf extends Pix_Table_Db_Adapter_SQL
 
             if ($res === false) {
                 if ($errno = $link->errno) {
-                    $message = (is_null($table) ? '': "Table: {$table->getClass()}") . 'SQL Error: ' . $errno . $sql . ' || ' . $link->error;
+                    $message = (is_null($table) ? '': "Table: {$table->getClass()}") . "SQL Error: ({$errno}){$link->error} " . substr($sql, 0, 128);
                     switch ($errno) {
                     case 1146:
                         throw new Pix_Table_TableNotFoundException($message);
                     case 1062:
                         throw new Pix_Table_DuplicateException((is_null($table) ? '': "(Table: {$table->getClass()})") . $link->error, $errno);
+                    case 1406:
+                        throw new Pix_Table_DataTooLongException($message);
 
                     case 2006: // MySQL server gone away
                     case 2013: // Lost connection to MySQL server during query
-                        trigger_error("Pix_Table" . (is_null($table) ? '' : "({$table->getClass()})"). "({$errno}): {$link->error} (SQL: $sql)", E_USER_WARNING);
+                        trigger_error("Pix_Table " . $message, E_USER_WARNING);
                         $this->resetConnect();
                         continue 2;
                     }
                 }
-                throw new Exception($message);
+                throw new Pix_Table_Exception($message);
             }
 
             if ($link->warning_count) {
@@ -176,7 +178,7 @@ class Pix_Table_Db_Adapter_MysqlConf extends Pix_Table_Db_Adapter_SQL
                     if (1592 == $e->errno) {
                         continue;
                     }
-                    trigger_error("Pix_Table({$e->errno}): {$e->message} (SQL: $sql)", E_USER_WARNING);
+                    trigger_error("Pix_Table " . (is_null($table) ? '': "Table: {$table->getClass()}") . "SQL Warning: ({$e->errno}){$e->message} " . substr($sql, 0, 128), E_USER_WARNING);
                 } while ($e->next());
             }
             return $res;

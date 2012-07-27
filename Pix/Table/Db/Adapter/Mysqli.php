@@ -72,9 +72,11 @@ class Pix_Table_Db_Adapter_Mysqli extends Pix_Table_Db_Adapter_SQL
 
 	if ($res === false) {
 	    if ($errno = $this->_link->errno) {
-		switch ($errno) {
-		    case 1062;
-		    throw new Pix_Table_DuplicateException($this->_link->error, $errno);
+                switch ($errno) {
+                case 1062:
+                    throw new Pix_Table_DuplicateException($this->_link->error, $errno);
+                case 1406:
+                    throw new Pix_Table_DataTooLongException($this->_link->error, $errno);
 		default:
                     throw new Exception("SQL Error: {$this->_link->error} SQL: $sql");
 		}
