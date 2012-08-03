@@ -241,24 +241,21 @@ class Pix_Table_Db_Adapter_MysqlConf extends Pix_Table_Db_Adapter_SQL
 	$s .= '(' . implode(', ', $index_columns) . ")\n";
 	$column_sql[] = $s;
 
-	if (is_array($table->_indexes)) {
-	    foreach ($table->_indexes as $name => $index) {
-		if ('unique' == $index['type']) {
-                    $s = 'UNIQUE KEY ' . $this->column_quote($name) . ' ';
-                    $columns = $index['columns'];
-		} else {
-                    $s = 'KEY ' . $this->column_quote($name);
-                    $columns = $index;
-		}
+        foreach ($table->getIndexes() as $name => $options) {
+            if ('unique' == $options['type']) {
+                $s = 'UNIQUE KEY ' . $this->column_quote($name) . ' ';
+            } else {
+                $s = 'KEY ' . $this->column_quote($name);
+            }
+            $columns = $options['columns'];
 
-		$index_columns = array();
-		foreach ($columns as $column_name) {
-                    $index_columns[] = $this->column_quote($column_name);
-		}
-		$s .= '(' . implode(', ', $index_columns) . ') ';
+            $index_columns = array();
+            foreach ($columns as $column_name) {
+                $index_columns[] = $this->column_quote($column_name);
+            }
+            $s .= '(' . implode(', ', $index_columns) . ') ';
 
-		$column_sql[] = $s;
-	    }
+            $column_sql[] = $s;
 	}
 
 	$sql .= " (\n" . implode(", \n", $column_sql) . ") ENGINE = InnoDB\n";

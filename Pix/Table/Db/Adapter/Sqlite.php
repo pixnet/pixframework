@@ -138,24 +138,22 @@ class Pix_Table_Db_Adapter_Sqlite extends Pix_Table_Db_Adapter_SQL
         // CREATE TABLE
         $this->query($sql);
 
-        if (is_array($table->_indexes)) {
-            foreach ($table->_indexes as $name => $index) {
-                if ('unique' == $index['type']) {
-                    $s = 'CREATE UNIQUE INDEX ';
-                    $columns = $index['columns'];
-                } else {
-                    $s = 'CREATE INDEX ';
-                    $columns = $index;
-                }
-                $s .= $this->column_quote($table->getTableName() . '_' . $name) . ' ON ' . $this->column_quote($table->getTableName());
-                $index_columns = array();
-                foreach ($columns as $column_name) {
-                    $index_columns[] = $this->column_quote($column_name);
-                }
-                $s .= '(' . implode(', ', $index_columns) . ') ';
-
-                $this->query($s);
+        foreach ($table->getIndexes() as $name => $options) {
+            if ('unique' == $options['type']) {
+                $s = 'CREATE UNIQUE INDEX ';
+            } else {
+                $s = 'CREATE INDEX ';
             }
+            $columns = $options['columns'];
+
+            $s .= $this->column_quote($table->getTableName() . '_' . $name) . ' ON ' . $this->column_quote($table->getTableName());
+            $index_columns = array();
+            foreach ($columns as $column_name) {
+                $index_columns[] = $this->column_quote($column_name);
+            }
+            $s .= '(' . implode(', ', $index_columns) . ') ';
+
+            $this->query($s);
         }
     }
 
