@@ -88,6 +88,7 @@ abstract class Pix_Table
     /**
      * _indexes 該 Table 用到的 index
      * 
+     * @deprecated use Table->addIndex instead
      * @var array
      * @access public
      */
