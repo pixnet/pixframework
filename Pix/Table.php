@@ -899,7 +899,15 @@ abstract class Pix_Table
      */
     public function getClass()
     {
+        if (!is_null($this->_class)) {
+            return $this->_class;
+        }
         return get_class($this);
+    }
+
+    public function setClassName($name)
+    {
+        $this->_class = $name;
     }
 
     protected $_index_datas = array();
