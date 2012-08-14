@@ -32,10 +32,10 @@ class Pix_Table_Db_Adapter_MysqlConf extends Pix_Table_Db_Adapter_MysqlCommon
 
     protected function _getLink($type = 'master')
     {
-        if (($link = $this->_link_pools['master']) and $this->_link_pool_version == self::$_connect_version and @$link->ping()) {
+        if (array_key_exists('master', $this->_link_pools) and ($link = $this->_link_pools['master']) and $this->_link_pool_version == self::$_connect_version and @$link->ping()) {
             return $link;
         }
-        if (($link = $this->_link_pools[$type])  and $this->_link_pool_version == self::$_connect_version and @$link->ping()) {
+        if (array_key_exists($type, $this->_link_pools) and ($link = $this->_link_pools[$type])  and $this->_link_pool_version == self::$_connect_version and @$link->ping()) {
             return $link;
         }
 
@@ -86,11 +86,11 @@ class Pix_Table_Db_Adapter_MysqlConf extends Pix_Table_Db_Adapter_MysqlCommon
             trigger_error("{$_SERVER['HTTP_HOST']} reconnect to ($conf_file) $i times: " . implode(', ', $wrong), E_USER_NOTICE);
         }
 
-        if ($conf->init) {
+        if (property_exists($conf, 'init') and $conf->init) {
             $link->query($conf->init);
         }
 
-        if ($conf->charset) {
+        if (property_exists($conf, 'charset') and $conf->charset) {
             $link->set_charset($conf->charset);
         } else {
             $link->set_charset('UTF8');
@@ -144,7 +144,7 @@ class Pix_Table_Db_Adapter_MysqlConf extends Pix_Table_Db_Adapter_MysqlCommon
             $res = $link->query($sql);
             $this->insert_id = $link->insert_id;
             $delta = microtime(true) - $starttime;
-            if (Pix_Table::$_log_groups[Pix_Table::LOG_QUERY]) {
+            if (array_key_exists(Pix_Table::LOG_QUERY, Pix_Table::$_log_groups) and Pix_Table::$_log_groups[Pix_Table::LOG_QUERY]) {
                 Pix_Table::debug(sprintf("[%s-%s](%f)%s", strval($link->host_info), $type, $delta, $sql));
             } elseif (($t = Pix_Table::getLongQueryTime()) and $delta > $t) {
                 Pix_Table::debug(sprintf("[%s-%s](%f)%s", strval($link->host_info), $type, $delta, $sql));
