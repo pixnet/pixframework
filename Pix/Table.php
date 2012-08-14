@@ -1055,6 +1055,30 @@ abstract class Pix_Table
     }
 
     /**
+     * declare a new empty Pix Table
+     *
+     * @static
+     * @access public
+     * @return Pix_Table
+     */
+    public static function newEmptyTable()
+    {
+        while (true) {
+            $unique_class_name = 'Pix_Table_EmptyTable_' . crc32(uniqid());
+            if (!class_exists($unique_class_name)) {
+                break;
+            }
+        }
+
+        // XXX: In Pix Table, a Table is mapping to a PHP class. If you want dynamically new a table,
+        // you must declare a new Pix_Table class.
+        // class_alias doesn't worked here.
+        eval("class {$unique_class_name} extends Pix_Table {}");
+        return Pix_Table::getTable($unique_class_name);
+
+    }
+
+    /**
      * isEditableKey  是否是可以被修改的 Row Key, Ex: column, relation ...
      *
      * @param string $key
