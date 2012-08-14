@@ -819,7 +819,9 @@ abstract class Pix_Table
 	    $data = $cache->load($cache_key);
             if (is_null($data)) {
                 // write to array cache
-                $this->_cache_rows[$array_cache_key] = null;
+                if (!self::$_save_memory) {
+                    $this->_cache_rows[$array_cache_key] = null;
+                }
 		return null;
             }
             if (false === $data) {
@@ -829,7 +831,9 @@ abstract class Pix_Table
             $data = $data['data'];
 
             // write to array cache
-            $this->_cache_rows[$array_cache_key] = $data;
+            if (!self::$_save_memory) {
+                $this->_cache_rows[$array_cache_key] = $data;
+            }
 	}
 
 	if (false === $data) {
@@ -899,7 +903,15 @@ abstract class Pix_Table
      */
     public function getClass()
     {
+        if (!is_null($this->_class)) {
+            return $this->_class;
+        }
         return get_class($this);
+    }
+
+    public function setClassName($name)
+    {
+        $this->_class = $name;
     }
 
     protected $_index_datas = array();
@@ -927,6 +939,19 @@ abstract class Pix_Table
 	    return $table->getPrimaryColumns();
 	}
 	return $table->_index_datas[$name]['columns'];
+    }
+
+    /**
+     * getIndexes get Table index list
+     *
+     * @static
+     * @access public
+     * @return array
+     */
+    public static function getIndexes()
+    {
+        $table = self::getTable();
+        return $table->_index_datas;
     }
 
     /**
@@ -1027,6 +1052,30 @@ abstract class Pix_Table
     {
 	$table = self::getTable();
         return $table->_name;
+    }
+
+    /**
+     * declare a new empty Pix Table
+     *
+     * @static
+     * @access public
+     * @return Pix_Table
+     */
+    public static function newEmptyTable()
+    {
+        while (true) {
+            $unique_class_name = 'Pix_Table_EmptyTable_' . crc32(uniqid());
+            if (!class_exists($unique_class_name)) {
+                break;
+            }
+        }
+
+        // XXX: In Pix Table, a Table is mapping to a PHP class. If you want dynamically new a table,
+        // you must declare a new Pix_Table class.
+        // class_alias doesn't worked here.
+        eval("class {$unique_class_name} extends Pix_Table {}");
+        return Pix_Table::getTable($unique_class_name);
+
     }
 
     /**
