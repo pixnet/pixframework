@@ -942,6 +942,19 @@ abstract class Pix_Table
     }
 
     /**
+     * getIndexes get Table index list
+     *
+     * @static
+     * @access public
+     * @return array
+     */
+    public static function getIndexes()
+    {
+        $table = self::getTable();
+        return $table->_index_datas;
+    }
+
+    /**
      * getRelationForeignTable 取得 relation 對應的 table
      *
      * @param string $relation relation 名稱
