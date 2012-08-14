@@ -819,7 +819,9 @@ abstract class Pix_Table
 	    $data = $cache->load($cache_key);
             if (is_null($data)) {
                 // write to array cache
-                $this->_cache_rows[$array_cache_key] = null;
+                if (!self::$_save_memory) {
+                    $this->_cache_rows[$array_cache_key] = null;
+                }
 		return null;
             }
             if (false === $data) {
@@ -829,7 +831,9 @@ abstract class Pix_Table
             $data = $data['data'];
 
             // write to array cache
-            $this->_cache_rows[$array_cache_key] = $data;
+            if (!self::$_save_memory) {
+                $this->_cache_rows[$array_cache_key] = $data;
+            }
 	}
 
 	if (false === $data) {
