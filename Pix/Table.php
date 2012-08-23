@@ -485,7 +485,8 @@ abstract class Pix_Table
         if (!Pix_Setting::get('Table:DropTableEnable')) {
             throw new Pix_Table_Exception("要 DROP TABLE 前請加上 Pix_Setting::set('Table:DropTableEnable', true);");
         }
-	$table = self::getTable();
+        $table = self::getTable();
+        $table->_cache_rows = array();
 	return $table->getDb()->dropTable($table);
     }
 
