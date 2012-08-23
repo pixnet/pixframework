@@ -337,7 +337,7 @@ class Pix_Table_TableTest extends PHPUnit_Framework_TestCase
         // search(all)
         $db = $this->getMock('Pix_Table_Db_Adapter_Abstract', array('fetch'));
         Pix_Table_TableTest_Table::setDb($db);
-        $search = Pix_Table_Search::factory(1, $table)->limit(1);
+        $search = Pix_Table_Search::factory()->limit(1);
         $db->expects($this->at(0))
             ->method('fetch')
             ->with($this->isInstanceOf('Pix_Table_TableTest_Table'), $search, '*')
@@ -351,7 +351,8 @@ class Pix_Table_TableTest extends PHPUnit_Framework_TestCase
         // search(array())
         $db = $this->getMock('Pix_Table_Db_Adapter_Abstract', array('fetch'));
         Pix_Table_TableTest_Table::setDb($db);
-        $search = Pix_Table_Search::factory(array('value' => 5), $table)->limit(1);
+        $search = Pix_Table_Search::factory()->limit(1);
+        $search = $search->search(array('value' => 5));
         $db->expects($this->once())
             ->method('fetch')
             ->with($this->isInstanceOf('Pix_Table_TableTest_Table', $search, '*'))
@@ -365,7 +366,8 @@ class Pix_Table_TableTest extends PHPUnit_Framework_TestCase
         // search(string)
         $db = $this->getMock('Pix_Table_Db_Adapter_Abstract', array('fetch'));
         Pix_Table_TableTest_Table::setDb($db);
-        $search = Pix_Table_Search::factory("t1_id > 3", $table);
+        $search = Pix_Table_Search::factory();
+        $search = $search->search("t1_id > 3");
         $db->expects($this->once())
             ->method('fetch')
             ->with($this->isInstanceOf('Pix_Table_TableTest_Table'), $search, '*')
@@ -395,7 +397,8 @@ class Pix_Table_TableTest extends PHPUnit_Framework_TestCase
 
         $db = $this->getMock('Pix_Table_Db_Adapter_Abstract', array('fetchOne'));
         Pix_Table_TableTest_Table::setDb($db);
-        $search = Pix_Table_Search::factory(array("t1_id" => 7, "value" => 'def'), $table);
+        $search = Pix_Table_Search::factory();
+        $search = $search->search(array("t1_id" => 7, "value" => "def"));
         $db->expects($this->once())
             ->method('fetchOne')
             ->with($this->isInstanceOf('Pix_Table_TableTest_Table'), array(7))
@@ -438,7 +441,8 @@ class Pix_Table_TableTest extends PHPUnit_Framework_TestCase
 
         $db = $this->getMock('Pix_Table_Db_Adapter_Abstract', array('fetch'));
         Pix_Table_TableTest_Table::setDb($db);
-        $search = Pix_Table_Search::factory(array('value' => '999'), $table)->limit(1);
+        $search = Pix_Table_Search::factory()->limit(1);
+        $search = $search->search(array('value' => '999'));
         $db->expects($this->once())
             ->method('fetch')
             ->with($this->isInstanceOf('Pix_Table_TableTest_Table'), $search, '*')
