@@ -10,7 +10,9 @@
 class Pix_Table_Search
 {
     protected $_after = null;
+    protected $_after_include = false;
     protected $_before = null;
+    protected $_before_include = false;
     protected $_order = array();
     protected $_limit = null;
     protected $_index = null;
@@ -141,7 +143,13 @@ class Pix_Table_Search
 
 	$this->_before = null;
         $this->_after = is_array($row) ? Pix_Array::factory($row) : $row;
+        $this->_after_include = array_key_exists(1, $args) ? $args[1] : false;
 	return $this;
+    }
+
+    public function afterInclude()
+    {
+        return $this->_after_include;
     }
 
     public function before()
@@ -154,7 +162,13 @@ class Pix_Table_Search
 
 	$this->_after = null;
 	$this->_before = is_array($row) ? Pix_Array::factory($row) : $row;
+        $this->_before_include = array_key_exists(1, $args) ? $args[1] : false;
 	return $this;
+    }
+
+    public function beforeInclude()
+    {
+        return $this->_before_include;
     }
 
     public static function reverseOrder($order)
