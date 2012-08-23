@@ -208,14 +208,14 @@ class Pix_Table_Db_Adapter_AmazonDynamoDb extends Pix_Table_Db_Adapter_Abstract
             // 加上 after or before
             if ($row = $search->after()) {
                 $options['RangeKeyCondition'] = array(
-                    'ComparisonOperator' => AmazonDynamoDB::CONDITION_GREATER_THAN,
+                    'ComparisonOperator' => ($search->afterInclude() ? AmazonDynamoDB::CONDITION_GREATER_THAN_OR_EQUAL : AmazonDynamoDB::CONDITION_GREATER_THAN),
                     'AttributeValueList' => array(
                         array($this->_getColumnType($table, $primary_keys[1]) => $row->{$primary_keys[1]}),
                     ),
                 );
             } elseif ($row = $search->before()) {
                 $options['RangeKeyCondition'] = array(
-                    'ComparisonOperator' => AmazonDynamoDB::CONDITION_LESS_THAN,
+                    'ComparisonOperator' => ($search->beforeInclude() ? AmazonDynamoDB::CONDITION_LESS_THAN_OR_EQUAL : AmazonDynamoDB::CONDITION_LESS_THAN),
                     'AttributeValueList' => array(
                         array($this->_getColumnType($table, $primary_keys[1]) => $row->{$primary_keys[1]}),
                     ),
