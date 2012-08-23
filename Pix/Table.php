@@ -503,10 +503,10 @@ abstract class Pix_Table
 	$table = self::getTable();
 	$conf = array();
 	$conf['tableClass'] = $table->getClass();
-	$conf['where'] = $where;
 
 	$resultSetClass = $table->_resultSetClass;
-	return new $resultSetClass($conf);
+        $resultset = new $resultSetClass($conf);
+        return $resultset->search($where);
     }
 	
     public $_cache_rows = array();

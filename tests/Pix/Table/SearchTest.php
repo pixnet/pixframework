@@ -183,16 +183,4 @@ class Pix_Table_SearchTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(Pix_Table_Search::getOrderArray(array('id', 'id2')), array('id' => 'asc', 'id2' => 'asc'));
         $this->assertEquals(Pix_Table_Search::getOrderArray(array('id' => 'desc', 'id2' => 'asc')), array('id' => 'desc', 'id2' => 'asc'));
     }
-
-    /**
-     * @covers Pix_Table_Search::getTable
-     * @todo   Implement testGetTable().
-     */
-    public function testGetTable()
-    {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-          'This test has not been implemented yet.'
-        );
-    }
 }
