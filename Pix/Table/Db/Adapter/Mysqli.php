@@ -8,7 +8,7 @@
  * @copyright 2003-2012 PIXNET Digital Media Corporation
  * @license http://framework.pixnet.net/license BSD License
  */
-class Pix_Table_Db_Adapter_Mysqli extends Pix_Table_Db_Adapter_SQL
+class Pix_Table_Db_Adapter_Mysqli extends Pix_Table_Db_Adapter_MysqlCommon
 {
     protected $_link;
 
@@ -19,7 +19,7 @@ class Pix_Table_Db_Adapter_Mysqli extends Pix_Table_Db_Adapter_SQL
 
     public function getSupportFeatures()
     {
-        return array('immediate_consistency');
+        return array('immediate_consistency', 'check_table');
     }
 
     /**
@@ -86,113 +86,16 @@ class Pix_Table_Db_Adapter_Mysqli extends Pix_Table_Db_Adapter_SQL
     }
 
     /**
-     * createTable 將 $table 建立進資料庫內
+     * quote 將 $str 字串內容 quote 起來。
      * 
-     * @param Pix_Table $table 
-     * @access public
-     * @return void
-     */
-    public function createTable($table)
-    {
-        $sql = "CREATE TABLE " . $this->column_quote($table->getTableName());
-	$types = array('bigint', 'tinyint', 'int', 'varchar', 'char', 'text', 'float', 'double', 'binary');
-
-	foreach ($table->_columns as $name => $column) {
-            $s = $this->column_quote($name) . ' ';
-	    $db_type = in_array($column['type'], $types) ? $column['type'] : 'text';
-	    $s .= strtoupper($db_type);
-
-	    if (in_array($db_type, array('varchar', 'char', 'binary'))) {
-		if (!$column['size']) {
-		    throw new Exception('you should set the option `size`');
-		}
-		$s .= '(' . $column['size'] . ')';
-	    }
-	    $s .= ' ';
-
-	    if ($column['unsigned']) {
-		$s .= 'UNSIGNED ';
-	    }
-
-	    if (isset($column['not-null']) and !$column['not-null']) {
-		$s .= 'NULL ';
-	    } else {
-		$s .= 'NOT NULL ';
-	    }
-
-	    if (isset($column['default'])) {
-                $s .= 'DEFAULT ' . $this->quoteWithColumn($table, $column['default'], $name) . ' ';
-	    }
-
-	    if ($column['auto_increment']) {
-		$s .= 'AUTO_INCREMENT ';
-	    }
-
-	    $column_sql[] = $s;
-	}
-
-	$s = 'PRIMARY KEY ' ;
-	$index_columns = array();
-	foreach ((is_array($table->_primary) ? $table->_primary : array($table->_primary)) as $pk) {
-            $index_columns[] = $this->column_quote($pk);
-	}
-	$s .= '(' . implode(', ', $index_columns) . ")\n";
-	$column_sql[] = $s;
-
-        foreach ($table->getIndexes() as $name => $options) {
-            if ('unique' == $options['type']) {
-                $s = 'UNIQUE KEY ' . $this->column_quote($name) . ' ';
-            } else {
-                $s = 'KEY ' . $this->column_quote($name);
-            }
-            $columns = $options['columns'];
-
-            $index_columns = array();
-            foreach ($columns as $column_name) {
-                $index_columns[] = $this->column_quote($column_name);
-            }
-            $s .= '(' . implode(', ', $index_columns) . ') ';
-
-            $column_sql[] = $s;
-        }
-
-	$sql .= " (\n" . implode(", \n", $column_sql) . ") ENGINE = InnoDB\n";
-
-	return $this->query($sql, $table);
-    }
-
-    /**
-     * dropTable 從資料庫內移除 $table 這個 Table
-     * 
-     * @param Pix_Table $table 
-     * @access public
-     * @return void
-     */
-    public function dropTable($table)
-    {
-        if (!Pix_Setting::get('Table:DropTableEnable')) {
-            throw new Pix_Table_Exception("要 DROP TABLE 前請加上 Pix_Setting::set('Table:DropTableEnable', true);");
-        }
-        $sql = "DROP TABLE " . $this->column_quote($table->getTableName());
-	return $this->query($sql, $table);
-    }
-
-    /**
-     * column_quote 把 $a 字串加上 quote
-     * 
-     * @param string $a 
+     * @param string $str 
      * @access public
      * @return string
      */
-    public function column_quote($a)
-    {
-	return "`" . addslashes($a) . "`";
-    }
-
-    public function quoteWithColumn($table, $value, $column_name = null)
+    public function quoteWithColumn($table, $value, $column_name)
     {
 	if (is_null($column_name)) {
-            return "'" . $this->_link->real_escape_string($value) . "'";
+            return "'" . $this->_link->real_escape_string(strval($value)) . "'";
 	}
 	if ($table->isNumbericColumn($column_name)) {
 	    return intval($value);
@@ -200,7 +103,7 @@ class Pix_Table_Db_Adapter_Mysqli extends Pix_Table_Db_Adapter_SQL
 	if (!is_scalar($value)) {
             trigger_error("{$_SERVER['SERVER_NAME']}{$_SERVER['REQUEST_URI']} 的 column `{$column_name}` 格式不正確: " . gettype($value), E_USER_WARNING);
 	}
-        return "'" . $this->_link->real_escape_string($value) . "'";
+        return "'" . $this->_link->real_escape_string(strval($value)) . "'";
     }
 
     public function getLastInsertId($table)
