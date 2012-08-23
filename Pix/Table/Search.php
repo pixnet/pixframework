@@ -204,16 +204,16 @@ class Pix_Table_Search
 	    $orders = explode(',', $order);
 	    $resultorder = array();
 	    foreach ($orders as $ord) {
-		if (preg_match('#^`?([^` ]*)`?( .*)?$#', trim($ord), $ret)) {
-		    $way = strtolower(trim($ret[2]));
-		    if (!in_array($way, array('asc', 'desc'))) {
-			$resultorder[$ret[1]] = 'asc';
-		    } else {
-			$resultorder[$ret[1]] = $way;
-		    }
-		} else {
-		    throw new Pix_Array_Exception('->order($order) 的格式無法判斷');
-		}
+                if (preg_match('#^`?([^` ]*)`?( .*)?$#', trim($ord), $ret)) {
+                    if (array_key_exists(2, $ret) and in_array(strtolower(trim($ret[2])), array('asc', 'desc'))) {
+                        $way = strtolower(trim($ret[2]));
+                    } else {
+                        $way = 'asc';
+                    }
+                    $resultorder[$ret[1]] = $way;
+                } else {
+                    throw new Pix_Array_Exception('->order($order) 的格式無法判斷');
+                }
 	    }
 	}
 	return $resultorder;
