@@ -219,9 +219,12 @@ class Pix_Table_Db_Adapter_SQL extends Pix_Table_Db_Adapter_Abstract
             if (!is_array($orders)) {
                 throw new Pix_Table_Exception("指定的 ORDER 無法使用 after 或是 before");
             }
-            if (!$row = $search->after()) {
+            if ($row = $search->after()) {
+                $is_include = $search->afterInclude();
                 // 如果指定 before 的話，順序要調過來
+            } else {
                 $row = $search->before();
+                $is_include = $search->beforeInclude();
                 $orders = Pix_Table_Search::reverseOrder($orders);
             }
 
@@ -236,6 +239,14 @@ class Pix_Table_Db_Adapter_SQL extends Pix_Table_Db_Adapter_Abstract
                 $and_terms[] = $this->column_quote($order) . ('asc' == $way ? '>' : '<') . " " . $this->quoteWithColumn($table, $row->{$order}, $order);
 		$or_terms[] = '(' . implode(' AND ', $and_terms) . ')';
 		$equal_orders[] = $order;
+            }
+
+            if ($is_include) {
+                $and_terms = array();
+                foreach ($equal_orders as $equal_order) {
+                    $and_terms[] = $this->column_quote($equal_order) . ' = ' . $this->quoteWithColumn($table, $row->{$equal_order}, $equal_order);
+                }
+                $or_terms[] = '(' . implode(' AND ', $and_terms) . ')';
             }
             $terms[] = '(' . implode(' OR ', $or_terms) . ')';
 	}
