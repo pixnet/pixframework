@@ -34,7 +34,7 @@ class Pix_Table_ResultSet extends Pix_Array // implements Pix_Array_Volumable
 	    $this->_belongs_row = $conf['belongs_row'];
 	}
 
-        $this->_search_object = Pix_Table_Search::factory(array(), $this->getTable());
+        $this->_search_object = Pix_Table_Search::factory();
     }
 
     public function __clone()
