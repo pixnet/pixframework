@@ -17,18 +17,16 @@ class Pix_Table_Search
     protected $_limit = null;
     protected $_index = null;
     protected $_offset = null;
-    protected $_table = null;
     protected $_search_conditions = array();
     protected $_search_condition_types = array('string' => 0, 'map' => 0);
 
-    static public function factory($data = null, $table = null)
+    static public function factory($data = null)
     {
         if ($data instanceof Pix_Table_Search) {
             return $data;
         }
 
         $search = new Pix_Table_Search();
-        $search->_table = $table;
         return $search->search($data);
     }
 
@@ -47,24 +45,8 @@ class Pix_Table_Search
 
         if (is_array($search)) {
             foreach ($search as $key => $value) {
-                if ($this->_table->_columns[$key]) {
-                    $keys = array($key);
-                } else {
-                    $keys = $this->_table->getRelationForeignKeys($key);
-                }
-
-                if (is_object($value) and is_a($value, 'Pix_Table_Row')) {
-                    $values = $value->getPrimaryValues();
-                } elseif (is_array($value)) {
-                    $values = $value;
-                } else {
-                    $values = array($value);
-                }
-
-                foreach (array_combine($keys, $values) as $key => $value) {
-                    $this->_search_conditions[] = array('map', $key, $value);
-                    $this->_search_condition_types['map'] ++;
-                }
+                $this->_search_conditions[] = array('map', $key, $value);
+                $this->_search_condition_types['map'] ++;
             }
             return $this;
         }
@@ -217,10 +199,5 @@ class Pix_Table_Search
 	    }
 	}
 	return $resultorder;
-    }
-
-    public function getTable()
-    {
-        return $this->_table;
     }
 }
