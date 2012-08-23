@@ -1061,21 +1061,26 @@ abstract class Pix_Table
      * @access public
      * @return Pix_Table
      */
-    public static function newEmptyTable()
+    public static function newEmptyTable($table_name = null)
     {
-        while (true) {
-            $unique_class_name = 'Pix_Table_EmptyTable_' . crc32(uniqid());
-            if (!class_exists($unique_class_name)) {
-                break;
+        if (is_null($table_name)) {
+            while (true) {
+                $table_name = 'Pix_Table_EmptyTable_' . crc32(uniqid());
+                if (!class_exists($table_name)) {
+                    break;
+                }
             }
+        }
+
+        if (class_exists($table_name)) {
+            throw new Pix_Table_Exception("newEmptyTable failed, {$table_name} is existed.");
         }
 
         // XXX: In Pix Table, a Table is mapping to a PHP class. If you want dynamically new a table,
         // you must declare a new Pix_Table class.
         // class_alias doesn't worked here.
-        eval("class {$unique_class_name} extends Pix_Table {}");
-        return Pix_Table::getTable($unique_class_name);
-
+        eval("class {$table_name} extends Pix_Table {}");
+        return Pix_Table::getTable($table_name);
     }
 
     /**
