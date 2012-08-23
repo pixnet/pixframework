@@ -453,6 +453,14 @@ class Pix_Table_ResultSet extends Pix_Array // implements Pix_Array_Volumable
 	return $rs;
     }
 
+    /**
+     * ->after($row, [$is_included]) to set after condiction or ->after() to get after condiction
+     *
+     * @param Pix_Table_Row|array|null $row
+     * @param boolean $is_included
+     * @access public
+     * @return mixed return if no parameters
+     */
     public function after()
     {
         $args = func_get_args();
@@ -465,6 +473,14 @@ class Pix_Table_ResultSet extends Pix_Array // implements Pix_Array_Volumable
 	return $rs;
     }
 
+    /**
+     * ->before($row, [$is_included]) to set before condiction or ->before() to get before condiction
+     *
+     * @param Pix_Table_Row|array|null $row
+     * @param boolean $is_included
+     * @access public
+     * @return mixed return if no parameters
+     */
     public function before()
     {
         $args = func_get_args();
