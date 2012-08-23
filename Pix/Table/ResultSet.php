@@ -461,7 +461,7 @@ class Pix_Table_ResultSet extends Pix_Array // implements Pix_Array_Volumable
         }
 	$rs = clone $this;
 	$rs->_rowset = null;
-        $rs->_search_object->after($args[0]);
+        $rs->_search_object->after($args[0], array_key_exists(1, $args) ? $args[1] : false);
 	return $rs;
     }
 
@@ -473,7 +473,7 @@ class Pix_Table_ResultSet extends Pix_Array // implements Pix_Array_Volumable
         }
 	$rs = clone $this;
 	$rs->_rowset = null;
-        $rs->_search_object->before($args[0]);
+        $rs->_search_object->before($args[0], array_key_exists(1, $args) ? $args[1] : false);
 	return $rs;
     }
 
