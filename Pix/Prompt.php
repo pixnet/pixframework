@@ -80,7 +80,7 @@ class Pix_Prompt
                 echo $e->getTraceAsString() . "\n";
             }
             self::$_vars = get_defined_vars();
-            self::$__last = $__l;
+            self::$__last = self::$__l;
         }
     }
 
