@@ -445,6 +445,33 @@ class Pix_Table_ResultSet extends Pix_Array // implements Pix_Array_Volumable
     {
 	$rs = clone $this;
         $rs->_rowset = null;
+
+
+        // convert {relation_name} => {row} to {key} => {value}
+        if (is_array($where)) {
+            $table = $this->getTable();
+            $new_where = array();
+            foreach ($where as $key => $value) {
+                if ($table->_columns[$key]) {
+                    $keys = array($key);
+                } else {
+                    $keys = $table->getRelationForeignKeys($key);
+                }
+
+                if (is_object($value) and is_a($value, 'Pix_Table_Row')) {
+                    $values = $value->getPrimaryValues();
+                } elseif (is_array($value)) {
+                    $values = $value;
+                } else {
+                    $values = array($value);
+                }
+
+                foreach (array_combine($keys, $values) as $key => $value) {
+                    $new_where[$key] = $value;
+                }
+            }
+            $where = $new_where;
+        }
         $rs->_search_object->search($where);
 	return $rs;
     }
