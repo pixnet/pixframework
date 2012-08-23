@@ -27,7 +27,10 @@ class Pix_Table_Search
         }
 
         $search = new Pix_Table_Search();
-        return $search->search($data);
+        if (!is_null($data)) {
+            $search = $search->search($data);
+        }
+        return $search;
     }
 
     public function search($search)
