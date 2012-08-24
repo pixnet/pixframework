@@ -127,16 +127,19 @@ class Pix_Array_Array extends Pix_Array
 
     public function toArray($column = null)
     {
-	if (!$column) {
-	    return $this->rewind()->_cur_data;
-	}
-	$arr = array();
-	foreach ($this->rewind()->_cur_data as $data) {
-            if (array_key_exists($column, $data)) {
-		$arr[] = $data[$column];
-	    }
-	}
-	return $arr;
+        $ret = array();
+        foreach ($this as $row) {
+            if (is_null($column)) {
+                $ret[] = $row;
+            } else {
+                if (is_array($row) and array_key_exists($column, $row)) {
+                    $ret[] = $row[$column];
+                } elseif (is_object($row)) {
+                    $ret[] = $row->{$column};
+                }
+            }
+        }
+        return $ret;
     }
 
     public function getPosition($obj)
@@ -146,16 +149,13 @@ class Pix_Array_Array extends Pix_Array
 
     public function count()
     {
-        if (count($this->getFilters())) {
-            $this->rewind();
+        $this->rewind();
 
-            while ($this->valid()) {
-                $this->next();
-            }
-
-            return $this->_row_count;
+        while ($this->valid()) {
+            $this->next();
         }
-	return count($this->_data);
+
+        return $this->_row_count;
     }
 
     public function seek($pos)
@@ -170,15 +170,13 @@ class Pix_Array_Array extends Pix_Array
 
     public function next()
     {
-        if (count($this->getFilters())) {
-            do {
-                next($this->_cur_data);
-            } while ($this->valid() and !$this->filterRow());
-            $this->_row_count++;
-        } else {
+        do {
             next($this->_cur_data);
-        }
-	return $this;
+        } while ($this->valid() and !$this->filterRow());
+
+        $this->_row_count ++;
+
+        return $this;
     }
 
     public function key()
@@ -190,7 +188,7 @@ class Pix_Array_Array extends Pix_Array
     {
         $valid = array_key_exists(key($this->_cur_data), $this->_cur_data);
 
-        if (count($this->getFilters()) and is_numeric($this->_limit)) {
+        if (is_numeric($this->_limit)) {
             $valid = ($valid and ($this->_row_count < $this->_limit));
         }
 
@@ -204,22 +202,18 @@ class Pix_Array_Array extends Pix_Array
 	    uasort($this->_cur_data, array($this, '_sort'));
         }
 
+        $this->_row_count = 0;
+
         $offset = 0;
-        if (count($this->getFilters())) {
-            $this->_row_count = 0;
-
-            while ($this->valid() and $offset < $this->_offset) {
-                if ($this->filterRow()) {
-                    $offset++;
-                }
-                next($this->_cur_data);
+        while ($this->valid() and $offset < $this->_offset) {
+            if ($this->filterRow()) {
+                $offset ++;
             }
+            next($this->_cur_data);
+        }
 
-            while ($this->valid() and !$this->filterRow()) {
-                next($this->_cur_data);
-            }
-        } else {
-            $this->_cur_data = array_slice($this->_cur_data, $this->_offset, $this->_limit, true);
+        while ($this->valid() and !$this->filterRow()) {
+            next($this->_cur_data);
         }
 
 	return $this;
