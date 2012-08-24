@@ -135,8 +135,35 @@ abstract class Pix_Array implements Countable, SeekableIterator, ArrayAccess
         $this->_filters[] = array($filter, $options);
     }
 
+    protected $_after;
+    protected $_after_included = false;
+
+    public function after()
+    {
+        $args = func_get_args();
+        if (!count($args)) {
+            return $this->_after;
+        }
+        $rs = clone $this;
+        $rs->_after = $args[0];
+        $rs->_after_included = array_key_exists(1, $args) ? $args[1] : false;
+        return $rs;
+    }
+
     protected function filterRow()
     {
+        if ($this->_after) {
+            $compare = $this->_sort($this->current(), $this->_after);
+
+            if ($compare < 0) {
+                return false;
+            }
+
+            if ($compare == 0 and !$this->_after_included) {
+                return false;
+            }
+        }
+
         if (count($this->_filters)) {
             foreach ($this->_filters as $filter) {
                 list($callback, $options) = $filter;
