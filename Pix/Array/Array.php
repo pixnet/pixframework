@@ -86,7 +86,7 @@ class Pix_Array_Array extends Pix_Array
     public function order($order = null)
     {
         $obj = clone $this;
-        $obj->_order = self::toOrderArray($order);
+        $obj->_order = Pix_Table_Search::getOrderArray($order);
         return $obj;
     }
 

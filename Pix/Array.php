@@ -116,42 +116,6 @@ abstract class Pix_Array implements Countable, SeekableIterator, ArrayAccess
 	return $this->limit($per_page)->offset(($page - 1) * $per_page)->order($order);
     }
 
-    static function toOrderArray($order)
-    {
-        $resultorder = array();
-        if (is_array($order)) {
-            foreach ($order as $column => $way) {
-                if (is_int($column)) {
-                    $resultorder[$way] = 'asc';
-                    continue;
-                }
-
-                $resultorder[$column] = strtolower($way);
-                if (!in_array(strtolower($way), array('asc', 'desc'))) {
-                    $resultorder[$column] = 'asc';
-                    continue;
-                }
-            }
-        }
-
-        if (is_scalar($order)) {
-            $orders = explode(',', $order);
-            $resultorder = array();
-            foreach ($orders as $ord) {
-                if (preg_match('#^`?([^` ]*)`?( .*)?$#', trim($ord), $ret)) {
-                    $way = strtolower(trim($ret[2]));
-                    $resultorder[$ret[1]] = $way;
-                    if (!in_array($way, array('asc', 'desc'))) {
-                        $resultorder[$ret[1]] = 'asc';
-                    }
-                } else {
-                    throw new Pix_Array_Exception('->order($order) 的格式無法判斷');
-                }
-            }
-        }
-        return $resultorder;
-    }
-
     public function filter($filter, $options = array())
     {
         $obj = clone $this;
