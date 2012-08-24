@@ -86,7 +86,7 @@ class Pix_Array_Array extends Pix_Array
     public function order($order = null)
     {
         $obj = clone $this;
-        $obj->_order = self::toOrderArray($order);
+        $obj->_order = Pix_Table_Search::getOrderArray($order);
         return $obj;
     }
 
@@ -132,7 +132,7 @@ class Pix_Array_Array extends Pix_Array
 	}
 	$arr = array();
 	foreach ($this->rewind()->_cur_data as $data) {
-	    if ($data[$column]) {
+            if (array_key_exists($column, $data)) {
 		$arr[] = $data[$column];
 	    }
 	}
@@ -204,6 +204,7 @@ class Pix_Array_Array extends Pix_Array
 	    uasort($this->_cur_data, array($this, '_sort'));
         }
 
+        $offset = 0;
         if (count($this->getFilters())) {
             $this->_row_count = 0;
 
