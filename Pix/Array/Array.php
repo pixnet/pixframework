@@ -127,16 +127,19 @@ class Pix_Array_Array extends Pix_Array
 
     public function toArray($column = null)
     {
-	if (!$column) {
-	    return $this->rewind()->_cur_data;
-	}
-	$arr = array();
-	foreach ($this->rewind()->_cur_data as $data) {
-            if (array_key_exists($column, $data)) {
-		$arr[] = $data[$column];
-	    }
-	}
-	return $arr;
+        $ret = array();
+        foreach ($this as $row) {
+            if (is_null($column)) {
+                $ret[] = $row;
+            } else {
+                if (is_array($row) and array_key_exists($column, $row)) {
+                    $ret[] = $row[$column];
+                } elseif (is_object($row)) {
+                    $ret[] = $row->{$column};
+                }
+            }
+        }
+        return $ret;
     }
 
     public function getPosition($obj)
