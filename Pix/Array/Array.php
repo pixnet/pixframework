@@ -58,9 +58,12 @@ class Pix_Array_Array extends Pix_Array
     public function _sort($a, $b)
     {
 	$way_num = array('asc' => 1, 'desc' => -1);
-	foreach ($this->_order as $column => $way) {
-	    if (is_array($a)) {
-		if (strtolower($a[$column]) > strtolower($b[$column])) {
+        foreach ($this->_order as $column => $way) {
+            if (is_array($a)) {
+                if (!array_key_exists($column, $a) or !array_key_exists($column, $b)) {
+                    return 0;
+                }
+                if (strtolower($a[$column]) > strtolower($b[$column])) {
 		    return $way_num[$way];
 		}
 		if (strtolower($a[$column]) < strtolower($b[$column])) {
