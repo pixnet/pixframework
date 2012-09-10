@@ -131,14 +131,14 @@ class Pix_Array_Array extends Pix_Array
     public function toArray($column = null)
     {
         $ret = array();
-        foreach ($this as $row) {
+        foreach ($this as $key => $row) {
             if (is_null($column)) {
-                $ret[] = $row;
+                $ret[$key] = $row;
             } else {
                 if (is_array($row) and array_key_exists($column, $row)) {
-                    $ret[] = $row[$column];
+                    $ret[$key] = $row[$column];
                 } elseif (is_object($row)) {
-                    $ret[] = $row->{$column};
+                    $ret[$key] = $row->{$column};
                 }
             }
         }
