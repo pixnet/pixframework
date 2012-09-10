@@ -36,7 +36,7 @@ class Pix_Table_Db_Adapter_SQL extends Pix_Table_Db_Adapter_Abstract
 
         $row = $res->fetch_assoc();
         $res->free_result();
-        return $row;
+        return $this->_filterRow($row);
     }
 
     /**
@@ -78,6 +78,32 @@ class Pix_Table_Db_Adapter_SQL extends Pix_Table_Db_Adapter_Abstract
         $row = $res->fetch_assoc();
         $res->free_result();
 	return intval($row['sum']);
+    }
+
+    /**
+     * filter database raw data to Pix_Table_Row data
+     *
+     * @param array $row
+     * @access protected
+     * @return array
+     */
+    protected function _filterRow($row)
+    {
+        if (!is_array($row)) {
+            return $row;
+        }
+        $return_row = array();
+
+        foreach ($row as $col => $value) {
+            if (FALSE === strpos($col, ':')) {
+                $return_row[$col] = $value;
+                continue;
+            }
+
+            list($col, $id) = explode(':', $col, 2);
+            $return_row[$col][$id] = $value;
+        }
+        return $return_row;
     }
 
     /**
@@ -150,7 +176,7 @@ class Pix_Table_Db_Adapter_SQL extends Pix_Table_Db_Adapter_Abstract
 	$res = $this->query($sql);
 	$rows = array();
 	while ($row = $res->fetch_assoc()) {
-	    $rows[] = $row;
+            $rows[] = $this->_filterRow($row);
 	}
 	$res->free_result();
 
