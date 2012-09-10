@@ -802,4 +802,15 @@ class Pix_Table_ResultSet extends Pix_Array // implements Pix_Array_Volumable
 	}
 	return $terms;
     }
+
+    /**
+     * Get Pix_Table_Search search object
+     *
+     * @access public
+     * @return Pix_Table_Search
+     */
+    public function getSearchObject()
+    {
+        return $this->_search_object;
+    }
 }
