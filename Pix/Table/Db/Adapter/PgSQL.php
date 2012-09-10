@@ -208,4 +208,21 @@ class Pix_Table_Db_Adapter_PgSQL extends Pix_Table_Db_Adapter_SQL
         }
         return null;
     }
+
+    /**
+     * get all tables in this db
+     *
+     * @access public
+     * @return array
+     */
+    public function getTables()
+    {
+        $res = $this->query("SELECT table_name FROM information_schema.tables WHERE table_schema = 'public'");
+        $tables = array();
+        while ($row = $res->fetch_array()) {
+            $tables[] = $row[0];
+        }
+        $res->free_result();
+        return $tables;
+    }
 }
