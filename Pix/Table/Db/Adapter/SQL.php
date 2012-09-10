@@ -264,6 +264,11 @@ class Pix_Table_Db_Adapter_SQL extends Pix_Table_Db_Adapter_Abstract
         return "`" . addslashes($a) . "`";
     }
 
+    public function getSQLConditionByTerm(Pix_Table_Search_Term $term, $table)
+    {
+        throw new Pix_Table_Exception('Unsupport Pix_Table_Search_Term: ' . $term->getType());
+    }
+
     /**
      * _get_where_clause 依照 $search 條件以及指定的 $table 回傳 WHERE 的 SQL 
      * 
@@ -282,6 +287,9 @@ class Pix_Table_Db_Adapter_SQL extends Pix_Table_Db_Adapter_Abstract
                 break;
             case 'string':
                 $terms[] = "(" . $condiction[1] . ")";
+                break;
+            case 'term':
+                $terms[] = $this->getSQLConditionByTerm($condiction[1], $table);
                 break;
             default:
                 throw new Pix_Table_Exception('不知名的狀態');
