@@ -22,7 +22,7 @@ class Pix_Controller_Helper_Json extends Pix_Helper
     public function json($controller, $obj)
     {
         header('Content-Type: application/json');
-        echo @json_encode($obj);
+        echo @json_encode($obj, JSON_NUMERIC_CHECK);
         return $controller->noview();
     }
 
@@ -32,7 +32,7 @@ class Pix_Controller_Helper_Json extends Pix_Helper
         if (!preg_match('/^[a-zA-Z0-9_]+$/', strval($callback))) {
             return $controller->json($obj);
         }
-        echo $callback . '(' . @json_encode($obj) . ')';
+        echo $callback . '(' . @json_encode($obj, JSON_NUMERIC_CHECK) . ')';
         return $controller->noview();
     }
 }
