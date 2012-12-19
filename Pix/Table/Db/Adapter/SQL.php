@@ -146,7 +146,12 @@ class Pix_Table_Db_Adapter_SQL extends Pix_Table_Db_Adapter_Abstract
         if (is_array($select_columns)) {
             $cols = array();
             foreach ($select_columns as $col) {
-                $cols[] = $this->column_quote($col, $table);
+                list($column_func, $column) = preg_split('/\s/', $col);
+                if ($column) {
+                    $cols[] = $column_func . ' ' . $this->column_quote($column, $table);
+                } else {
+                    $cols[] = $this->column_quote($col);
+                }
             }
             $select_expression = implode(', ', $cols);
         }
