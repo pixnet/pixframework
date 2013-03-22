@@ -38,7 +38,7 @@ class Pix_Table_AllTests
 	$suite->addTestSuite('Pix_Table_TableRelationTest');
 	$suite->addTestSuite('Pix_Table_TableHelperTest');
         $suite->addTestSuite('Pix_Table_SearchTest');
-        $suite->addTestSuite('Pix_Table_TableTermThest');
+        $suite->addTestSuite('Pix_Table_TableTermTest');
 
         return $suite;
     }
