@@ -576,6 +576,24 @@ abstract class Pix_Table
 	return new $rowClass($conf);
     }
 
+
+    /**
+     * bulk insert
+     *
+     * @param array $keys
+     * @param array $values_list
+     * @param array $options (optional)
+     * @static
+     * @access public
+     * @return void
+     */
+    public static function bulkInsert($keys, $values_list, $options = array())
+    {
+        $table = self::getTable();
+
+        return $table->getDb()->bulkInsert($table, $keys, $values_list, $options);
+    }
+
     /**
      * insert 新增一筆資料進資料庫(立刻會存進資料庫)
      * 
