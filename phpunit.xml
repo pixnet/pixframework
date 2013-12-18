@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<phpunit colors="true" backupGlobals="false" backupStaticAttributes="false" syntaxCheck="false" bootstrap="tests/init.inc.php">
+<phpunit colors="true" backupGlobals="false" backupStaticAttributes="false" convertNoticesToExceptions="false" syntaxCheck="false" bootstrap="tests/init.inc.php">
 
   <testsuites>
     <testsuite name="Pix Framework">
