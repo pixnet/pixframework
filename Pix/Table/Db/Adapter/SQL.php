@@ -66,7 +66,7 @@ class Pix_Table_Db_Adapter_SQL extends Pix_Table_Db_Adapter_Abstract
      * @param string $column
      * @param Pix_Table_Search $search
      * @access public
-     * @return int
+     * @return mixed
      */
     public function fetchSum($table, $column, $search)
     {
@@ -77,7 +77,7 @@ class Pix_Table_Db_Adapter_SQL extends Pix_Table_Db_Adapter_Abstract
 	$res = $this->query($sql);
         $row = $res->fetch_assoc();
         $res->free_result();
-	return intval($row['sum']);
+	return $row['sum'];
     }
 
     /**
