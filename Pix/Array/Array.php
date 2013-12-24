@@ -133,9 +133,6 @@ class Pix_Array_Array extends Pix_Array
         $ret = array();
         $i = 0;
         foreach ($this as $key => $row) {
-            if (is_numeric($key)) {
-                $key = $i++;
-            }
             if (is_null($column)) {
                 $ret[$key] = $row;
             } else {
