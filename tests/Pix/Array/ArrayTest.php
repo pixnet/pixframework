@@ -402,16 +402,16 @@ class Pix_Array_ArrayTest extends PHPUnit_Framework_TestCase
         $obj = new StdClass;
         $obj->name = 'alice';
         $obj->age = 12;
-        $array[] = $obj;
+        $array[0] = $obj;
 
         $obj = new StdClass;
         $obj->name = 'bob';
         $obj->age = 13;
-        $array[] = $obj;
+        $array[1] = $obj;
 
-        $this->assertEquals($array->toArray('name'), array('alice', 'bob'));
-        $this->assertEquals($array->order('age')->toArray('name'), array('alice', 'bob'));
-        $this->assertEquals($array->order('age DESC')->toArray('name'), array('bob', 'alice'));
+        $this->assertEquals($array->toArray('name'), array('0' => 'alice', '1' => 'bob'));
+        $this->assertEquals($array->order('age')->toArray('name'), array('0' => 'alice', '1' => 'bob'));
+        $this->assertEquals($array->order('age DESC')->toArray('name'), array('1' => 'bob', 0 => 'alice'));
     }
 
     public function testToArrayByColumn()
@@ -539,19 +539,19 @@ class Pix_Array_ArrayTest extends PHPUnit_Framework_TestCase
     public function testAfter()
     {
         $source_array = array(
-            array('name' => 'alice', 'gender' => 'f', 'age' => 24),
-            array('name' => 'bob', 'gender' => 'm', 'age' => 27),
-            array('name' => 'carole', 'gender' => 'f', 'age' => 30),
-            array('name' => 'david', 'gender' => 'm', 'age' => 18),
+            0 => array('name' => 'alice', 'gender' => 'f', 'age' => 24),
+            1 => array('name' => 'bob', 'gender' => 'm', 'age' => 27),
+            2 => array('name' => 'carole', 'gender' => 'f', 'age' => 30),
+            3 => array('name' => 'david', 'gender' => 'm', 'age' => 18),
         );
 
         $array = Pix_Array::factory($source_array);
 
-        $this->assertEquals($array->order('age')->toArray('name'), array('david', 'alice', 'bob', 'carole'));
-        $this->assertEquals($array->order('age')->after(array('age' => 19))->toArray('name'), array('alice', 'bob', 'carole'));
-        $this->assertEquals($array->order('age')->after(array('age' => 24))->toArray('name'), array('bob', 'carole'));
-        $this->assertEquals($array->order('age')->after(array('age' => 24), true)->toArray('name'), array('alice', 'bob', 'carole'));
-        $this->assertEquals($array->order('age, gender DESC')->after(array('age' => 24), true)->toArray('name'), array('alice', 'bob', 'carole'));
+        $this->assertEquals($array->order('age')->toArray('name'), array(3 => 'david', 0 => 'alice', 1 => 'bob', 2 => 'carole'));
+        $this->assertEquals($array->order('age')->after(array('age' => 19))->toArray('name'), array(0 => 'alice', 1 => 'bob', 2 => 'carole'));
+        $this->assertEquals($array->order('age')->after(array('age' => 24))->toArray('name'), array(1 => 'bob', 2 => 'carole'));
+        $this->assertEquals($array->order('age')->after(array('age' => 24), true)->toArray('name'), array(0 => 'alice',1 => 'bob', 2 => 'carole'));
+        $this->assertEquals($array->order('age, gender DESC')->after(array('age' => 24), true)->toArray('name'), array(0 => 'alice', 1 => 'bob', 2 => 'carole'));
     }
 
     /**
