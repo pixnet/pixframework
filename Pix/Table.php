@@ -115,6 +115,7 @@ abstract class Pix_Table
     const LOG_ARRAYCACHE = 2;
     const LOG_SLOWQUERY = 3;
     public static $_force_master = false;
+    public static $_throw_incorrect_string_exception = false;
 
     protected $_db = null;
 

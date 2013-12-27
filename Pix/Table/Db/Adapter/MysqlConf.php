@@ -184,6 +184,9 @@ class Pix_Table_Db_Adapter_MysqlConf extends Pix_Table_Db_Adapter_MysqlCommon
                     if (1592 == $e->errno) {
                         continue;
                     }
+                    if (Pix_Table::$_throw_incorrect_string_exception and 1366 == $e->errno) {
+                        throw new Pix_Table_IncorrectStringException($e->message);
+                    }
                     trigger_error("Pix_Table " . (is_null($table) ? '': "Table: {$table->getClass()}") . "SQL Warning: ({$e->errno}){$e->message} " . substr($sql, 0, 128), E_USER_WARNING);
                 } while ($e->next());
             }
