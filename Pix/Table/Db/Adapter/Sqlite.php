@@ -2,7 +2,7 @@
 
 /**
  * Pix_Table_Db_Adapter_Sqlite
- * 
+ *
  * @uses Pix_Table_Db_Adapter
  * @package Table
  * @copyright 2003-2012 PIXNET Digital Media Corporation
@@ -65,14 +65,14 @@ class Pix_Table_Db_Adapter_Sqlite extends Pix_Table_Db_Adapter_SQL
             }
             throw new Exception("SQL Error: ({$errorInfo[0]}:{$errorInfo[1]}) {$errorInfo[2]} (SQL: {$sql})");
         }
-        
+
         return new Pix_Table_Db_Adapter_PDO_Result($statement);
     }
 
     /**
      * createTable 將 $table 建立進資料庫內
-     * 
-     * @param Pix_Table $table 
+     *
+     * @param Pix_Table $table
      * @access public
      * @return void
      */
@@ -170,8 +170,8 @@ class Pix_Table_Db_Adapter_Sqlite extends Pix_Table_Db_Adapter_SQL
 
     /**
      * column_quote 把 $a 字串加上 quote
-     * 
-     * @param string $a 
+     *
+     * @param string $a
      * @access public
      * @return string
      */
