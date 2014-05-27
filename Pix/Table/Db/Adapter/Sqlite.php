@@ -112,7 +112,7 @@ class Pix_Table_Db_Adapter_Sqlite extends Pix_Table_Db_Adapter_SQL
 
             if ($column['auto_increment']) {
                 if ($primarys[0] != $name or count($primarys) > 1) {
-                    throw new Exception('SQLITE 的 AUTOINCREMENT 一定要是唯一的 Primary Key');
+                    throw new Exception('SQLITE 的 AUTOINCREMENT 一定要是唯一的 Primary Key: Table ' . $table->getTableName());
                 }
                 $s .= ' PRIMARY KEY AUTOINCREMENT ';
                 $pk_isseted = true;
