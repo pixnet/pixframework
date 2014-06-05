@@ -1,0 +1,25 @@
+{
+    "name": "pixnet/pixframework",
+    "description": "PHP Framework developed by PIXNET",
+    "keywords": ["pixnet", "orm", "framework"],
+    "type": "library",
+    "homepage": "http://framework.pixnet.net/",
+    "license": "BSD License",
+    "authors": [
+        {
+            "name": "Tech",
+            "email": "pixnetapi@pixnet.tw"
+        },
+        {
+            "name": "PIXNET API",
+            "homepage": "http://dev.pixnet.pro"
+        }
+    ],
+    "require": {
+        "php": ">=5.4.1"
+    },
+    "autoload": {
+        "classmap": [ "Pix/" ]
+    },
+    "minimum-stability": "dev"
+}
