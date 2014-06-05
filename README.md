@@ -8,7 +8,7 @@ See [http://framework.pixnet.net/] (http://framework.pixnet.net/) for more infor
 
 ##安裝 - Installation#
 ### 使用 Composer ###
-- 增加`"pixnet/pixframework": "dev-master"`到您的`composer.json`的`require`部分.
-- 執行`composer install`.
+- 增加 `"pixnet/pixframework": "dev-master"` 到您的 `composer.json` 的 `require` 部分.
+- 執行 `composer install`.
 
 [![Build Status](https://secure.travis-ci.org/pixnet/pixframework.png?branch=master)](http://travis-ci.org/pixnet/pixframework)
