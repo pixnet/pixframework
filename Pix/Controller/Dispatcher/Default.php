@@ -11,7 +11,7 @@ class Pix_Controller_Dispatcher_Default extends Pix_Controller_Dispatcher
 {
     public function dispatch($url)
     {
-        list(, $controllerName, $actionName) = explode(DIRECTORY_SEPARATOR, $url);
+        list(, $controllerName, $actionName) = explode('/', $url);
         list($actionName, $ext) = explode('.', $actionName);
         $args = array();
         if ($ext) {
