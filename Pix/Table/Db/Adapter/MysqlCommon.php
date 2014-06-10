@@ -27,7 +27,7 @@ abstract class Pix_Table_Db_Adapter_MysqlCommon extends Pix_Table_Db_Adapter_SQL
 	    }
 	    $s .= ' ';
 
-	    if ($column['unsigned']) {
+	    if (isset($column['unsigned']) and $column['unsigned']) {
 		$s .= 'UNSIGNED ';
 	    }
 
@@ -41,7 +41,7 @@ abstract class Pix_Table_Db_Adapter_MysqlCommon extends Pix_Table_Db_Adapter_SQL
                 $s .= 'DEFAULT ' . $this->quoteWithColumn($table, $column['default'], $name) . ' ';
 	    }
 
-	    if ($column['auto_increment']) {
+	    if (isset($column['auto_increment']) and $column['auto_increment']) {
 		$s .= 'AUTO_INCREMENT ';
 	    }
 
