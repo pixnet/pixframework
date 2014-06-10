@@ -102,7 +102,7 @@ class Pix_Prompt
 
     static public function addOften($prefix = '')
     {
-        if (self::$_walked_prefix[$prefix]) {
+        if (isset(self::$_walked_prefix[$prefix]) and self::$_walked_prefix[$prefix]) {
             return;
         }
         self::$_walked_prefix[$prefix] = true;
