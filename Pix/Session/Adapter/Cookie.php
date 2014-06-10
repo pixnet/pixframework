@@ -15,7 +15,7 @@ class Pix_Session_Adapter_Cookie extends Pix_Session_Adapter
     {
         Pix_Session_Adapter::__construct($config);
 
-        list($sig, $data) = explode('|', $_COOKIE[$this->_getCookieKey()], 2);
+        list($sig, $data) = array_pad(explode('|', $_COOKIE[$this->_getCookieKey()], 2), 2, null);
         if (!$secret = $this->getOption('secret')) {
             throw new Pix_Exception('you should set the option `secret`');
         }
