@@ -208,9 +208,9 @@ class Pix_Controller
     {
         $baseDir = rtrim($data_path, '/');
 
+        list($uri, $params) = array_pad(explode('?', $_SERVER['REQUEST_URI'], 2), 2, null);
         // dispatch
         foreach (self::$_dispatchers as $dispatcher) {
-            list($uri, $params) = array_pad(explode('?', $_SERVER['REQUEST_URI'], 2), 2, null);
             if (is_callable($dispatcher)) {
                 list($controllerName, $actionName, $params) = $dispatcher($uri);
             } elseif ($dispatcher instanceof Pix_Controller_Dispatcher) {
