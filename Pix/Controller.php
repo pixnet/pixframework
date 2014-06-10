@@ -207,6 +207,7 @@ class Pix_Controller
     public static function dispatch($data_path)
     {
         $baseDir = rtrim($data_path, '/');
+        $controllerName = null;
 
         list($uri, $params) = array_pad(explode('?', $_SERVER['REQUEST_URI'], 2), 2, null);
         // dispatch
