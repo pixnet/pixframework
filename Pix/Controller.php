@@ -102,7 +102,7 @@ class Pix_Controller
      */
     public function getURI()
     {
-        list($uri, $params) = explode('?', $_SERVER['REQUEST_URI'], 2);
+        list($uri, $params) = array_pad(explode('?', $_SERVER['REQUEST_URI'], 2), 2, null);
         return $uri;
     }
 
@@ -207,10 +207,11 @@ class Pix_Controller
     public static function dispatch($data_path)
     {
         $baseDir = rtrim($data_path, '/');
+        $controllerName = null;
 
+        list($uri, $params) = array_pad(explode('?', $_SERVER['REQUEST_URI'], 2), 2, null);
         // dispatch
         foreach (self::$_dispatchers as $dispatcher) {
-            list($uri, $params) = explode('?', $_SERVER['REQUEST_URI'], 2);
             if (is_callable($dispatcher)) {
                 list($controllerName, $actionName, $params) = $dispatcher($uri);
             } elseif ($dispatcher instanceof Pix_Controller_Dispatcher) {
@@ -224,7 +225,7 @@ class Pix_Controller
         }
 
         if (is_null($controllerName) or is_null($actionName)) {
-            list($uri, $params) = explode('?', $_SERVER['REQUEST_URI'], 2);
+            list($uri, $params) = array_pad(explode('?', $_SERVER['REQUEST_URI'], 2), 2, null);
             $default_dispatcher = new Pix_Controller_Dispatcher_Default();
             list($controllerName, $actionName, $params) = $default_dispatcher->dispatch($uri);
         }

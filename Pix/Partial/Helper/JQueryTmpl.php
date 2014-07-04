@@ -9,7 +9,7 @@
  */
 class Pix_Partial_Helper_JQueryTmpl extends Pix_Helper
 {
-    public function getFuncs()
+    public static function getFuncs()
     {
 	return array('jquerytmpl', 'addjquerytmpl');
     }
@@ -41,7 +41,7 @@ class Pix_Partial_Helper_JQueryTmpl extends Pix_Helper
 		$token['type'] = 'variable';
 		$token['variable'] = $m[1];
 	    } elseif (preg_match('#^{{(.*)}}$#', $tag, $m)) {
-		list($command, $options) = explode(' ', trim($m[1]), 2);
+		list($command, $options) = array_pad(explode(' ', trim($m[1]), 2), 2, null);
 		$token['type'] = $command;
 
 		if ('if' == $command) {

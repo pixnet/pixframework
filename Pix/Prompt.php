@@ -102,7 +102,7 @@ class Pix_Prompt
 
     static public function addOften($prefix = '')
     {
-        if (self::$_walked_prefix[$prefix]) {
+        if (isset(self::$_walked_prefix[$prefix]) and self::$_walked_prefix[$prefix]) {
             return;
         }
         self::$_walked_prefix[$prefix] = true;
@@ -129,7 +129,7 @@ class Pix_Prompt
         }
     }
 
-    public function autocomplete($name, $args2, $args3)
+    public static function autocomplete($name, $args2, $args3)
     {
         $res = array();
         if (preg_match('#^(.*)::(.*)$#', $name, $matches)) {
