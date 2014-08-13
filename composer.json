@@ -16,8 +16,8 @@
         }
     ],
     "require": {
+        "mrclay/minify": "*",
         "php": ">=5.4.1",
-        "zaininnari/html-minifier": "*"
     },
     "autoload": {
         "classmap": [ "Pix/" ]

@@ -1,7 +1,5 @@
 <?php
 
-use zz\Html\HTMLMinify;
-
 /**
  * Pix_Partial 為了讓 PHP 讓頁面更簡潔，參數使用比更靈活
  *
@@ -253,7 +251,7 @@ class Pix_Partial
         }
 
         if (self::$_minify_mode) {
-            $str = HTMLMinify::minify($str, ['optimizationLevel' => HTMLMinify::OPTIMIZATION_ADVANCED]);
+            $str = Minify_HTML::minify($str, ['cssMinifier' => ['Minify_CSS', 'minify'], 'jsMinifier' => ['JSMin', 'minify']]);
         }
 
         if (!self::$_nocache and strlen($cache_id) > 0) {
