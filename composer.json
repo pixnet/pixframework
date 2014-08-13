@@ -16,7 +16,7 @@
         }
     ],
     "require": {
-        "mrclay/minify": "*",
+        "mrclay/minify": ">=2.2.0",
         "php": ">=5.4.1"
     },
     "autoload": {
