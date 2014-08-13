@@ -196,14 +196,14 @@ class Pix_Partial
         }
 
         $cache_key = sprintf(
-                'Pix_Partial:%s:%s:%s:%s:%s:%s',
-                $this->_cache_prefix,
-                strtolower($_SERVER['HTTP_HOST']),
-                sha1(file_get_contents($path)),
-                $cache_id,
-                self::$_trim_mode ? 1 : 0,
-                self::$_minify_mode ? 1 : 0
-                );
+            'Pix_Partial:%s:%s:%s:%s:%s:%s',
+            $this->_cache_prefix,
+            strtolower($_SERVER['HTTP_HOST']),
+            sha1(file_get_contents($path)),
+            $cache_id,
+            self::$_trim_mode ? 1 : 0,
+            self::$_minify_mode ? 1 : 0
+        );
         if (!self::$_nocache and !self::$_write_only_mode and strlen($cache_id) > 0 and $html = $cache->load($cache_key)) {
             return $html;
         }
