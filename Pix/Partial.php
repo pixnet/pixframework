@@ -27,8 +27,8 @@ class Pix_Partial
      */
     public function __construct($path = null, $options = array())
     {
-	if ($path) {
-	    $this->setPath($path);
+        if ($path) {
+            $this->setPath($path);
         } else {
             $this->setPath($this->_path);
         }
@@ -40,17 +40,17 @@ class Pix_Partial
 
     public function __get($k)
     {
-	return $this->_data[$k];
+        return $this->_data[$k];
     }
 
     public function __set($k, $v)
     {
-	$this->_data[$k] = $v;
+        $this->_data[$k] = $v;
     }
 
     public function __isset($k)
     {
-	return isset($this->_data[$k]);
+        return isset($this->_data[$k]);
     }
 
     protected static $_trim_mode = false;
@@ -74,7 +74,7 @@ class Pix_Partial
      */
     public static function setTrimMode($trim_mode = false)
     {
-	self::$_trim_mode = $trim_mode;
+        self::$_trim_mode = $trim_mode;
     }
 
     /**
@@ -86,7 +86,7 @@ class Pix_Partial
      */
     public static function getTrimMode()
     {
-	return self::$_trim_mode;
+        return self::$_trim_mode;
     }
 
     /**
@@ -124,7 +124,7 @@ class Pix_Partial
      */
     public static function setNoCache($nocache = false)
     {
-	self::$_nocache = $nocache;
+        self::$_nocache = $nocache;
     }
 
     /**
@@ -136,7 +136,7 @@ class Pix_Partial
      */
     public static function getNoCache()
     {
-	return self::$_nocache;
+        return self::$_nocache;
     }
 
     /**
@@ -149,12 +149,12 @@ class Pix_Partial
      */
     public static function setCommentMode($comment_mode = false)
     {
-	self::$_comment_mode = $comment_mode;
+        self::$_comment_mode = $comment_mode;
     }
 
     public static function getCommentMode()
     {
-	return self::$_comment_mode;
+        return self::$_comment_mode;
     }
 
     /**
@@ -168,15 +168,15 @@ class Pix_Partial
      */
     public function partial($file, $data = null, $options = null)
     {
-	if ($data instanceof Pix_Partial) {
+        if ($data instanceof Pix_Partial) {
             $data = $data->_data;
-	} else {
+        } else {
             $data = (array) $data;
-	}
+        }
 
-	if (array_key_exists('_data', $data)) {
-	    $data = array_shift($data);
-	}
+        if (array_key_exists('_data', $data)) {
+            $data = array_shift($data);
+        }
 
         if ($this->_path) {
             $path = $this->_path . ltrim($file, '/');
@@ -198,59 +198,59 @@ class Pix_Partial
         }
 
         $cache_key = sprintf(
-            'Pix_Partial:%s:%s:%s:%s:%s:%s',
-            $this->_cache_prefix,
-            strtolower($_SERVER['HTTP_HOST']),
-            sha1(file_get_contents($path)),
-            $cache_id,
-            self::$_trim_mode ? 1 : 0,
-            self::$_minify_mode ? 1 : 0
-        );
+                'Pix_Partial:%s:%s:%s:%s:%s:%s',
+                $this->_cache_prefix,
+                strtolower($_SERVER['HTTP_HOST']),
+                sha1(file_get_contents($path)),
+                $cache_id,
+                self::$_trim_mode ? 1 : 0,
+                self::$_minify_mode ? 1 : 0
+                );
         if (!self::$_nocache and !self::$_write_only_mode and strlen($cache_id) > 0 and $html = $cache->load($cache_key)) {
             return $html;
         }
 
-	// TODO: 這邊要改漂亮一點的寫法
-	$old_data = $this->_data;
-	$this->_data = $data;
+        // TODO: 這邊要改漂亮一點的寫法
+        $old_data = $this->_data;
+        $this->_data = $data;
 
-	ob_start();
+        ob_start();
 
-	try {
-	    if (!file_exists($path)) {
-		throw new Exception("找不到 {$path} 這個路徑的 partial");
-	    }
-	    if (preg_match('#.tmpl$#', $path)) {
-		$this->jQueryTmpl($path, $this);
-	    } else {
-		require($path);
-	    }
-	    $str = ob_get_clean();
-	} catch (Pix_Partial_NoRender $e) {
-	    ob_get_clean();
-	    $str = '';
-	} catch (Pix_Partial_BreakRender $e) {
-	    $str = ob_get_clean();
-	} catch (Exception $e) {
-	    ob_get_clean();
-	    throw $e;
-	}
+        try {
+            if (!file_exists($path)) {
+                throw new Exception("找不到 {$path} 這個路徑的 partial");
+            }
+            if (preg_match('#.tmpl$#', $path)) {
+                $this->jQueryTmpl($path, $this);
+            } else {
+                require($path);
+            }
+            $str = ob_get_clean();
+        } catch (Pix_Partial_NoRender $e) {
+            ob_get_clean();
+            $str = '';
+        } catch (Pix_Partial_BreakRender $e) {
+            $str = ob_get_clean();
+        } catch (Exception $e) {
+            ob_get_clean();
+            throw $e;
+        }
 
-	if (self::getCommentMode() and $str) {
-	    $str = "<!-- Pix_Partial START {$file} -->\n{$str}\n<!-- Pix_Partial END {$file} -->\n";
-	}
+        if (self::getCommentMode() and $str) {
+            $str = "<!-- Pix_Partial START {$file} -->\n{$str}\n<!-- Pix_Partial END {$file} -->\n";
+        }
 
-	$this->_data = $old_data;
-	if (self::$_trim_mode) {
-	    $newstr = '';
-	    foreach (explode("\n", $str) as $line) {
+        $this->_data = $old_data;
+        if (self::$_trim_mode) {
+            $newstr = '';
+            foreach (explode("\n", $str) as $line) {
                 $line = trim($line);
                 if (!empty($line)) {
                     $newstr .= $line . "\n";
                 }
             }
-	    $str = trim($newstr);
-	}
+            $str = trim($newstr);
+        }
 
         if (self::$_minify_mode) {
             $str = HTMLMinify::minify($str, ['optimizationLevel' => HTMLMinify::OPTIMIZATION_ADVANCED]);
@@ -260,7 +260,7 @@ class Pix_Partial
             $cache->save($cache_key, $str);
         }
 
-	return $str;
+        return $str;
     }
 
     /**
@@ -271,7 +271,7 @@ class Pix_Partial
      */
     public function noRender()
     {
-	throw new Pix_Partial_NoRender();
+        throw new Pix_Partial_NoRender();
     }
 
     /**
@@ -282,7 +282,7 @@ class Pix_Partial
      */
     public function breakRender()
     {
-	throw new Pix_Partial_BreakRender();
+        throw new Pix_Partial_BreakRender();
     }
 
     /**
@@ -294,7 +294,7 @@ class Pix_Partial
      */
     public function setPath($path)
     {
-	$this->_path = rtrim($path, '/') . '/';
+        $this->_path = rtrim($path, '/') . '/';
     }
 
     /**
@@ -305,12 +305,12 @@ class Pix_Partial
      */
     public function getPath()
     {
-	return $this->_path;
+        return $this->_path;
     }
 
     public function escape($var)
     {
-	return call_user_func($this->_escape, $var);
+        return call_user_func($this->_escape, $var);
     }
 
     /**
@@ -322,9 +322,9 @@ class Pix_Partial
      */
     public static function addCommonHelpers()
     {
-	self::addHelper('Pix_Partial_Helper_Html');
+        self::addHelper('Pix_Partial_Helper_Html');
         self::addHelper('Pix_Partial_Helper_Capture');
-	self::addHelper('Pix_Partial_Helper_JQueryTmpl');
+        self::addHelper('Pix_Partial_Helper_JQueryTmpl');
     }
 
     /**
