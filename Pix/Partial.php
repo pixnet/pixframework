@@ -244,8 +244,11 @@ class Pix_Partial
 	if (self::$_trim_mode) {
 	    $newstr = '';
 	    foreach (explode("\n", $str) as $line) {
-		$newstr .= trim($line) . "\n";
-	    }
+                $line = trim($line);
+                if (!empty($line)) {
+                    $newstr .= $line . "\n";
+                }
+            }
 	    $str = trim($newstr);
 	}
 
