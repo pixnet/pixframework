@@ -16,7 +16,8 @@
         }
     ],
     "require": {
-        "php": ">=5.4.1"
+        "php": ">=5.4.1",
+        "zaininnari/html-minifier": "*"
     },
     "autoload": {
         "classmap": [ "Pix/" ]
