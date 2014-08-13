@@ -1,5 +1,7 @@
 <?php
 
+use zz\Html\HTMLMinify;
+
 /**
  * Pix_Partial 為了讓 PHP 讓頁面更簡潔，參數使用比更靈活
  *
@@ -53,6 +55,7 @@ class Pix_Partial
 
     protected static $_trim_mode = false;
     protected static $_comment_mode = false;
+    protected static $_minify_mode = false;
     protected static $_nocache = false;
     protected static $_write_only_mode = false;
 
@@ -84,6 +87,31 @@ class Pix_Partial
     public static function getTrimMode()
     {
 	return self::$_trim_mode;
+    }
+
+    /**
+     * setMinifyMode 是否要啟動 Minify mode，把換行與不必要的空白都拿掉
+     *
+     * @param boolean $minify_mode
+     * @static
+     * @access public
+     * @return void
+     */
+    public static function setMinifyMode($minify_mode = false)
+    {
+        self::$_minify_mode = $minify_mode;
+    }
+
+    /**
+     * getMinifyMode 取得 Minify Mode 是否開啟
+     *
+     * @static
+     * @access public
+     * @return boolean
+     */
+    public static function getMinifyMode()
+    {
+        return self::$_minify_mode;
     }
 
     /**
@@ -169,11 +197,15 @@ class Pix_Partial
             $cache = new Pix_Cache();
         }
 
-        $cache_key = sprintf('Pix_Partial:%s:%s:%s:%d',
-                $this->_cache_prefix,
-                sha1(file_get_contents($path)),
-                $cache_id,
-                self::$_trim_mode ? 1 : 0);
+        $cache_key = sprintf(
+            'Pix_Partial:%s:%s:%s:%s:%s:%s',
+            $this->_cache_prefix,
+            strtolower($_SERVER['HTTP_HOST']),
+            sha1(file_get_contents($path)),
+            $cache_id,
+            self::$_trim_mode ? 1 : 0,
+            self::$_minify_mode ? 1 : 0
+        );
         if (!self::$_nocache and !self::$_write_only_mode and strlen($cache_id) > 0 and $html = $cache->load($cache_key)) {
             return $html;
         }
@@ -216,6 +248,10 @@ class Pix_Partial
 	    }
 	    $str = trim($newstr);
 	}
+
+        if (self::$_minify_mode) {
+            $str = HTMLMinify::minify($str, ['optimizationLevel' => HTMLMinify::OPTIMIZATION_ADVANCED]);
+        }
 
         if (!self::$_nocache and strlen($cache_id) > 0) {
             $cache->save($cache_key, $str);
