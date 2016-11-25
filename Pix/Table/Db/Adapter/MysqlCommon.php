@@ -196,20 +196,20 @@ abstract class Pix_Table_Db_Adapter_MysqlCommon extends Pix_Table_Db_Adapter_SQL
     }
 
     /**
-     * column_quote 把 $a 字串加上 quote
+     * column_quote 把 $name 字串加上 quote
      *
-     * @param string $a 
+     * @param string $name
      * @access public
      * @return string
      */
-    public function column_quote($a)
+    public function column_quote($name)
     {
-        $a = addslashes($a);
+        $name = addslashes($name);
 
         $match = ['`'];
         $replace = ['``'];
-        $a = str_replace($match, $replace, $a);
-        return "`$a`";
+        $name = str_replace($match, $replace, $name);
+        return "`$name`";
     }
 
     /**
