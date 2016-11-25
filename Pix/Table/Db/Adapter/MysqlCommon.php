@@ -204,7 +204,12 @@ abstract class Pix_Table_Db_Adapter_MysqlCommon extends Pix_Table_Db_Adapter_SQL
      */
     public function column_quote($a)
     {
-	return "`" . addslashes($a) . "`";
+        $a = addslashes($a);
+
+        $match = ['`'];
+        $replace = ['``'];
+        $a = str_replace($match, $replace, $a);
+        return "`$a`";
     }
 
     /**
