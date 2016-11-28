@@ -11,7 +11,7 @@ class Pix_Table_TableTest_Table extends Pix_Table
 {
     public function init()
     {
-        $this->_name = 'table';
+        $this->_name = 'table_`test`_escape';
         $this->_primary = 't1_id';
         $this->_rowClass = 'Pix_Table_TableTest_TableRow';
 
@@ -603,7 +603,7 @@ class Pix_Table_TableTest extends PHPUnit_Framework_TestCase
     public function testGetTableName()
     {
         $table = Pix_Table::getTable('Pix_Table_TableTest_Table');
-        $this->assertEquals($table->getTableName(), 'table');
+        $this->assertEquals($table->getTableName(), 'table_`test`_escape');
 
         $table = Pix_Table::getTable('Pix_Table_TableTest_Table2');
         $this->assertEquals($table->getTableName(), 'table2');
