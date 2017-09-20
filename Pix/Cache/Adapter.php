@@ -58,7 +58,7 @@ abstract class Pix_Cache_Adapter
      * @access public
      * @return void
      */
-    public function sets($keys_values)
+    public function sets(array $keys_values)
     {
         foreach ($keys_values as $key => $value) {
             $this->set($key, $value);
