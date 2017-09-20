@@ -38,7 +38,7 @@ abstract class Pix_Cache_Adapter
      * @access public
      * @return array
      */
-    public function gets($keys)
+    public function gets(array $keys)
     {
         $ret = array();
         foreach ($keys as $key) {
