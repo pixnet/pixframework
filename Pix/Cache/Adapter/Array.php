@@ -9,7 +9,7 @@
  */
 class Pix_Cache_Adapter_Array extends Pix_Cache_Adapter
 {
-    protected $_big_array = array();
+    protected $bigArray = array();
 
     /**
      * @codeCoverageIgnore
@@ -29,7 +29,7 @@ class Pix_Cache_Adapter_Array extends Pix_Cache_Adapter
      */
     public function add($key, $value, $options = array())
     {
-        if (array_key_exists($key, $this->_big_array)) {
+        if (array_key_exists($key, $this->bigArray)) {
             return false;
         }
 
@@ -50,11 +50,11 @@ class Pix_Cache_Adapter_Array extends Pix_Cache_Adapter
     public function set($key, $value, $options = array())
     {
         if (array() === $options) {
-            $this->_big_array[$key] = array('value' => $value);
+            $this->bigArray[$key] = array('value' => $value);
         } elseif (is_numeric($options)) {
             $start_at = time();
             $end_at = $start_at + (int)$options;
-            $this->_big_array[$key] = array(
+            $this->bigArray[$key] = array(
                 'value' => $value,
                 'start_at' => $start_at,
                 'end_at' => $end_at
@@ -73,7 +73,7 @@ class Pix_Cache_Adapter_Array extends Pix_Cache_Adapter
      */
     public function delete($key)
     {
-        unset($this->_big_array[$key]);
+        unset($this->bigArray[$key]);
         return true;
     }
 
@@ -88,7 +88,7 @@ class Pix_Cache_Adapter_Array extends Pix_Cache_Adapter
      */
     public function replace($key, $value, $options = array())
     {
-        if (!array_key_exists($key, $this->_big_array)) {
+        if (!array_key_exists($key, $this->bigArray)) {
             return false;
         }
 
@@ -152,7 +152,7 @@ class Pix_Cache_Adapter_Array extends Pix_Cache_Adapter
         if (!is_scalar($data)) {
             throw new InvalidArgumentException('append 只能加文字');
         }
-        if (!array_key_exists($key, $this->_big_array)) {
+        if (!array_key_exists($key, $this->bigArray)) {
             return false;
         }
 
@@ -177,7 +177,7 @@ class Pix_Cache_Adapter_Array extends Pix_Cache_Adapter
         if (!is_scalar($data)) {
             throw new InvalidArgumentException('prepend 只能加文字');
         }
-        if (!array_key_exists($key, $this->_big_array)) {
+        if (!array_key_exists($key, $this->bigArray)) {
             return false;
         }
 
@@ -197,15 +197,15 @@ class Pix_Cache_Adapter_Array extends Pix_Cache_Adapter
      */
     public function get($key)
     {
-        if (!array_key_exists($key, $this->_big_array)) {
+        if (!array_key_exists($key, $this->bigArray)) {
             return false;
         }
-        $result = $this->_big_array[$key];
+        $result = $this->bigArray[$key];
         if ($result['end_at'] && (time() > $result['end_at'])) {
             self::delete($key);
         }
 
-        return $this->_big_array[$key]['value'];
+        return $this->bigArray[$key]['value'];
     }
 
     /**
