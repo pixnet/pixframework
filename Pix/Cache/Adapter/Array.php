@@ -53,7 +53,7 @@ class Pix_Cache_Adapter_Array extends Pix_Cache_Adapter
             $this->bigArray[$key] = array('value' => $value);
         } elseif (is_numeric($options)) {
             $start_at = time();
-            $end_at = $start_at + (int)$options;
+            $end_at = $start_at + (int) $options;
             $this->bigArray[$key] = array(
                 'value' => $value,
                 'start_at' => $start_at,
