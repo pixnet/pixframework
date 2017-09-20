@@ -38,97 +38,97 @@ class Pix_Cache_Adapter_Memcached extends Pix_Cache_Adapter
 
     public function getMemcache()
     {
-	if (is_null($this->_memcache)) {
-	    $servers = $this->_servers;
-	    if (!is_array($servers)) {
-		throw new Pix_Exception('config error');
-	    }
+        if (is_null($this->_memcache)) {
+            $servers = $this->_servers;
+            if (!is_array($servers)) {
+                throw new Pix_Exception('config error');
+            }
 
-	    $this->_memcache = new Memcached;
-	    foreach ($servers as $server) {
-		$this->_memcache->addServer(
-		    $server['host'],
-		    $server['port'],
-		    isset($server['weight']) ? intval($server['weight']) : 1
-		);
-	    }
-	}
-	return $this->_memcache;
+            $this->_memcache = new Memcached;
+            foreach ($servers as $server) {
+                $this->_memcache->addServer(
+                    $server['host'],
+                    $server['port'],
+                    isset($server['weight']) ? intval($server['weight']) : 1
+                );
+            }
+        }
+        return $this->_memcache;
     }
 
     protected function _getOptions($options)
     {
-	$ret = array();
+        $ret = array();
         $ret['expire'] = is_int($options) ? $options : (isset($options['expire']) ? $options['expire'] : $this->_default_expire);
         $ret['compress'] = isset($options['compress']) ? $options['compress'] : $this->_default_compress;
-	return $ret;
+        return $ret;
     }
 
     public function add($key, $value, $options = array())
     {
-	$memcache = $this->getMemcache();
-	$options = $this->_getOptions($options);
+        $memcache = $this->getMemcache();
+        $options = $this->_getOptions($options);
         $memcache->setOption(Memcached::OPT_COMPRESSION, $options['compress'] ? true : false);
-	return $memcache->add($key, $value, $options['expire']);
+        return $memcache->add($key, $value, $options['expire']);
     }
 
     public function set($key, $value, $options = array())
     {
-	$memcache = $this->getMemcache();
-	$options = $this->_getOptions($options);
+        $memcache = $this->getMemcache();
+        $options = $this->_getOptions($options);
         $memcache->setOption(Memcached::OPT_COMPRESSION, $options['compress'] ? true : false);
         return $memcache->set($key, $value, $options['expire']);
     }
 
     public function delete($key)
     {
-	$memcache = $this->getMemcache();
-	return $memcache->delete($key, 0);
+        $memcache = $this->getMemcache();
+        return $memcache->delete($key, 0);
     }
 
     public function replace($key, $value, $options = array())
     {
-	$memcache = $this->getMemcache();
-	$options = $this->_getOptions($options);
+        $memcache = $this->getMemcache();
+        $options = $this->_getOptions($options);
         $memcache->setOption(Memcached::OPT_COMPRESSION, $options['compress'] ? true : false);
-	return $memcache->replace($key, $value, $options['expire']);
+        return $memcache->replace($key, $value, $options['expire']);
     }
 
     public function inc($key, $inc = 1)
     {
-	$memcache = $this->getMemcache();
-	return $memcache->increment($key, $inc);
+        $memcache = $this->getMemcache();
+        return $memcache->increment($key, $inc);
     }
 
     public function dec($key, $inc = 1)
     {
-	$memcache = $this->getMemcache();
-	return $memcache->decrement($key, $inc);
+        $memcache = $this->getMemcache();
+        return $memcache->decrement($key, $inc);
     }
 
     public function append($key, $data, $options = array())
     {
-	$memcache = $this->getMemcache();
-	$options = $this->_getOptions($options);
+        $memcache = $this->getMemcache();
+        $options = $this->_getOptions($options);
         return $memcache->append($key, $data);
     }
 
     public function prepend($key, $data, $options = array())
     {
-	$memcache = $this->getMemcache();
-	$options = $this->_getOptions($options);
+        $memcache = $this->getMemcache();
+        $options = $this->_getOptions($options);
         return $memcache->prepend($key, $data);
     }
 
     public function get($key)
     {
-	$memcache = $this->getMemcache();
-	return $memcache->get($key);
+        $memcache = $this->getMemcache();
+        return $memcache->get($key);
     }
 
     public function gets(array $keys)
     {
-	$memcache = $this->getMemcache();
-	return $memcache->getMulti($keys);
+        $memcache = $this->getMemcache();
+        return $memcache->getMulti($keys);
     }
 }

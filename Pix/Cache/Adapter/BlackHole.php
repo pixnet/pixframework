@@ -49,11 +49,11 @@ class Pix_Cache_Adapter_BlackHole extends Pix_Cache_Adapter
 
     public function get($key)
     {
-	return false;
+        return false;
     }
 
     public function gets(array $keys)
     {
-	return false;
+        return false;
     }
 }
