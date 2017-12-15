@@ -2,7 +2,8 @@
 
 class Row {
     public $num;
-    public function __construct($num) {
+    public function __construct($num)
+    {
         $this->num = $num;
     }
     public function isOdd()

@@ -181,15 +181,41 @@ class Pix_Table_Row
         return $ret;
     }
 
-    public function init() { }
-    public function preSave() { }
-    public function preInsert() { }
-    public function preUpdate($changed_fields = null) { }
-    public function preDelete() { }
-    public function postSave() { }
-    public function postInsert() { }
-    public function postUpdate($changed_fields = null) { }
-    public function postDelete() { }
+    public function init()
+    {
+    }
+
+    public function preSave()
+    {
+    }
+
+    public function preInsert()
+    {
+    }
+
+    public function preUpdate($changed_fields = null)
+    {
+    }
+
+    public function preDelete()
+    {
+    }
+
+    public function postSave()
+    {
+    }
+
+    public function postInsert()
+    {
+    }
+
+    public function postUpdate($changed_fields = null)
+    {
+    }
+
+    public function postDelete()
+    {
+    }
 
     /**
      * get changed columns-values assicoate array
