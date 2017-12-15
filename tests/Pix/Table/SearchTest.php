@@ -55,18 +55,6 @@ class Pix_Table_SearchTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Pix_Table_Search::isMapOnly
-     * @todo   Implement testIsMapOnly().
-     */
-    public function testIsMapOnly()
-    {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-          'This test has not been implemented yet.'
-        );
-    }
-
-    /**
      * @covers Pix_Table_Search::order
      */
     public function testOrder()
@@ -113,53 +101,6 @@ class Pix_Table_SearchTest extends PHPUnit_Framework_TestCase
 
         $search = $search->offset(null);
         $this->assertEquals($search->offset(), null);
-    }
-
-    /**
-     * @covers Pix_Table_Search::after
-     * @todo   Implement testAfter().
-     */
-    public function testAfter()
-    {
-        $this->markTestIncomplete(
-          'This test has not been implemented yet.'
-        );
-    }
-
-    /**
-     * @covers Pix_Table_Search::afterInclude
-     * @todo   Implement testAfterInclude().
-     */
-    public function testAfterInclude()
-    {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-          'This test has not been implemented yet.'
-        );
-    }
-
-    /**
-     * @covers Pix_Table_Search::before
-     * @todo   Implement testBefore().
-     */
-    public function testBefore()
-    {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-          'This test has not been implemented yet.'
-        );
-    }
-
-    /**
-     * @covers Pix_Table_Search::beforeInclude
-     * @todo   Implement testBeforeInclude().
-     */
-    public function testBeforeInclude()
-    {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-          'This test has not been implemented yet.'
-        );
     }
 
     /**
