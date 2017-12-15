@@ -53,7 +53,11 @@ class Pix_Table_TableRowTest_Table extends Pix_Table
         $this->_columns['value'] = array('type' => 'text', 'default' => 'default');
 
         $this->_hooks['hook_value_add_3'] = array('get' => 'get_hook_value_add_3', 'set' => 'set_hook_value_add_3');
-        $this->_hooks['hook_value_add_5'] = array('get' => function($row){ return $row->value + 5; }, 'set' => function($row, $value){ $row->value = $value + 5; });
+        $this->_hooks['hook_value_add_5'] = array('get' => function ($row) {
+            return $row->value + 5;
+        }, 'set' => function ($row, $value) {
+            $row->value = $value + 5;
+        });
         $this->_hooks['hook_no_get_and_set'] = array();
         $this->_hooks['hook_invalid_get_and_set'] = array('get' => new StdClass, 'set' => new StdClass);
     }
