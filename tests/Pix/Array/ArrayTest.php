@@ -251,6 +251,13 @@ class Pix_Array_ArrayTest extends PHPUnit_Framework_TestCase
         $this->assertEquals($users->first(), array('name' => 99));
     }
 
+    public function testSearchException()
+    {
+        $this->setExpectedException('Pix_Array_Exception');
+        $data = Pix_Array::factory();
+        $data->search([]);
+    }
+
     public function testOrder()
     {
         $objs = Pix_Array::factory();
