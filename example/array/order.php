@@ -42,4 +42,3 @@ echo "===" . PHP_EOL;
 foreach ($members->order('money DESC, height DESC') as $member) {
     echo $member['name'] . '(' . $member['money'] . ',' . $member['height'] . ')' . PHP_EOL;
 }
-

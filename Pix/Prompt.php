@@ -200,7 +200,6 @@ class Pix_Prompt
                     $res[] = $m . '()';
                 }
             }
-
         } else {
             foreach (self::findMatch($name) as $o) {
                 $res[] = $o;

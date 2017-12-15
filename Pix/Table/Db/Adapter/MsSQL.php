@@ -240,5 +240,4 @@ class Pix_Table_Db_Adapter_MsSQL extends Pix_Table_Db_Adapter_MysqlCommon
         }
         return null;
     }
-
 }

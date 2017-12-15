@@ -177,6 +177,5 @@ class Pix_Partial_Helper_JQueryTmpl extends Pix_Helper
         echo file_get_contents($path);
         echo '</script>';
         return ob_get_clean();
-
     }
 }

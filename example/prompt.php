@@ -9,4 +9,3 @@ for ($i = 1; isset($_SERVER['argv'][$i]); $i ++) {
 
 include(__DIR__ . '/../Pix/Prompt.php');
 Pix_Prompt::init();
-

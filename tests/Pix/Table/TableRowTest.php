@@ -228,7 +228,6 @@ class Pix_Table_TableRowTest extends PHPUnit_Framework_TestCase
         $row = Pix_Table_TableRowTest_Table::createRow();
         $row->value = 'preInsert_stop';
         $row->save();
-
     }
 
     public function testDelete()

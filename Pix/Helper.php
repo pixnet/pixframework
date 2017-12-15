@@ -50,6 +50,4 @@ abstract class Pix_Helper
     {
         $this->_options[$key] = $value;
     }
-
-
 }

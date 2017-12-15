@@ -152,7 +152,6 @@ class Pix_Table_Db_Adapter_SQL extends Pix_Table_Db_Adapter_Abstract
         }
 
         return $select_expression;
-
     }
 
     /**

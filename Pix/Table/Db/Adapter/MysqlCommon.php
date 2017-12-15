@@ -362,7 +362,6 @@ abstract class Pix_Table_Db_Adapter_MysqlCommon extends Pix_Table_Db_Adapter_SQL
                     "index {$name} columns is not match(model: " . implode(',', $indexes_on_table[$name]['columns']) . ", db: " . implode(',', $indexes_on_db[$name]['columns']) . ')',
                 );
             }
-
         }
 
         return $ret;

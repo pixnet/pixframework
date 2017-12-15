@@ -214,7 +214,6 @@ class Pix_Table_Db_Adapter_PgSQL extends Pix_Table_Db_Adapter_SQL
         $column_options = $table->_columns[$a];
         if ('geography' == $column_options['type']) {
             return 'ST_Y("' . addslashes($a) . '"::geometry) AS "' . addslashes($a) . ':0", ST_X("' . addslashes($a) . '"::geometry) AS "' . addslashes($a) . ':1"';
-
         }
 
         return '"' . addslashes($a) . '"';

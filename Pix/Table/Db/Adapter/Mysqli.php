@@ -110,5 +110,4 @@ class Pix_Table_Db_Adapter_Mysqli extends Pix_Table_Db_Adapter_MysqlCommon
     {
         return $this->_link->insert_id;
     }
-
 }

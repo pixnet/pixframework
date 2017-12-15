@@ -33,7 +33,6 @@ class Pix_Table_TestIndexTest_Article extends Pix_Table
     }
 }
 
-
 class Pix_Table_TableIndexTest extends PHPUnit_Framework_TestCase
 {
     public function test()

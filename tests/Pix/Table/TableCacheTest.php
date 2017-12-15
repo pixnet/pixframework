@@ -143,5 +143,4 @@ class Pix_Table_TableCacheTest extends PHPUnit_Framework_TestCase
         $table->cacheRow(8, false);
         $this->assertTrue($table->getRowFromCache(8) === false);
     }
-
 }

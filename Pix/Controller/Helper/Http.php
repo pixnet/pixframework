@@ -126,5 +126,4 @@ class Pix_Controller_Helper_Http extends Pix_Helper
 
         return FALSE;
     }
-
 }

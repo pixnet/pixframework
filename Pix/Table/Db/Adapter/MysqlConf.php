@@ -200,5 +200,4 @@ class Pix_Table_Db_Adapter_MysqlConf extends Pix_Table_Db_Adapter_MysqlCommon
     {
         return $this->insert_id;
     }
-
 }

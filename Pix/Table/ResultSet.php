@@ -265,7 +265,6 @@ class Pix_Table_ResultSet extends Pix_Array // implements Pix_Array_Volumable
             }
         }
         return $resultorder;
-
     }
 
     public function order()

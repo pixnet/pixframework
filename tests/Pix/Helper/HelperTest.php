@@ -44,7 +44,6 @@ class Pix_Helper_HelperTest extends PHPUnit_Framework_TestCase
         $this->assertEquals($manager->callHelper('testOption', array('test1')), 'value1:test');
         $this->assertEquals($manager->callHelper('testOption', array('test2')), 'value2:test');
         $this->assertEquals($manager->callHelper('testOption', array('not_exists_option')), ':test');
-
     }
 
     /**
