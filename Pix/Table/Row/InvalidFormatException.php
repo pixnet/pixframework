@@ -16,6 +16,6 @@ class Pix_Table_Row_InvalidFormatException extends Exception
     {
         parent::__construct($row->getTableClass() . '的欄位 ' . $name. ' 格式不正確');
 
-	$this->column = $column;
+        $this->column = $column;
     }
 }

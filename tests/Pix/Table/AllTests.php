@@ -30,13 +30,13 @@ class Pix_Table_AllTests
     {
         $suite = new PHPUnit_Framework_TestSuite('Pix Framework - Pix');
 
-	// Start remaining tests...
-	$suite->addTestSuite('Pix_Table_TableTest');
-	$suite->addTestSuite('Pix_Table_TableIndexTest');
-	$suite->addTestSuite('Pix_Table_TableCacheTest');
-	$suite->addTestSuite('Pix_Table_TableRowTest');
-	$suite->addTestSuite('Pix_Table_TableRelationTest');
-	$suite->addTestSuite('Pix_Table_TableHelperTest');
+        // Start remaining tests...
+        $suite->addTestSuite('Pix_Table_TableTest');
+        $suite->addTestSuite('Pix_Table_TableIndexTest');
+        $suite->addTestSuite('Pix_Table_TableCacheTest');
+        $suite->addTestSuite('Pix_Table_TableRowTest');
+        $suite->addTestSuite('Pix_Table_TableRelationTest');
+        $suite->addTestSuite('Pix_Table_TableHelperTest');
         $suite->addTestSuite('Pix_Table_SearchTest');
         $suite->addTestSuite('Pix_Table_TableTermTest');
 

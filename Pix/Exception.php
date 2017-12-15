@@ -14,8 +14,8 @@ class Pix_Exception extends Exception
 
     public function __construct($message = null, $errorcode = null, $options = null)
     {
-	parent::__construct($message);
-	$this->errorcode = $errorcode;
-	$this->options = $options;
+        parent::__construct($message);
+        $this->errorcode = $errorcode;
+        $this->options = $options;
     }
 }

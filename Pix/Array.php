@@ -30,18 +30,18 @@ abstract class Pix_Array implements Countable, SeekableIterator, ArrayAccess
      */
     public static function factory($obj = null)
     {
-	if (is_object($obj) and is_a($obj, 'Pix_Array')) {
-	    return $obj;
-	}
+        if (is_object($obj) and is_a($obj, 'Pix_Array')) {
+            return $obj;
+        }
 
-	if (is_array($obj)) {
-	    return new Pix_Array_Array($obj);
-	}
+        if (is_array($obj)) {
+            return new Pix_Array_Array($obj);
+        }
 
-	if (is_null($obj)) {
-	    return new Pix_Array_Array(array());
-	}
-	return null;
+        if (is_null($obj)) {
+            return new Pix_Array_Array(array());
+        }
+        return null;
     }
 
     /**
@@ -67,53 +67,53 @@ abstract class Pix_Array implements Countable, SeekableIterator, ArrayAccess
     // XXX: 需要檢查所有繼承 Pix_Array 的 class，並 implement 這五個 function
     public function push($value)
     {
-	throw new Pix_Array_Exception('尚未實做');
+        throw new Pix_Array_Exception('尚未實做');
     }
 
     public function pop()
     {
-	throw new Pix_Array_Exception('尚未實做');
+        throw new Pix_Array_Exception('尚未實做');
     }
 
     public function shift()
     {
-	throw new Pix_Array_Exception('尚未實做');
+        throw new Pix_Array_Exception('尚未實做');
     }
 
     public function unshift($value)
     {
-	throw new Pix_Array_Exception('尚未實做');
+        throw new Pix_Array_Exception('尚未實做');
     }
 
     public function reverse($preserve_keys = false)
     {
-	throw new Pix_Array_Exception('尚未實做');
+        throw new Pix_Array_Exception('尚未實做');
     }
 
     public function pager($page, $perPage)
     {
-	$page = max(1, intval($page));
-	return $this->limit($perPage)->offset(($page - 1) * $perPage);
+        $page = max(1, intval($page));
+        return $this->limit($perPage)->offset(($page - 1) * $perPage);
     }
 
     public function paginate($page = 1, $options = array())
     {
         $default_per_page = 20;
-	$page = max(1, intval($page));
-	$default_settings = array(
-	    // per_page:每頁幾項, order:SQL排序QUERY
-	    'per_page' => $default_per_page,
-	    'order' => '`id` DESC',
-	);
-	$settings = array_merge($default_settings, $options);
-	foreach ($settings as $key => $val) {
-	    $$key = $val;
-	}
+        $page = max(1, intval($page));
+        $default_settings = array(
+            // per_page:每頁幾項, order:SQL排序QUERY
+            'per_page' => $default_per_page,
+            'order' => '`id` DESC',
+        );
+        $settings = array_merge($default_settings, $options);
+        foreach ($settings as $key => $val) {
+            $$key = $val;
+        }
         if ($per_page <= 0) $per_page = $default_per_page;
-	$this->total_page = ceil(count($this) / $per_page);
-	$this->per_page = $per_page;
-	$this->now_page = $page;
-	return $this->limit($per_page)->offset(($page - 1) * $per_page)->order($order);
+        $this->total_page = ceil(count($this) / $per_page);
+        $this->per_page = $per_page;
+        $this->now_page = $page;
+        return $this->limit($per_page)->offset(($page - 1) * $per_page)->order($order);
     }
 
     public function filter($filter, $options = array())

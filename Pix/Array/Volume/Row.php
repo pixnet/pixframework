@@ -14,27 +14,27 @@ class Pix_Array_Volume_Row
 
     public function __construct($row, $array)
     {
-	$this->_row = $row;
-	$this->_array = $array;
+        $this->_row = $row;
+        $this->_array = $array;
     }
 
     public function getRow()
     {
-	return $this->_row;
+        return $this->_row;
     }
 
     public function getPos()
     {
-	return $this->_array->getPos($this);
+        return $this->_array->getPos($this);
     }
 
     public function getOrder()
     {
-	return $this->_array->getOrder($this);
+        return $this->_array->getOrder($this);
     }
 
     public function ok()
     {
-	return $this->_array->rowOk($this);
+        return $this->_array->rowOk($this);
     }
 }

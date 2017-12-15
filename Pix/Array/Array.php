@@ -29,61 +29,61 @@ class Pix_Array_Array extends Pix_Array
      */
     public function __construct(array $data)
     {
-	$this->_data = $data;
-	$this->_cur_data = $data;
+        $this->_data = $data;
+        $this->_cur_data = $data;
     }
 
     public function getRand($count = null)
     {
-	$rand_data = $this->_data;
-	shuffle($rand_data);
-	if ($count) {
-	    return new Pix_Array_Array(array_slice($rand_data, 0, $count));
-	} else {
+        $rand_data = $this->_data;
+        shuffle($rand_data);
+        if ($count) {
+            return new Pix_Array_Array(array_slice($rand_data, 0, $count));
+        } else {
             return $rand_data[0];
-	}
+        }
     }
 
     public function getOffset()
     {
-	return $this->_offset;
+        return $this->_offset;
     }
 
     public function offset($offset = 0)
     {
-	$this->_offset = $offset;
-	return $this;
+        $this->_offset = $offset;
+        return $this;
     }
 
     public function _sort($a, $b)
     {
-	$way_num = array('asc' => 1, 'desc' => -1);
+        $way_num = array('asc' => 1, 'desc' => -1);
         foreach ($this->_order as $column => $way) {
             if (is_array($a)) {
                 if (!array_key_exists($column, $a) or !array_key_exists($column, $b)) {
                     return 0;
                 }
                 if (strtolower($a[$column]) > strtolower($b[$column])) {
-		    return $way_num[$way];
-		}
-		if (strtolower($a[$column]) < strtolower($b[$column])) {
-		    return -1 * $way_num[$way];
-		}
-	    } else {
-		if (strtolower($a->{$column}) > strtolower($b->{$column})) {
-		    return $way_num[$way];
-		}
-		if (strtolower($a->{$column}) < strtolower($b->{$column})) {
-		    return -1 * $way_num[$way];
-		}
-	    }
-	}
-	return 0;
+                    return $way_num[$way];
+                }
+                if (strtolower($a[$column]) < strtolower($b[$column])) {
+                    return -1 * $way_num[$way];
+                }
+            } else {
+                if (strtolower($a->{$column}) > strtolower($b->{$column})) {
+                    return $way_num[$way];
+                }
+                if (strtolower($a->{$column}) < strtolower($b->{$column})) {
+                    return -1 * $way_num[$way];
+                }
+            }
+        }
+        return 0;
     }
 
     public function getOrder()
     {
-	return $this->_order;
+        return $this->_order;
     }
 
     public function order($order = null)
@@ -95,7 +95,7 @@ class Pix_Array_Array extends Pix_Array
 
     public function getLimit()
     {
-	return $this->_limit;
+        return $this->_limit;
     }
 
     public function limit($limit = null)
@@ -107,25 +107,25 @@ class Pix_Array_Array extends Pix_Array
 
     public function sum($column = null)
     {
-	if (!$column) {
-	    return array_sum($this->_data);
-	}
-	throw new Pix_Array_Exception('TODO');
+        if (!$column) {
+            return array_sum($this->_data);
+        }
+        throw new Pix_Array_Exception('TODO');
     }
 
     public function max($column = null)
     {
-	throw new Pix_Array_Exception('TODO');
+        throw new Pix_Array_Exception('TODO');
     }
 
     public function min($column = null)
     {
-	throw new Pix_Array_Exception('TODO');
+        throw new Pix_Array_Exception('TODO');
     }
 
     public function first()
     {
-	return $this->rewind()->current();
+        return $this->rewind()->current();
     }
 
     public function toArray($column = null)
@@ -148,7 +148,7 @@ class Pix_Array_Array extends Pix_Array
 
     public function getPosition($obj)
     {
-	throw new Pix_Array_Exception('TODO');
+        throw new Pix_Array_Exception('TODO');
     }
 
     public function count()
@@ -164,12 +164,12 @@ class Pix_Array_Array extends Pix_Array
 
     public function seek($pos)
     {
-	return $this->_data[$pos];
+        return $this->_data[$pos];
     }
 
     public function current()
     {
-	return current($this->_cur_data);
+        return current($this->_cur_data);
     }
 
     public function next()
@@ -185,7 +185,7 @@ class Pix_Array_Array extends Pix_Array
 
     public function key()
     {
-	return key($this->_cur_data);
+        return key($this->_cur_data);
     }
 
     public function valid()
@@ -201,9 +201,9 @@ class Pix_Array_Array extends Pix_Array
 
     public function rewind()
     {
-	$this->_cur_data = $this->_data;
-	if ($this->_order) {
-	    uasort($this->_cur_data, array($this, '_sort'));
+        $this->_cur_data = $this->_data;
+        if ($this->_order) {
+            uasort($this->_cur_data, array($this, '_sort'));
         }
 
         $this->_row_count = 0;
@@ -220,7 +220,7 @@ class Pix_Array_Array extends Pix_Array
             next($this->_cur_data);
         }
 
-	return $this;
+        return $this;
     }
 
     public function offsetExists($pos)
@@ -230,50 +230,50 @@ class Pix_Array_Array extends Pix_Array
 
     public function offsetGet($pos)
     {
-	return $this->_data[$pos];
+        return $this->_data[$pos];
     }
 
     public function __get($name)
     {
-	return $this->_data[$name];
+        return $this->_data[$name];
     }
 
     public function offsetSet($pos, $value)
     {
-	if (is_null($pos)) {
-	    $this->_data[] = $value;
-	} else {
-	    $this->_data[$pos] = $value;
-	}
+        if (is_null($pos)) {
+            $this->_data[] = $value;
+        } else {
+            $this->_data[$pos] = $value;
+        }
     }
 
     public function offsetUnset($pos)
     {
-	unset($this->_data[$pos]);
+        unset($this->_data[$pos]);
     }
 
     public function push($value)
     {
-	return array_push($this->_data, $value);
+        return array_push($this->_data, $value);
     }
 
     public function pop()
     {
-	return array_pop($this->_data);
+        return array_pop($this->_data);
     }
 
     public function shift()
     {
-	return array_shift($this->_data);
+        return array_shift($this->_data);
     }
 
     public function unshift($value)
     {
-	return array_unshift($this->_data, $value);
+        return array_unshift($this->_data, $value);
     }
 
     public function reverse($preserve_keys = false)
     {
-	return array_reverse($this->_data, $preserve_keys);
+        return array_reverse($this->_data, $preserve_keys);
     }
 }

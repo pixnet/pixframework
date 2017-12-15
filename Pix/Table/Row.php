@@ -20,26 +20,26 @@ class Pix_Table_Row
 
     public function __destruct()
     {
-	unset($this->_data);
-	unset($this->_orig_data);
+        unset($this->_data);
+        unset($this->_orig_data);
     }
 
     public function equals($row)
     {
-	if ($row instanceof Pix_Table_Row) {
-	    if ($row->_tableClass != $this->_tableClass) {
-		throw new Pix_Table_Exception('這兩個是不同的 ModelRow ，你的程式是不是寫錯了?');
-	    }
-	    $primary_b = $row->getPrimaryValues();
-	} elseif (is_scalar($row)) {
-	    $primary_b = array($row);
-	} elseif (is_array($row)) {
-	    $primary_b = $row;
-	}
+        if ($row instanceof Pix_Table_Row) {
+            if ($row->_tableClass != $this->_tableClass) {
+                throw new Pix_Table_Exception('這兩個是不同的 ModelRow ，你的程式是不是寫錯了?');
+            }
+            $primary_b = $row->getPrimaryValues();
+        } elseif (is_scalar($row)) {
+            $primary_b = array($row);
+        } elseif (is_array($row)) {
+            $primary_b = $row;
+        }
 
-	$primary_a = $this->getPrimaryValues();
+        $primary_a = $this->getPrimaryValues();
 
-	return $primary_a == $primary_b;
+        return $primary_a == $primary_b;
     }
 
     public function updateByString($args)
@@ -63,15 +63,15 @@ class Pix_Table_Row
     {
         if (!is_array($args)) {
             return $this->updateByString($args);
-	}
-	$table = $this->getTable();
+        }
+        $table = $this->getTable();
 
         foreach ($args as $column => $value) {
             if ($table->isEditableKey($column)) {
                 $this->{$column} = $value;
             }
-	}
-	$this->save();
+        }
+        $this->save();
     }
 
     /**
@@ -87,7 +87,7 @@ class Pix_Table_Row
 
     public function getTableClass()
     {
-	return $this->_tableClass;
+        return $this->_tableClass;
     }
 
     protected $_table = null;
@@ -112,39 +112,39 @@ class Pix_Table_Row
      */
     public function delete($follow_relation = true)
     {
-	if (is_null($this->_primary_values)) {
-	    throw new Pix_Table_Exception('這個 Row 還不存在在 DB 上面，不能刪除');
+        if (is_null($this->_primary_values)) {
+            throw new Pix_Table_Exception('這個 Row 還不存在在 DB 上面，不能刪除');
         }
 
         $table = $this->getTable();
 
-	try {
-	    $this->preDelete();
-	} catch (Pix_Table_Row_Stop $e) {
-	    return;
-	}
+        try {
+            $this->preDelete();
+        } catch (Pix_Table_Row_Stop $e) {
+            return;
+        }
 
-	if ($follow_relation) {
-	    foreach ($table->_relations as $name => $relation) {
+        if ($follow_relation) {
+            foreach ($table->_relations as $name => $relation) {
                 if (array_key_exists('delete', $relation) and $relation['delete']) {
                     if ($relation['rel'] == 'belongs_to' || $relation['rel'] == 'has_one') {
                         if ($this->{$name}) {
                             $this->{$name}->delete();
                         }
-		    } else {
-			foreach ($this->{$name} as $row) {
-			    $row->delete();
-			}
-		    }
-		}
-	    }
-	}
+                    } else {
+                        foreach ($this->{$name} as $row) {
+                            $row->delete();
+                        }
+                    }
+                }
+            }
+        }
 
         $this->getRowDb()->deleteOne($this);
-	$this->postDelete();
-	$this->cacheRow(null);
-	$this->_orig_data = array();
-	$this->_data = array();
+        $this->postDelete();
+        $this->cacheRow(null);
+        $this->_orig_data = array();
+        $this->_data = array();
         $this->_primary_values = null;
 
         return;
@@ -170,15 +170,15 @@ class Pix_Table_Row
      */
     public function findPrimaryValues()
     {
-	$table = $this->getTable();
-	$ret = array();
-	foreach ($table->getPrimaryColumns() as $c) {
-	    if (!isset($this->_data[$c])) {
-		return null;
-	    }
-	    $ret[] = $this->_data[$c];
-	}
-	return $ret;
+        $table = $this->getTable();
+        $ret = array();
+        foreach ($table->getPrimaryColumns() as $c) {
+            if (!isset($this->_data[$c])) {
+                return null;
+            }
+            $ret[] = $this->_data[$c];
+        }
+        return $ret;
     }
 
     public function init() { }
@@ -212,90 +212,90 @@ class Pix_Table_Row
 
     public function save()
     {
-	try {
-	    $this->preSave();
-	} catch (Pix_Table_Row_Stop $e) {
-	    return;
-	}
+        try {
+            $this->preSave();
+        } catch (Pix_Table_Row_Stop $e) {
+            return;
+        }
 
         if (!is_null($this->_primary_values)) { // UPDATE
-	    try {
+            try {
                 $changed_fields = $this->getChangedColumnValues();
-		$this->preUpdate($changed_fields);
-	    } catch (Pix_Table_Row_Stop $e) {
-		return;
+                $this->preUpdate($changed_fields);
+            } catch (Pix_Table_Row_Stop $e) {
+                return;
             }
 
             $changed_fields = $this->getChangedColumnValues();
-	    if (!count($changed_fields)) {
-		return;
+            if (!count($changed_fields)) {
+                return;
             }
 
             $this->getRowDb()->updateOne($this, $changed_fields);
-	    $this->refreshRowData();
-	    $this->cacheRow($this->_data);
-	    $this->postUpdate($changed_fields);
-	    $this->postSave();
+            $this->refreshRowData();
+            $this->cacheRow($this->_data);
+            $this->postUpdate($changed_fields);
+            $this->postSave();
             return $this->_primary_values;
-	} else { // INSERT
-	    try {
-		$this->preInsert();
-	    } catch (Pix_Table_Row_Stop $e) {
-		return;
-	    }
+        } else { // INSERT
+            try {
+                $this->preInsert();
+            } catch (Pix_Table_Row_Stop $e) {
+                return;
+            }
 
-	    // 先清空 cache ，以免在資料庫下完 INSERT 和之後更新 cache 之間的空檔會有問題。
+            // 先清空 cache ，以免在資料庫下完 INSERT 和之後更新 cache 之間的空檔會有問題。
             if ($primary_values = $this->findPrimaryValues()) {
-		$this->cacheRow(false);
-	    }
+                $this->cacheRow(false);
+            }
 
             $insert_id = $this->getRowDb()->insertOne($this->getTable(), $this->_data);
 
             if ($insert_id) {
                 $this->_primary_values = array($insert_id);
-		$primary_columns = $this->getTable()->getPrimaryColumns();
+                $primary_columns = $this->getTable()->getPrimaryColumns();
                 $this->_data[$primary_columns[0]] = $insert_id;
-	    } else {
+            } else {
                 $this->_primary_values = array();
-		foreach ($this->getTable()->getPrimaryColumns() as $col) {
+                foreach ($this->getTable()->getPrimaryColumns() as $col) {
                     $this->_primary_values[] = $this->_data[$col];
-		}
-	    }
+                }
+            }
 
-	    $this->refreshRowData();
-	    $this->cacheRow($this->_data);
-	    $this->postInsert();
-	    $this->postSave();
+            $this->refreshRowData();
+            $this->cacheRow($this->_data);
+            $this->postInsert();
+            $this->postSave();
             return $insert_id;
-	}
+        }
     }
 
     public function __construct($conf, $no_init = false)
     {
-	if (!isset($conf['tableClass'])) {
-	    throw new Pix_Table_Exception('建立 Row 必需要指定 tableClass');
-	}
-	$this->_tableClass = $conf['tableClass'];
+        if (!isset($conf['tableClass'])) {
+            throw new Pix_Table_Exception('建立 Row 必需要指定 tableClass');
+        }
+        $this->_tableClass = $conf['tableClass'];
         $this->_table = Pix_Table::getTable($this->_tableClass);
 
-	if (isset($conf['data'])) {
+        if (isset($conf['data'])) {
             $this->_primary_values = array();
-	    foreach ($this->getTable()->getPrimaryColumns() as $column) {
-		if (!isset($conf['data'][$column])) {
+            foreach ($this->getTable()->getPrimaryColumns() as $column) {
+                if (!isset($conf['data'][$column])) {
                     throw new Pix_Table_Exception("{$this->_tableClass} Row 的資料抓的不完整(缺少 column: {$column})");
-		}
+                }
                 $this->_primary_values[] = $conf['data'][$column];
-	    }
-	    $this->_data = $conf['data'];
-	    $this->_orig_data = $conf['data'];
-	} elseif (isset($conf['default'])) {
-	    $this->_data = $conf['default'];
-	    $this->_orig_data = $conf['default'];
-	}
+            }
+            $this->_data = $conf['data'];
+            $this->_orig_data = $conf['data'];
+        } elseif (isset($conf['default'])) {
+            $this->_data = $conf['default'];
+            $this->_orig_data = $conf['default'];
+        }
 
-	if (!$no_init) {
-	    $this->init();
-	}
+        if (!$no_init) {
+            $this->init();
+        }
     }
 
     public function getColumn($name)
@@ -309,17 +309,17 @@ class Pix_Table_Row
 
     public function setColumn($name, $value)
     {
-	while (Pix_Table::$_verify) {
-	    $column = $this->getTable()->_columns[$name];
-	    if ($value === null)
-		break;
-	    switch ($column['type']) {
-		case 'int':
-		case 'smallint':
-		case 'tinyint':
-		    // 這邊用 ctype_digit 而不用 is_int 是因為 is_int('123') 會 return false
-		    //if (!ctype_digit(strval($value)))
-		    // 這邊改用 regex ，因為 ctype_digit 會把負數也傳 false.. orz
+        while (Pix_Table::$_verify) {
+            $column = $this->getTable()->_columns[$name];
+            if ($value === null)
+            break;
+            switch ($column['type']) {
+                case 'int':
+                case 'smallint':
+                case 'tinyint':
+                    // 這邊用 ctype_digit 而不用 is_int 是因為 is_int('123') 會 return false
+                    //if (!ctype_digit(strval($value)))
+                    // 這邊改用 regex ，因為 ctype_digit 會把負數也傳 false.. orz
                     if (!preg_match('#^[-]?[0-9]+$#', $value)) {
                         throw new Pix_Table_Row_InvalidFormatException($name, $column, $this);
                     }
@@ -329,20 +329,20 @@ class Pix_Table_Row
                     }
                     break;
 
-		case 'enum':
-		    if (is_array($column['list']) and !in_array($value, $column['list'])) {
+                case 'enum':
+                    if (is_array($column['list']) and !in_array($value, $column['list'])) {
                         throw new Pix_Table_Row_InvalidFormatException($name, $column, $this);
                     }
-		    break;
-		case 'varchar':
-		case 'char':
-/*		    if (strlen($value) > $column['size'])
-			throw new Pix_Table_Row_InvalidFormatException($name, $column, $this);
-		    break; */
-	    }
-	    break;
-	}
-	$this->_data[$name] = $value;
+                break;
+                case 'varchar':
+                case 'char':
+        /*          if (strlen($value) > $column['size'])
+                    throw new Pix_Table_Row_InvalidFormatException($name, $column, $this);
+                    break; */
+            }
+            break;
+        }
+        $this->_data[$name] = $value;
     }
 
     public function getHook($name)
@@ -383,9 +383,9 @@ class Pix_Table_Row
 
     public function getRelation($name)
     {
-	$table = $this->getTable();
-	if (isset($this->_relation_data[$name])) {
-	    return $this->_relation_data[$name];
+        $table = $this->getTable();
+        if (isset($this->_relation_data[$name])) {
+            return $this->_relation_data[$name];
         }
 
         if (!in_array($table->_relations[$name]['rel'], array('has_one', 'belongs_to'))) {
@@ -398,7 +398,7 @@ class Pix_Table_Row
             $where = array_combine($foreign_keys, $primary_values);
 
             return $this->_relation_data[$name] = $foreign_table->search($where, $this);
-	}
+        }
 
         // A has_one B, A: $this->_table B: $type_Table
         $foreign_table = $this->getTable()->getRelationForeignTable($name);
@@ -419,157 +419,157 @@ class Pix_Table_Row
 
     public function setRelation($name, $value)
     {
-	$table = $this->getTable();
-	// 如果是 has_many 不給 set
-	if ($table->_relations[$name]['rel'] == 'has_many') {
-	    throw new Pix_Table_Exception("has_many 不能夠 ->{$name} = \$value; 請改用 ->{$name}[] = \$value");
-	} elseif ('has_one' == $table->_relations[$name]['rel'] || 'belongs_to' == $table->_relations[$name]['rel']) {
-	    $this->_relation_data[$name] = null;
-	    $type = $table->_relations[$name]['type'];
-	    $type_table = Pix_Table::getTable($type);
+        $table = $this->getTable();
+        // 如果是 has_many 不給 set
+        if ($table->_relations[$name]['rel'] == 'has_many') {
+            throw new Pix_Table_Exception("has_many 不能夠 ->{$name} = \$value; 請改用 ->{$name}[] = \$value");
+        } elseif ('has_one' == $table->_relations[$name]['rel'] || 'belongs_to' == $table->_relations[$name]['rel']) {
+            $this->_relation_data[$name] = null;
+            $type = $table->_relations[$name]['type'];
+            $type_table = Pix_Table::getTable($type);
 
             $foreign_keys = $table->getRelationForeignKeys($name);
 
-	    if (is_scalar($value)) {
-		$value = array($value);
-	    }
+            if (is_scalar($value)) {
+                $value = array($value);
+            }
 
-	    if ($value instanceof Pix_Table_Row and $value->getTableClass() == $type) {
-		$value = $value->getPrimaryValues();
-	    } elseif ($value == null) {
-		$value = array(null);
-	    } elseif (!is_array($value)) {
+            if ($value instanceof Pix_Table_Row and $value->getTableClass() == $type) {
+                $value = $value->getPrimaryValues();
+            } elseif ($value == null) {
+                $value = array(null);
+            } elseif (!is_array($value)) {
                 throw new Pix_Table_Exception(' = 右邊的東西只能是 Row 或是 PK' . $type . get_class($value));
-	    }
+            }
 
-	    if (count($value) != count($foreign_keys)) {
+            if (count($value) != count($foreign_keys)) {
                 throw new Pix_Table_Exception('參數不夠');
-	    }
+            }
 
-	    $column_values = array_combine($foreign_keys, $value);
-	    foreach ($column_values as $column => $value) {
-		$this->{$column} = $value;
-	    }
-	    return;
-	} else {
+            $column_values = array_combine($foreign_keys, $value);
+            foreach ($column_values as $column => $value) {
+                $this->{$column} = $value;
+            }
+            return;
+        } else {
             throw new Pix_Table_Exception('relation 的 rel 只能是 has_many, has_one 或是 belongs_to 喔');
-	}
+        }
     }
 
     public function __get($name)
     {
-	$table = $this->getTable();
-	// State1. 檢查是否在 column 裡面
-	if (isset($table->_columns[$name])) {
-	    return $this->getColumn($name);
-	}
+        $table = $this->getTable();
+        // State1. 檢查是否在 column 裡面
+        if (isset($table->_columns[$name])) {
+            return $this->getColumn($name);
+        }
 
-	// State2. 檢查是否在 Relations 裡面
-	if (isset($table->_relations[$name])) {
-	    return $this->getRelation($name);
-	}
+        // State2. 檢查是否在 Relations 裡面
+        if (isset($table->_relations[$name])) {
+            return $this->getRelation($name);
+        }
 
-	// State3. User 自訂資料
-	if ($name[0] === '_') {
-	    return $this->_user_data[substr($name, 1)];
-	}
+        // State3. User 自訂資料
+        if ($name[0] === '_') {
+            return $this->_user_data[substr($name, 1)];
+        }
 
-	// State5. Aliases 資料
+        // State5. Aliases 資料
         if (array_key_exists($name, $table->_aliases)) {
             $aliases = $table->_aliases[$name];
-	    $rel = $this->getRelation($aliases['relation']);
-	    if ($aliases['where']) {
-		$rel = $rel->search($aliases['where']);
-	    }
-	    if ($aliases['order']) {
-		$rel = $rel->order($aliases['order']);
-	    }
-	    return $rel;
-	}
+            $rel = $this->getRelation($aliases['relation']);
+            if ($aliases['where']) {
+                $rel = $rel->search($aliases['where']);
+            }
+            if ($aliases['order']) {
+                $rel = $rel->order($aliases['order']);
+            }
+            return $rel;
+        }
 
-	// 檢查 hook 資料
-	if (isset($table->_hooks[$name])) {
-	    return $this->getHook($name);
-	}
+        // 檢查 hook 資料
+        if (isset($table->_hooks[$name])) {
+            return $this->getHook($name);
+        }
         throw new Pix_Table_NoThisColumnException("{$this->getTableClass()} 沒有 {$name} 這個 column");
     }
 
     public function __set($name, $value)
     {
-	$table = $this->getTable();
-	// State1. 檢查是否在 column 裡面
-	if (isset($table->_columns[$name])) {
-	    $this->setColumn($name, $value);
-	    return;
-	}
+        $table = $this->getTable();
+        // State1. 檢查是否在 column 裡面
+        if (isset($table->_columns[$name])) {
+            $this->setColumn($name, $value);
+            return;
+        }
 
-	// State2. 檢查是否在 Relations 裡面
-	if (isset($table->_relations[$name])) {
-	    $this->setRelation($name, $value);
-	    return;
-	}
+        // State2. 檢查是否在 Relations 裡面
+        if (isset($table->_relations[$name])) {
+            $this->setRelation($name, $value);
+            return;
+        }
 
-	// State3. User 自訂資料
-	if ($name[0] === '_') {
-	    $this->_user_data[substr($name, 1)] = $value;
-	    return;
-	}
+        // State3. User 自訂資料
+        if ($name[0] === '_') {
+            $this->_user_data[substr($name, 1)] = $value;
+            return;
+        }
 
-	// 檢查 hook 資料
-	if (isset($table->_hooks[$name])) {
-	    $this->setHook($name, $value);
-	    return;
-	}
+        // 檢查 hook 資料
+        if (isset($table->_hooks[$name])) {
+            $this->setHook($name, $value);
+            return;
+        }
         throw new Pix_Table_NoThisColumnException("{$this->getTableClass()} 沒有 {$name} 這個 column");
     }
 
     public function __isset($name)
     {
-	$table = $this->getTable();
-	if (isset($table->_columns[$name]) or isset($table->_aliases[$name]))
-	    return true;
+        $table = $this->getTable();
+        if (isset($table->_columns[$name]) or isset($table->_aliases[$name]))
+        return true;
 
-	if ('has_many' == $table->_relations[$name]['rel']) {
-	    return true;
-	}
+        if ('has_many' == $table->_relations[$name]['rel']) {
+            return true;
+        }
 
-	if ($table->_relations[$name]) {
+        if ($table->_relations[$name]) {
             $row = $this->getRelation($name);
-	    if ($row)
-		return true;
-	    else
-		return false;
-	}
+            if ($row)
+            return true;
+            else
+            return false;
+        }
 
-	if ($name[0] == '_') {
-	    return isset($this->_user_data[substr($name, 1)]);
-	}
-	return false;
+        if ($name[0] == '_') {
+            return isset($this->_user_data[substr($name, 1)]);
+        }
+        return false;
     }
 
     public function toArray()
     {
-	$array = array();
-	foreach ($this->getTable()->_columns as $name => $temp) {
-	    $array[$name] = $this->{$name};
-	}
-	return $array;
+        $array = array();
+        foreach ($this->getTable()->_columns as $name => $temp) {
+            $array[$name] = $this->{$name};
+        }
+        return $array;
     }
 
     public function __unset($name)
     {
-	if ($name[0] == '_') {
-	    unset($this->_user_data[substr($name, 1)]);
+        if ($name[0] == '_') {
+            unset($this->_user_data[substr($name, 1)]);
         } elseif ('has_one' == $this->getTable()->_relations[$name]['rel']) {
             $foreign_keys = $this->getTable()->getRelationForeignKeys($name);
-	    if ($foreign_keys == $this->getTable()->getPrimaryColumns()) {
-		throw new Exception('Foreign Key 等於 Primary Key 的 Relation 不可以直接 unset($obj->rel)');
-	    }
-	    $this->{$name} = null;
-	    $this->save();
-	} else {
-	    throw new Exception('column name 不可以 unset');
-	}
+            if ($foreign_keys == $this->getTable()->getPrimaryColumns()) {
+                throw new Exception('Foreign Key 等於 Primary Key 的 Relation 不可以直接 unset($obj->rel)');
+            }
+            $this->{$name} = null;
+            $this->save();
+        } else {
+            throw new Exception('column name 不可以 unset');
+        }
     }
 
     public function createRelation($relation, $values = array())
@@ -608,7 +608,7 @@ class Pix_Table_Row
 
     public function __call($name, $args)
     {
-	$table = $this->getTable();
+        $table = $this->getTable();
         if (preg_match('#create_(.+)#', $name, $ret)) {
             if (count($args) > 0) {
                 return $this->createRelation($ret[1], $args[0]);
@@ -623,9 +623,9 @@ class Pix_Table_Row
             $new_args = $args;
             array_unshift($new_args, $this);
             return Pix_Table::getStaticHelperManager('row')->callHelper($name, $new_args);
-	} else {
-	    throw new Pix_Table_Exception(get_class($this) . " 沒有 $name 這個 function 喔");
-	}
+        } else {
+            throw new Pix_Table_Exception(get_class($this) . " 沒有 $name 這個 function 喔");
+        }
     }
 
     /**
@@ -636,7 +636,7 @@ class Pix_Table_Row
      */
     public function getUniqueID()
     {
-	return $this->getTableClass() . ':' . json_encode($this->getPrimaryValues());
+        return $this->getTableClass() . ':' . json_encode($this->getPrimaryValues());
     }
 
     /**
@@ -662,7 +662,7 @@ class Pix_Table_Row
         }
 
         if ($row = $db->fetchOne($this->getTable(), $this->getPrimaryValues())) {
-	    $this->_data = $this->_orig_data = $row;
+            $this->_data = $this->_orig_data = $row;
         }
 
         if ($db->support('force_master')) {

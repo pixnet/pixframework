@@ -19,7 +19,7 @@ class Pix_Table_Db_Adapter_MysqlConf extends Pix_Table_Db_Adapter_MysqlCommon
     }
     public function __construct($config)
     {
-	$this->_config = $config;
+        $this->_config = $config;
     }
 
     protected $_link_pools = array();
@@ -160,18 +160,18 @@ class Pix_Table_Db_Adapter_MysqlConf extends Pix_Table_Db_Adapter_MysqlCommon
                 if ($errno = $link->errno) {
                     $message = (is_null($table) ? '': "Table: {$table->getClass()}") . "SQL Error: ({$errno}){$link->error} " . substr($sql, 0, 128);
                     switch ($errno) {
-                    case 1146:
-                        throw new Pix_Table_TableNotFoundException($message);
-                    case 1062:
-                        throw new Pix_Table_DuplicateException((is_null($table) ? '': "(Table: {$table->getClass()})") . $link->error, $errno);
-                    case 1406:
-                        throw new Pix_Table_DataTooLongException($message);
+                        case 1146:
+                            throw new Pix_Table_TableNotFoundException($message);
+                        case 1062:
+                            throw new Pix_Table_DuplicateException((is_null($table) ? '': "(Table: {$table->getClass()})") . $link->error, $errno);
+                        case 1406:
+                            throw new Pix_Table_DataTooLongException($message);
 
-                    case 2006: // MySQL server gone away
-                    case 2013: // Lost connection to MySQL server during query
-                        trigger_error("Pix_Table " . $message, E_USER_WARNING);
-                        $this->resetConnect();
-                        continue 2;
+                        case 2006: // MySQL server gone away
+                        case 2013: // Lost connection to MySQL server during query
+                            trigger_error("Pix_Table " . $message, E_USER_WARNING);
+                            $this->resetConnect();
+                            continue 2;
                     }
                 }
                 throw new Pix_Table_Exception($message);

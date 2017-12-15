@@ -22,7 +22,7 @@ class Pix_Setting
      */
     static public function set($key, $value)
     {
-	self::$_settings[$key] = $value;
+        self::$_settings[$key] = $value;
     }
 
     /**

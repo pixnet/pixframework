@@ -21,15 +21,15 @@ class Pix_Session
 
     public function __construct()
     {
-	self::getObject();
+        self::getObject();
     }
 
     protected static function getObject()
     {
-	if (!is_null(self::$_obj)) {
-	    return self::$_obj;
-	}
-	return self::$_obj = Pix_Session_Adapter::loadAdapter(self::$_adapter, self::$_adapter_options);
+        if (!is_null(self::$_obj)) {
+            return self::$_obj;
+        }
+        return self::$_obj = Pix_Session_Adapter::loadAdapter(self::$_adapter, self::$_adapter_options);
     }
 
     /**
@@ -70,7 +70,7 @@ class Pix_Session
 
     public static function __callStatic($name, $args)
     {
-	return self::__call($name, $args);
+        return self::__call($name, $args);
     }
 
     public function __call($name, $args)
@@ -81,52 +81,52 @@ class Pix_Session
 
     public static function get($key)
     {
-	$obj = self::getObject();
-	return $obj->get($key);
+        $obj = self::getObject();
+        return $obj->get($key);
     }
 
     public static function set($key, $value)
     {
-	$obj = self::getObject();
-	return $obj->set($key, $value);
+        $obj = self::getObject();
+        return $obj->set($key, $value);
     }
 
     public static function delete($key)
     {
-	$obj = self::getObject();
-	return $obj->delete($key);
+        $obj = self::getObject();
+        return $obj->delete($key);
     }
 
     public static function clear()
     {
-	$obj = self::getObject();
-	return $obj->clear();
+        $obj = self::getObject();
+        return $obj->clear();
     }
 
     public static function setOption($key, $value)
     {
-	$obj = self::getObject();
-	return $obj->setOption($key, $value);
+        $obj = self::getObject();
+        return $obj->setOption($key, $value);
     }
 
     public static function getOption($key)
     {
-	$obj = self::getObject();
-	return $obj->getOption($key);
+        $obj = self::getObject();
+        return $obj->getOption($key);
     }
 
     public function __get($key)
     {
-	return self::get($key);
+        return self::get($key);
     }
 
     public function __set($key, $value)
     {
-	return self::set($key, $value);
+        return self::set($key, $value);
     }
 
     public function __unset($key)
     {
-	return self::delete($key);
+        return self::delete($key);
     }
 }

@@ -14,7 +14,7 @@ class Pix_Table_Db_Adapter_MsSQL extends Pix_Table_Db_Adapter_MysqlCommon
 
     public function __construct($link)
     {
-	$this->_link = $link;
+        $this->_link = $link;
     }
 
     public function getSupportFeatures()
@@ -31,24 +31,24 @@ class Pix_Table_Db_Adapter_MsSQL extends Pix_Table_Db_Adapter_MysqlCommon
      */
     public function query($sql, $table = null)
     {
-	if (Pix_Table::$_log_groups[Pix_Table::LOG_QUERY]) {
-	    Pix_Table::debug(sprintf("[%s]\t%40s", strval($this->_link), $sql));
-	}
+        if (Pix_Table::$_log_groups[Pix_Table::LOG_QUERY]) {
+            Pix_Table::debug(sprintf("[%s]\t%40s", strval($this->_link), $sql));
+        }
         // TODO: log sql query
-	if ($comment = Pix_Table::getQueryComment()) {
-	    $sql = trim($sql, '; ') . ' #' . $comment;
-	}
+        if ($comment = Pix_Table::getQueryComment()) {
+            $sql = trim($sql, '; ') . ' #' . $comment;
+        }
 
-	$starttime = microtime(true);
+        $starttime = microtime(true);
         $res = mssql_query($sql, $this->_link);
-	if (($t = Pix_Table::getLongQueryTime()) and ($delta = (microtime(true) - $starttime)) > $t) {
-	    Pix_Table::debug(sprintf("[%s]\t%s\t%40s", strval($this->_link), $delta, $sql));
-	}
+        if (($t = Pix_Table::getLongQueryTime()) and ($delta = (microtime(true) - $starttime)) > $t) {
+            Pix_Table::debug(sprintf("[%s]\t%s\t%40s", strval($this->_link), $delta, $sql));
+        }
 
-	if ($res === false) {
+        if ($res === false) {
             throw new Exception("SQL Error: {$this->_link} SQL: $sql");
-	}
-	return new Pix_Table_Db_Adapter_MsSQL_Result($res);
+        }
+        return new Pix_Table_Db_Adapter_MsSQL_Result($res);
     }
 
     public function column_quote($a)
@@ -66,49 +66,49 @@ class Pix_Table_Db_Adapter_MsSQL extends Pix_Table_Db_Adapter_MysqlCommon
     public function createTable($table)
     {
         $sql = "CREATE TABLE " . $this->column_quote($table->getTableName());
-	$types = array('bigint', 'tinyint', 'int', 'varchar', 'char', 'text', 'float', 'double', 'binary');
+        $types = array('bigint', 'tinyint', 'int', 'varchar', 'char', 'text', 'float', 'double', 'binary');
 
-	foreach ($table->_columns as $name => $column) {
+        foreach ($table->_columns as $name => $column) {
             $s = $this->column_quote($name) . ' ';
-	    $db_type = in_array($column['type'], $types) ? $column['type'] : 'text';
-	    $s .= strtoupper($db_type);
+            $db_type = in_array($column['type'], $types) ? $column['type'] : 'text';
+            $s .= strtoupper($db_type);
 
-	    if (in_array($db_type, array('varchar', 'char', 'binary'))) {
-		if (!$column['size']) {
-		    throw new Exception('you should set the option `size`');
-		}
-		$s .= '(' . $column['size'] . ')';
-	    }
-	    $s .= ' ';
+            if (in_array($db_type, array('varchar', 'char', 'binary'))) {
+                if (!$column['size']) {
+                    throw new Exception('you should set the option `size`');
+                }
+                $s .= '(' . $column['size'] . ')';
+            }
+            $s .= ' ';
 
-	    if ($column['unsigned']) {
-		$s .= 'UNSIGNED ';
-	    }
+            if ($column['unsigned']) {
+                $s .= 'UNSIGNED ';
+            }
 
-	    if (isset($column['not-null']) and !$column['not-null']) {
-		$s .= 'NULL ';
-	    } else {
-		$s .= 'NOT NULL ';
-	    }
+            if (isset($column['not-null']) and !$column['not-null']) {
+                $s .= 'NULL ';
+            } else {
+                $s .= 'NOT NULL ';
+            }
 
-	    if (isset($column['default'])) {
+            if (isset($column['default'])) {
                 $s .= 'DEFAULT ' . $this->quoteWithColumn($table, $column['default'], $name) . ' ';
-	    }
+            }
 
-	    if ($column['auto_increment']) {
-		$s .= 'IDENTITY (1, 1) ';
-	    }
+            if ($column['auto_increment']) {
+                $s .= 'IDENTITY (1, 1) ';
+            }
 
-	    $column_sql[] = $s;
-	}
+            $column_sql[] = $s;
+        }
 
-	$s = 'PRIMARY KEY ' ;
-	$index_columns = array();
-	foreach ((is_array($table->_primary) ? $table->_primary : array($table->_primary)) as $pk) {
+        $s = 'PRIMARY KEY ' ;
+        $index_columns = array();
+        foreach ((is_array($table->_primary) ? $table->_primary : array($table->_primary)) as $pk) {
             $index_columns[] = $this->column_quote($pk);
-	}
-	$s .= '(' . implode(', ', $index_columns) . ")\n";
-	$column_sql[] = $s;
+        }
+        $s .= '(' . implode(', ', $index_columns) . ")\n";
+        $column_sql[] = $s;
 
         foreach ($table->getIndexes() as $name => $options) {
             if ('unique' == $options['type']) {
@@ -125,11 +125,11 @@ class Pix_Table_Db_Adapter_MsSQL extends Pix_Table_Db_Adapter_MysqlCommon
             $s .= '(' . implode(', ', $index_columns) . ') ';
 
             $column_sql[] = $s;
-	}
+        }
 
-	$sql .= " (\n" . implode(", \n", $column_sql) . ") \n";
+        $sql .= " (\n" . implode(", \n", $column_sql) . ") \n";
 
-	return $this->query($sql, $table);
+        return $this->query($sql, $table);
     }
 
     /**
@@ -146,11 +146,11 @@ class Pix_Table_Db_Adapter_MsSQL extends Pix_Table_Db_Adapter_MysqlCommon
             $value = str_replace("'", "''", $value);
             $value = str_replace("\0", "[NULL]", $value);
             return "'" . strval($value) . "'";
-	}
-	if ($table->isNumbericColumn($column_name)) {
-	    return intval($value);
-	}
-	if (!is_scalar($value)) {
+        }
+        if ($table->isNumbericColumn($column_name)) {
+            return intval($value);
+        }
+        if (!is_scalar($value)) {
             trigger_error("{$_SERVER['SERVER_NAME']}{$_SERVER['REQUEST_URI']} 的 column `{$column_name}` 格式不正確: " . gettype($value), E_USER_WARNING);
         }
         return $this->quoteWithColumn($table, $value, null);

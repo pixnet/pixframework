@@ -26,7 +26,7 @@ class Pix_Array_Volume_ResultSet implements Iterator, countable
     public function __construct($array, $options = array())
     {
         $this->_origin_array = $array;
-	$this->_chunk = isset($options['chunk']) ? intval($options['chunk']) : 100;
+        $this->_chunk = isset($options['chunk']) ? intval($options['chunk']) : 100;
         $this->_volume_id = isset($options['id']) ? $options['id'] : $array->getVolumeID();
         $this->_simple_mode = isset($options['simple_mode']) ? intval($options['simple_mode']) : false;
     }
@@ -35,13 +35,13 @@ class Pix_Array_Volume_ResultSet implements Iterator, countable
     {
         $this->_last_row = $this->_after;
         $this->_pos = 0;
-	$this->_array = Pix_Array::factory(
-	    $this->_origin_array
-	    ->after($this->_origin_array->getVolumePos($this->_last_row))
-	    ->limit($this->_chunk)
-	    ->rewind()
-	);
-	return $this;
+        $this->_array = Pix_Array::factory(
+            $this->_origin_array
+            ->after($this->_origin_array->getVolumePos($this->_last_row))
+            ->limit($this->_chunk)
+            ->rewind()
+        );
+        return $this;
     }
 
     public function first()
@@ -56,7 +56,7 @@ class Pix_Array_Volume_ResultSet implements Iterator, countable
         if ($this->_simple_mode) {
             return $this->_last_row;
         }
-	return new Pix_Array_Volume_Row($this->_last_row, $this);
+        return new Pix_Array_Volume_Row($this->_last_row, $this);
     }
 
     public function key()
@@ -69,14 +69,14 @@ class Pix_Array_Volume_ResultSet implements Iterator, countable
         $this->_array->next();
         if (0 !== $this->_limit and !$this->valid()) {
             $this->_array = Pix_Array::factory($this->_origin_array->after($this->_origin_array->getVolumePos($this->_last_row))->limit($this->_chunk)->rewind());
-	}
+        }
     }
 
     public function valid()
     {
         if (!is_null($this->_limit) and ($this->_pos >= $this->_offset + $this->_limit)) {
-	    return false;
-	}
+            return false;
+        }
         return $this->_array->valid();
     }
 
@@ -105,17 +105,17 @@ class Pix_Array_Volume_ResultSet implements Iterator, countable
     {
         if ($this->_pos < $this->_offset) {
             $this->_pos ++;
-	    return false;
+            return false;
         }
-	if (is_null($this->_limit)) {
-	    $this->_pos ++;
-	    return true;
+        if (is_null($this->_limit)) {
+            $this->_pos ++;
+            return true;
         }
         if ($this->_limit + $this->_offset > $this->_pos) {
-	    $this->_pos ++;
-	    return true;
-	}
-	return false;
+            $this->_pos ++;
+            return true;
+        }
+        return false;
     }
 
     /**
@@ -126,12 +126,12 @@ class Pix_Array_Volume_ResultSet implements Iterator, countable
      */
     public function getPos($row)
     {
-	return $this->_array->getVolumePos($row->getRow());
+        return $this->_array->getVolumePos($row->getRow());
     }
 
     public function getOrder($row)
     {
-	return $this->_pos;
+        return $this->_pos;
     }
 
     public function count()

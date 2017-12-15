@@ -135,7 +135,7 @@ abstract class Pix_Table
      */
     public static function setQueryComment($comment = null)
     {
-	self::$_query_comment = $comment;
+        self::$_query_comment = $comment;
     }
 
     /**
@@ -147,7 +147,7 @@ abstract class Pix_Table
      */
     public static function getQueryComment()
     {
-	return self::$_query_comment;
+        return self::$_query_comment;
     }
 
     /**
@@ -160,7 +160,7 @@ abstract class Pix_Table
      */
     public static function setLongQueryTime($second = 1)
     {
-	self::$_log_groups[self::LOG_SLOWQUERY] = $second;
+        self::$_log_groups[self::LOG_SLOWQUERY] = $second;
     }
 
     /**
@@ -180,15 +180,15 @@ abstract class Pix_Table
 
     public function addFilter($filter, $funcname = '')
     {
-	if (!$funcname = ($funcname)) {
-	    $funcname = 'filter_' . $filter;
-	}
-	$this->_filters[$filter] = $funcname;
+        if (!$funcname = ($funcname)) {
+            $funcname = 'filter_' . $filter;
+        }
+        $this->_filters[$filter] = $funcname;
     }
 
     public function getFilters()
     {
-	return $this->_filters;
+        return $this->_filters;
     }
 
     /**
@@ -218,15 +218,15 @@ abstract class Pix_Table
 
     public static function setCache($cache)
     {
-	if (!is_null($cache) and !($cache instanceof Pix_Cache)) {
-	    throw new Pix_Table_Exception('不正確的 Cache');
-	}
-	self::$_cache = $cache;
+        if (!is_null($cache) and !($cache instanceof Pix_Cache)) {
+            throw new Pix_Table_Exception('不正確的 Cache');
+        }
+        self::$_cache = $cache;
     }
 
     public static function getCache()
     {
-	return self::$_cache;
+        return self::$_cache;
     }
 
     /**
@@ -316,7 +316,7 @@ abstract class Pix_Table
     // @codeCoverageIgnoreStart
     public static function debug($word)
     {
-	error_log($word, 0);
+        error_log($word, 0);
     }
     // @codeCoverageIgnoreEnd
 
@@ -371,7 +371,7 @@ abstract class Pix_Table
     {
         $table = self::getTable();
         if ($table->_db) {
-	    return $table->_db;
+            return $table->_db;
         }
 
         if ($db = $table->_getDb() and !is_null($db)) {
@@ -405,10 +405,10 @@ abstract class Pix_Table
      */
     public static function is_a($object, $table)
     {
-	if (!($object instanceof Pix_Table_Row)) {
-	    return false;
-	}
-	return $object->getTableClass() == $table;
+        if (!($object instanceof Pix_Table_Row)) {
+            return false;
+        }
+        return $object->getTableClass() == $table;
     }
 
     public static function getTable($table = null)
@@ -453,7 +453,7 @@ abstract class Pix_Table
      */
     static public function createTable()
     {
-	$table = self::getTable();
+        $table = self::getTable();
         return $table->getDb()->createTable($table);
     }
 
@@ -488,7 +488,7 @@ abstract class Pix_Table
         }
         $table = self::getTable();
         $table->_cache_rows = array();
-	return $table->getDb()->dropTable($table);
+        return $table->getDb()->dropTable($table);
     }
 
     /**
@@ -501,15 +501,15 @@ abstract class Pix_Table
      */
     static public function search($where)
     {
-	$table = self::getTable();
-	$conf = array();
-	$conf['tableClass'] = $table->getClass();
+        $table = self::getTable();
+        $conf = array();
+        $conf['tableClass'] = $table->getClass();
 
-	$resultSetClass = $table->_resultSetClass;
+        $resultSetClass = $table->_resultSetClass;
         $resultset = new $resultSetClass($conf);
         return $resultset->search($where);
     }
-	
+
     public $_cache_rows = array();
 
     /**
@@ -522,37 +522,37 @@ abstract class Pix_Table
      */
     static public function find($primary_value)
     {
-	$table = self::getTable();
+        $table = self::getTable();
 
-	if (is_scalar($primary_value)) {
-	    $primary_value = array($primary_value);
-	}
+        if (is_scalar($primary_value)) {
+            $primary_value = array($primary_value);
+        }
 
-	if (false !== ($row = $table->getRowFromCache($primary_value))) {
-	    return $row;
-	}
+        if (false !== ($row = $table->getRowFromCache($primary_value))) {
+            return $row;
+        }
 
-	$conf = array();
-	$conf['tableClass'] = $table->getClass();
+        $conf = array();
+        $conf['tableClass'] = $table->getClass();
 
         if (!$row = $table->getDb()->fetchOne($table, $primary_value)) {
-	    $table->cacheRow($primary_value, null);
-	    return null;
-	}
-	$conf['data'] = $row;
-	$table->cacheRow($primary_value, $row);
+            $table->cacheRow($primary_value, null);
+            return null;
+        }
+        $conf['data'] = $row;
+        $table->cacheRow($primary_value, $row);
 
-	$rowClass = $table->_rowClass;
-	$row = new $rowClass($conf);
+        $rowClass = $table->_rowClass;
+        $row = new $rowClass($conf);
 
-	return $row;
+        return $row;
     }
 
     static public function find_by($columns, $values)
     {
-	$table = self::getTable();
+        $table = self::getTable();
 
-	return $table->search(array_combine($columns, $values))->first();
+        return $table->search(array_combine($columns, $values))->first();
     }
 
     /**
@@ -565,16 +565,16 @@ abstract class Pix_Table
      */
     static public function createRow($belong_row = null)
     {
-	$table = self::getTable();
+        $table = self::getTable();
 
-	$conf['tableClass'] = $table->getClass();
-	foreach ($table->_columns as $name => $param) {
-	    if (isset($param['default'])) {
-		$conf['default'][$name] = $param['default'];
-	    }
-	}
-	$rowClass = $table->_rowClass;
-	return new $rowClass($conf);
+        $conf['tableClass'] = $table->getClass();
+        foreach ($table->_columns as $name => $param) {
+            if (isset($param['default'])) {
+                $conf['default'][$name] = $param['default'];
+            }
+        }
+        $rowClass = $table->_rowClass;
+        return new $rowClass($conf);
     }
 
 
@@ -605,24 +605,24 @@ abstract class Pix_Table
      */
     static public function insert($data)
     {
-	$table = self::getTable();
-	$row = $table->createRow();
-	foreach ($data as $column => $value) {
-	    if (isset($table->_columns[$column]) or isset($table->_relations[$column]) or ('_' == $column[0]) or isset($table->_hooks[$column]['set'])) {
-		$row->{$column} = $value;
-	    }
-	}
+        $table = self::getTable();
+        $row = $table->createRow();
+        foreach ($data as $column => $value) {
+            if (isset($table->_columns[$column]) or isset($table->_relations[$column]) or ('_' == $column[0]) or isset($table->_hooks[$column]['set'])) {
+                $row->{$column} = $value;
+            }
+        }
 
-	$row->save();
-	return $row;
+        $row->save();
+        return $row;
     }
 
     public function getPrimaryColumns()
     {
-	if (!is_array($this->_primary)) {
-	    $this->_primary = array($this->_primary);
-	}
-	return $this->_primary;
+        if (!is_array($this->_primary)) {
+            $this->_primary = array($this->_primary);
+        }
+        return $this->_primary;
     }
 
     /**
@@ -634,22 +634,22 @@ abstract class Pix_Table
      */
     public function isNumbericColumn($column)
     {
-	if (is_scalar($column) and isset($this->_columns[$column]['type']) and in_array($this->_columns[$column]['type'], array('int', 'tinyint'))) {
-	    return true;
-	}
-	return false;
+        if (is_scalar($column) and isset($this->_columns[$column]['type']) and in_array($this->_columns[$column]['type'], array('int', 'tinyint'))) {
+            return true;
+        }
+        return false;
     }
 
     static public function __callStatic($name, $args)
     {
-	$table = self::getTable();
-	return $table->__call($name, $args);
+        $table = self::getTable();
+        return $table->__call($name, $args);
     }
 
     public function __call($name, $args)
     {
-	if (preg_match('#find_by_(.+)#', $name, $ret)) {
-	    $column = explode('_and_', $ret[1]);
+        if (preg_match('#find_by_(.+)#', $name, $ret)) {
+            $column = explode('_and_', $ret[1]);
             return $this->find_by($column, $args);
         } elseif ($this->getHelperManager('table')->hasMethod($name)) {
             array_unshift($args, $this);
@@ -657,8 +657,8 @@ abstract class Pix_Table
         } elseif (self::getStaticHelperManager('table')->hasMethod($name)) {
             array_unshift($args, $this);
             return self::getStaticHelperManager('table')->callHelper($name, $args);
-	}
-	throw new Pix_Table_Exception("找不到這個函式喔: {$name}");
+        }
+        throw new Pix_Table_Exception("找不到這個函式喔: {$name}");
     }
 
     protected $_helper_managers = array();
@@ -794,8 +794,8 @@ abstract class Pix_Table
      */
     public function enableTableCache($cache_prefix = '')
     {
-	$this->_table_cache_prefix = $cache_prefix;
-	$this->_table_cache = true;
+        $this->_table_cache_prefix = $cache_prefix;
+        $this->_table_cache = true;
     }
 
     /**
@@ -806,7 +806,7 @@ abstract class Pix_Table
      */
     public function disableTableCache()
     {
-	$this->_table_cache = false;
+        $this->_table_cache = false;
     }
 
     /**
@@ -818,9 +818,9 @@ abstract class Pix_Table
      */
     public function getRowFromCache($primary_values)
     {
-	if (is_scalar($primary_values)) {
-	    $primary_values = array($primary_values);
-	}
+        if (is_scalar($primary_values)) {
+            $primary_values = array($primary_values);
+        }
 
         $data = null;
         $array_cache_key = implode('&', array_map('urlencode', $primary_values));
@@ -829,24 +829,24 @@ abstract class Pix_Table
             if (is_null($data)) {
                 return null;
             }
-	} else {
-	    if (!$this->_table_cache) return false;
-	    if (!$cache = $this->getCache()) return false;
+        } else {
+            if (!$this->_table_cache) return false;
+            if (!$cache = $this->getCache()) return false;
 
-	    $table_class = $this->getClass();
-	    $cache_key = "Pix_Table_Cache:{$table_class}:{$this->_table_cache_prefix}:" . implode('-', $primary_values);
+            $table_class = $this->getClass();
+            $cache_key = "Pix_Table_Cache:{$table_class}:{$this->_table_cache_prefix}:" . implode('-', $primary_values);
 
-	    $data = $cache->load($cache_key);
+            $data = $cache->load($cache_key);
             if (is_null($data)) {
                 // write to array cache
                 if (!self::$_save_memory) {
                     $this->_cache_rows[$array_cache_key] = null;
                 }
-		return null;
+                return null;
             }
             if (false === $data) {
-		return false;
-	    }
+                return false;
+            }
             $data = unserialize($data);
             $data = $data['data'];
 
@@ -854,18 +854,18 @@ abstract class Pix_Table
             if (!self::$_save_memory) {
                 $this->_cache_rows[$array_cache_key] = $data;
             }
-	}
+        }
 
-	if (false === $data) {
-	    return false;
-	}
+        if (false === $data) {
+            return false;
+        }
 
-	$conf = array();
-	$conf['tableClass'] = $this->getClass();
-	$conf['data'] = $data;
+        $conf = array();
+        $conf['tableClass'] = $this->getClass();
+        $conf['data'] = $data;
 
-	$rowClass = $this->_rowClass;
-	return new $rowClass($conf);
+        $rowClass = $this->_rowClass;
+        return new $rowClass($conf);
     }
 
     /**
@@ -882,32 +882,32 @@ abstract class Pix_Table
             return;
         }
 
-	if (is_scalar($primary_values)) {
-	    $primary_values = array($primary_values);
-	}
+        if (is_scalar($primary_values)) {
+            $primary_values = array($primary_values);
+        }
 
-	// memory cache
+        // memory cache
         if (!self::$_save_memory) {
             $array_cache_key = implode('&', array_map('urlencode', $primary_values));
             $this->_cache_rows[$array_cache_key] = $data;
-	}
+        }
 
-	// table cache
-	if (!$this->_table_cache) return false;
-	if (!$cache = $this->getCache()) return false;
+        // table cache
+        if (!$this->_table_cache) return false;
+        if (!$cache = $this->getCache()) return false;
 
-	$table_class = $this->getClass();
-	$cache_key = "Pix_Table_Cache:{$table_class}:{$this->_table_cache_prefix}:" . implode('-', $primary_values);
+        $table_class = $this->getClass();
+        $cache_key = "Pix_Table_Cache:{$table_class}:{$this->_table_cache_prefix}:" . implode('-', $primary_values);
 
-	if (is_null($data)) {
-	    $cache->save($cache_key, null);
-	    return;
-	}
+        if (is_null($data)) {
+            $cache->save($cache_key, null);
+            return;
+        }
 
-	if (false === $data) {
-	    $cache->delete($cache_key);
-	    return;
-	}
+        if (false === $data) {
+            $cache->delete($cache_key);
+            return;
+        }
 
         $json = serialize(array('data' => $data));
         $cache->save($cache_key, $json);
@@ -948,17 +948,17 @@ abstract class Pix_Table
      */
     static public function addIndex($name, $columns, $type = 'index')
     {
-	$table = self::getTable();
-	$table->_index_datas[$name] = array('columns' => $columns, 'type' => $type);
+        $table = self::getTable();
+        $table->_index_datas[$name] = array('columns' => $columns, 'type' => $type);
     }
 
     static public function getIndexColumns($name)
     {
-	$table = self::getTable();
-	if ('PRIMARY' == $name) {
-	    return $table->getPrimaryColumns();
-	}
-	return $table->_index_datas[$name]['columns'];
+        $table = self::getTable();
+        if ('PRIMARY' == $name) {
+            return $table->getPrimaryColumns();
+        }
+        return $table->_index_datas[$name]['columns'];
     }
 
     /**
@@ -1042,23 +1042,23 @@ abstract class Pix_Table
      */
     static public function findUniqueKey($columns)
     {
-	$table = self::getTable();
-	$primary_columns = $table->getPrimaryColumns();
-	if (array_intersect($primary_columns, $columns) == $primary_columns) {
-	    return 'PRIMARY';
-	}
+        $table = self::getTable();
+        $primary_columns = $table->getPrimaryColumns();
+        if (array_intersect($primary_columns, $columns) == $primary_columns) {
+            return 'PRIMARY';
+        }
 
-	foreach ($table->_index_datas as $name => $data) {
-	    if ('unique' != $data['type']) {
-		continue;
-	    }
+        foreach ($table->_index_datas as $name => $data) {
+            if ('unique' != $data['type']) {
+                continue;
+            }
 
-	    if (!array_diff($data['columns'], $columns)) {
-		return $name;
-	    }
-	}
+            if (!array_diff($data['columns'], $columns)) {
+                return $name;
+            }
+        }
 
-	return null;
+        return null;
     }
 
     /**
@@ -1070,7 +1070,7 @@ abstract class Pix_Table
      */
     static public function getTableName()
     {
-	$table = self::getTable();
+        $table = self::getTable();
         return $table->_name;
     }
 

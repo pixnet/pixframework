@@ -25,14 +25,14 @@ class Pix_Table_ResultSet extends Pix_Array // implements Pix_Array_Volumable
     public function __construct($conf)
     {
         if (!isset($conf['tableClass'])) {
-	    throw new Exception('new ResultSet 時必需要指定 tableClass');
-	}
+            throw new Exception('new ResultSet 時必需要指定 tableClass');
+        }
         $this->_tableClass = $conf['tableClass'];
         $this->_table = Pix_Table::getTable($this->_tableClass);
 
-	if (isset($conf['belongs_row'])) {
-	    $this->_belongs_row = $conf['belongs_row'];
-	}
+        if (isset($conf['belongs_row'])) {
+            $this->_belongs_row = $conf['belongs_row'];
+        }
 
         $this->_search_object = Pix_Table_Search::factory();
     }
@@ -52,103 +52,103 @@ class Pix_Table_ResultSet extends Pix_Array // implements Pix_Array_Volumable
      */
     public function getRand($count = null)
     {
-	if (count($this->getTable()->getPrimaryColumns()) != 1) {
-	    if ($count) {
-		return $this->order('RAND()')->limit($count);
-	    } else {
-		return $this->order('RAND()')->first();
-	    }
-	}
+        if (count($this->getTable()->getPrimaryColumns()) != 1) {
+            if ($count) {
+                return $this->order('RAND()')->limit($count);
+            } else {
+                return $this->order('RAND()')->first();
+            }
+        }
 
-	$primary = $this->getTable()->getPrimaryColumns();
-	$primary = $primary[0];
+        $primary = $this->getTable()->getPrimaryColumns();
+        $primary = $primary[0];
 
 
-	// 如果要取的數量超過 ResultSet Row 的數量的一半，就直接 ORDER BY RAND 了...
-	$rs_count = count($this);
-	if ($count >= intval($rs_count / 2)) {
-	    if ($count) {
-		return $this->order('RAND()')->limit($count);
-	    } else {
-		return $this->order('RAND()')->first();
-	    }
-	}
+        // 如果要取的數量超過 ResultSet Row 的數量的一半，就直接 ORDER BY RAND 了...
+        $rs_count = count($this);
+        if ($count >= intval($rs_count / 2)) {
+            if ($count) {
+                return $this->order('RAND()')->limit($count);
+            } else {
+                return $this->order('RAND()')->first();
+            }
+        }
 
-	$min = $this->min($primary)->{$primary};
-	$max = $this->max($primary)->{$primary};
+        $min = $this->min($primary)->{$primary};
+        $max = $this->max($primary)->{$primary};
 
-	if ($count) {
-	    $used = array();
-	    $res = array();
+        if ($count) {
+            $used = array();
+            $res = array();
 
             for ($i = 0; $i < $count; ) {
                 if (!$row = $this->search("$primary >= " . rand($min, $max))->order(array($primary => 'asc'))->first()) {
-		    continue;
-		}
-                if ($used[$row->{$primary}]) {
-		    continue;
+                    continue;
                 }
-		$res[] = $row;
-		$used[$row->{$primary}] = true;
+                if ($used[$row->{$primary}]) {
+                    continue;
+                }
+                $res[] = $row;
+                $used[$row->{$primary}] = true;
 
-		$i ++;
-	    }
-	    return Pix_Array::factory($res);
-	} else {
-	    while (1) {
-		if (!$row = $this->search("$primary >= " . rand($min, $max))->first()) {
-		    continue;
-		}
-		return $row;
-	    }
-	}
+                $i ++;
+            }
+            return Pix_Array::factory($res);
+        } else {
+            while (1) {
+                if (!$row = $this->search("$primary >= " . rand($min, $max))->first()) {
+                    continue;
+                }
+                return $row;
+            }
+        }
     }
 
     public function filterQuery()
     {
 
         $args = func_get_args();
-	$filters = $this->getTable()->getFilters();
-	$ret = $this;
-	foreach ($args as $filter) {
-	    if (!$func = $filters[$filter]) {
-		throw new Exception("找不到 {$filter} 這個 filter");
-	    }
-	    if (is_array($func)) {
-		if ($func['search']) {
-		    $ret = $ret->search($func['search']);
-		}
-		if ($func['order']) {
-		    $ret = $ret->search($func['order']);
-		}
-		if ($func['limit']) {
-		    $ret = $ret->search($func['limit']);
-		}
-	    } elseif (is_scalar($func)) {
-		if (!method_exists($ret, $func)) {
-		    throw new Exception("找不到 {$func} 這個 function");
-		}
-		$ret = $ret->{$func}();
-		if (!($ret instanceof Pix_Table_ResultSet)) {
-		    throw new Exception("filter 回傳格式必須要是 Pix_Table_ResultSet");
-		}
-	    } else {
-		throw new Exception('錯誤');
-	    }
-	}
-	return $ret;
+        $filters = $this->getTable()->getFilters();
+        $ret = $this;
+        foreach ($args as $filter) {
+            if (!$func = $filters[$filter]) {
+                throw new Exception("找不到 {$filter} 這個 filter");
+            }
+            if (is_array($func)) {
+                if ($func['search']) {
+                    $ret = $ret->search($func['search']);
+                }
+                if ($func['order']) {
+                    $ret = $ret->search($func['order']);
+                }
+                if ($func['limit']) {
+                    $ret = $ret->search($func['limit']);
+                }
+            } elseif (is_scalar($func)) {
+                if (!method_exists($ret, $func)) {
+                    throw new Exception("找不到 {$func} 這個 function");
+                }
+                $ret = $ret->{$func}();
+                if (!($ret instanceof Pix_Table_ResultSet)) {
+                    throw new Exception("filter 回傳格式必須要是 Pix_Table_ResultSet");
+                }
+            } else {
+                throw new Exception('錯誤');
+            }
+        }
+        return $ret;
     }
 
     public function find($id)
     {
-	$primary_columns = $this->getTable()->getPrimaryColumns();
-	if (!is_array($id)) {
-	    $id = array($id);
-	}
-	if (count($primary_columns) != count($id)) {
-	    throw new Exception("使用 find 時 primary key 數量不正確");
-	}
-	return $this->search(array_combine($primary_columns, $id))->first();
+        $primary_columns = $this->getTable()->getPrimaryColumns();
+        if (!is_array($id)) {
+            $id = array($id);
+        }
+        if (count($primary_columns) != count($id)) {
+            throw new Exception("使用 find 時 primary key 數量不正確");
+        }
+        return $this->search(array_combine($primary_columns, $id))->first();
     }
 
     /**
@@ -181,13 +181,13 @@ class Pix_Table_ResultSet extends Pix_Array // implements Pix_Array_Volumable
      */
     public function searchIn($column, $values)
     {
-	if (!is_array($values) or !$values) {
-	    return $this->search(0);
-	}
+        if (!is_array($values) or !$values) {
+            return $this->search(0);
+        }
 
-	$terms = array();
+        $terms = array();
         $db = $this->getResultSetDb();
-	foreach ($values as $v) {
+        foreach ($values as $v) {
             $terms[] = $db->quoteWithColumn($this->getTable(), $v, $column);
         }
         return $this->search($db->column_quote($column) . " IN (" . implode(', ', $terms) . ")");
@@ -202,7 +202,7 @@ class Pix_Table_ResultSet extends Pix_Array // implements Pix_Array_Volumable
         }
         $rs = clone $this;
         $rs->_search_object->offset($args[0]);
-	return $rs;
+        return $rs;
     }
 
     public function index()
@@ -213,7 +213,7 @@ class Pix_Table_ResultSet extends Pix_Array // implements Pix_Array_Volumable
         }
         $rs = clone $this;
         $rs->_search_object->index($args[0]);
-	return $rs;
+        return $rs;
     }
 
     /**
@@ -226,45 +226,45 @@ class Pix_Table_ResultSet extends Pix_Array // implements Pix_Array_Volumable
      */
     public static function getOrderArray($order, $reverse = false)
     {
-	$resultorder = array();
-	if (is_array($order)) {
-	    foreach ($order as $column => $way) {
-		if (is_int($column)) {
-		    $resultorder[$way] = $reverse ? 'desc' : 'asc';
-		    continue;
-		}
+        $resultorder = array();
+        if (is_array($order)) {
+            foreach ($order as $column => $way) {
+                if (is_int($column)) {
+                    $resultorder[$way] = $reverse ? 'desc' : 'asc';
+                    continue;
+                }
 
-		$resultorder[$column] = strtolower($way);
-		if (!in_array(strtolower($way), array('asc', 'desc'))) {
-		    $resultorder[$column] = $reverse ? 'desc' : 'asc';
-		    continue;
-		}
-		if ($reverse) {
-		    $way = 'asc' == strtolower($way) ? 'desc' : 'asc';
-		}
-	    }
-	}
+                $resultorder[$column] = strtolower($way);
+                if (!in_array(strtolower($way), array('asc', 'desc'))) {
+                    $resultorder[$column] = $reverse ? 'desc' : 'asc';
+                    continue;
+                }
+                if ($reverse) {
+                    $way = 'asc' == strtolower($way) ? 'desc' : 'asc';
+                }
+            }
+        }
 
-	if (is_scalar($order)) {
-	    $orders = explode(',', $order);
-	    $resultorder = array();
-	    foreach ($orders as $ord) {
-		if (preg_match('#^`?([^` ]*)`?( .*)?$#', trim($ord), $ret)) {
-		    $way = strtolower(trim($ret[2]));
-		    if (!in_array($way, array('asc', 'desc'))) {
-			$resultorder[$ret[1]] = $reverse ? 'desc' : 'asc';
-		    } else {
-			if ($reverse) {
-			    $way = 'asc' == strtolower($way) ? 'desc' : 'asc';
-			}
-			$resultorder[$ret[1]] = $way;
-		    }
-		} else {
-		    throw new Pix_Array_Exception('->order($order) 的格式無法判斷');
-		}
-	    }
-	}
-	return $resultorder;
+        if (is_scalar($order)) {
+            $orders = explode(',', $order);
+            $resultorder = array();
+            foreach ($orders as $ord) {
+                if (preg_match('#^`?([^` ]*)`?( .*)?$#', trim($ord), $ret)) {
+                    $way = strtolower(trim($ret[2]));
+                    if (!in_array($way, array('asc', 'desc'))) {
+                        $resultorder[$ret[1]] = $reverse ? 'desc' : 'asc';
+                    } else {
+                        if ($reverse) {
+                            $way = 'asc' == strtolower($way) ? 'desc' : 'asc';
+                        }
+                        $resultorder[$ret[1]] = $way;
+                    }
+                } else {
+                    throw new Pix_Array_Exception('->order($order) 的格式無法判斷');
+                }
+            }
+        }
+        return $resultorder;
 
     }
 
@@ -276,7 +276,7 @@ class Pix_Table_ResultSet extends Pix_Array // implements Pix_Array_Volumable
         }
         $rs = clone $this;
         $rs->_search_object->order($args[0]);
-	return $rs;
+        return $rs;
     }
 
     public function limit()
@@ -288,12 +288,12 @@ class Pix_Table_ResultSet extends Pix_Array // implements Pix_Array_Volumable
 
         $rs = clone $this;
         $rs->_search_object->limit($args[0]);
-	return $rs;
+        return $rs;
     }
 
     public function getTableClass()
     {
-	return $this->_tableClass;
+        return $this->_tableClass;
     }
 
     protected $_table = null;
@@ -311,24 +311,24 @@ class Pix_Table_ResultSet extends Pix_Array // implements Pix_Array_Volumable
 
     public function update($data)
     {
-	foreach ($this as $row) {
-	    $row->update($data);
-	}
-	return true;
+        foreach ($this as $row) {
+            $row->update($data);
+        }
+        return true;
     }
 
     public function delete($where = NULL)
     {
-	$count = 0;
-	if ($where) {
-	    $rowset = $this->search($where);
-	} else {
-	    $rowset = $this;
-	}
-	foreach ($rowset as $row) {
-	    $count += $row->delete();
-	}
-	return $count;
+        $count = 0;
+        if ($where) {
+            $rowset = $this->search($where);
+        } else {
+            $rowset = $this;
+        }
+        foreach ($rowset as $row) {
+            $count += $row->delete();
+        }
+        return $count;
     }
 
     public function count()
@@ -346,8 +346,8 @@ class Pix_Table_ResultSet extends Pix_Array // implements Pix_Array_Volumable
 
     public function sum($column = null)
     {
-	if (!$column) {
-	    throw new Exception('一定要指定 $column');
+        if (!$column) {
+            throw new Exception('一定要指定 $column');
         }
 
         if ($this->getFilters()) {
@@ -374,38 +374,38 @@ class Pix_Table_ResultSet extends Pix_Array // implements Pix_Array_Volumable
 
         // 如果沒有指定 Filter 或者是 PRIMARY KEY
         if (!$this->getFilters() and $where and 'PRIMARY' == $this->getTable()->findUniqueKey(array_keys($where))) {
-	    $val = array();
-	    foreach ($this->getTable()->getPrimaryColumns() as $col) {
-		$val[] = $where[$col];
-	    }
+            $val = array();
+            foreach ($this->getTable()->getPrimaryColumns() as $col) {
+                $val[] = $where[$col];
+            }
 
-	    $this->_rowset = array();
-	    $this->_pointer = 0;
-	    if ($row = $this->getTable()->find($val, $this)) {
-		foreach ($where as $key => $value) {
-		    if ($row->{$key} != $value) {
-			return $this;
-		    }
-		}
+            $this->_rowset = array();
+            $this->_pointer = 0;
+            if ($row = $this->getTable()->find($val, $this)) {
+                foreach ($where as $key => $value) {
+                    if ($row->{$key} != $value) {
+                        return $this;
+                    }
+                }
 
-		$this->_rowset[] = $row->toArray();
-	    }
-	    return $this;
-	}
+                $this->_rowset[] = $row->toArray();
+            }
+            return $this;
+        }
 
-	$this->_rowset = array();
+        $this->_rowset = array();
         foreach ($this->getResultSetDb()->fetch($this->getTable(), $this->_search_object, $select_columns) as $row) {
             $this->_rowset[] = $row;
             // 如果 SELECT * 的話，就可以把這個 row 給 cache 起來了
             if ('*' == $select_columns) {
                 $this->_cacheRow($row);
             }
-	}
+        }
         $this->_pointer = 0;
         if ($this->valid() and !$this->filterRow()) {
             $this->next();
         }
-	return $this;
+        return $this;
     }
 
     /**
@@ -426,27 +426,27 @@ class Pix_Table_ResultSet extends Pix_Array // implements Pix_Array_Volumable
 
     public function current()
     {
-	if (!$this->_rowset) {
-	    $this->rewind();
-	}
+        if (!$this->_rowset) {
+            $this->rewind();
+        }
 
         if (!array_key_exists($this->_pointer, $this->_rowset)) {
             return null;
         }
 
-	$conf = array();
-	$conf['tableClass'] = $this->_tableClass;
-	$conf['data'] = $this->_rowset[$this->_pointer];
-	$conf['belongs_row'] = $this->_belongs_row;
+        $conf = array();
+        $conf['tableClass'] = $this->_tableClass;
+        $conf['data'] = $this->_rowset[$this->_pointer];
+        $conf['belongs_row'] = $this->_belongs_row;
 
-	$rowClass = $this->getTable()->_rowClass;
-	$row = new $rowClass($conf);
-	return $row;
+        $rowClass = $this->getTable()->_rowClass;
+        $row = new $rowClass($conf);
+        return $row;
     }
 
     public function key()
     {
-	return $this->_pointer;
+        return $this->_pointer;
     }
 
     public function next()
@@ -458,12 +458,12 @@ class Pix_Table_ResultSet extends Pix_Array // implements Pix_Array_Volumable
 
     public function valid()
     {
-	return $this->_pointer < count($this->_rowset);
+        return $this->_pointer < count($this->_rowset);
     }
 
     public function search($where)
     {
-	$rs = clone $this;
+        $rs = clone $this;
         $rs->_rowset = null;
 
 
@@ -493,7 +493,7 @@ class Pix_Table_ResultSet extends Pix_Array // implements Pix_Array_Volumable
             $where = $new_where;
         }
         $rs->_search_object->search($where);
-	return $rs;
+        return $rs;
     }
 
     /**
@@ -510,10 +510,10 @@ class Pix_Table_ResultSet extends Pix_Array // implements Pix_Array_Volumable
         if (!count($args)) {
             return $this->_search_object->after();
         }
-	$rs = clone $this;
-	$rs->_rowset = null;
+        $rs = clone $this;
+        $rs->_rowset = null;
         $rs->_search_object->after($args[0], array_key_exists(1, $args) ? $args[1] : false);
-	return $rs;
+        return $rs;
     }
 
     /**
@@ -530,10 +530,10 @@ class Pix_Table_ResultSet extends Pix_Array // implements Pix_Array_Volumable
         if (!count($args)) {
             return $this->_search_object->before();
         }
-	$rs = clone $this;
-	$rs->_rowset = null;
+        $rs = clone $this;
+        $rs->_rowset = null;
         $rs->_search_object->before($args[0], array_key_exists(1, $args) ? $args[1] : false);
-	return $rs;
+        return $rs;
     }
 
     public function seek($position)
@@ -548,30 +548,30 @@ class Pix_Table_ResultSet extends Pix_Array // implements Pix_Array_Volumable
 
     public function offsetExists($row)
     {
-	return $this->offsetGet($row);
+        return $this->offsetGet($row);
     }
 
     public function offsetGet($row)
     {
-	if ($row == null) {
-	    return null;
-	}
+        if ($row == null) {
+            return null;
+        }
 
-	$type_table = $this->getTable();
-	if (is_scalar($row)) {
-	    $row = array($row);
-	}
-	if (!is_array($row)) {
-	    throw new Pix_Exception("不能夠使用 [Object] ，只能使用 [string] 或是 [int]");
-	}
-	$where = array_combine($type_table->getPrimaryColumns(), $row);
+        $type_table = $this->getTable();
+        if (is_scalar($row)) {
+            $row = array($row);
+        }
+        if (!is_array($row)) {
+            throw new Pix_Exception("不能夠使用 [Object] ，只能使用 [string] 或是 [int]");
+        }
+        $where = array_combine($type_table->getPrimaryColumns(), $row);
 
-	return $this->search($where)->first();
+        return $this->search($where)->first();
     }
 
     public function offsetSet($pos, $row)
     {
-	throw new Exception('TODO');
+        throw new Exception('TODO');
     }
 
     public function offsetUnset($pos)
@@ -581,19 +581,19 @@ class Pix_Table_ResultSet extends Pix_Array // implements Pix_Array_Volumable
 
     public function max($column = null)
     {
-	if (!$column) {
-	    throw new Exception('一定要指定 $column');
-	}
-	$rs = clone $this;
+        if (!$column) {
+            throw new Exception('一定要指定 $column');
+        }
+        $rs = clone $this;
         return $rs->order(array($column => 'desc'))->first();
     }
 
     public function min($column = null)
     {
-	if (!$column) {
-	    throw new Exception('一定要指定 $column');
-	}
-	$rs = clone $this;
+        if (!$column) {
+            throw new Exception('一定要指定 $column');
+        }
+        $rs = clone $this;
         return $rs->order(array($column => 'asc'))->first();
     }
 
@@ -610,28 +610,28 @@ class Pix_Table_ResultSet extends Pix_Array // implements Pix_Array_Volumable
             list(/*map*/, $k, $v) = $condiction;
             $row->{$k} = $v;
         }
-	return $row;
+        return $row;
     }
 
     public function insert($data)
     {
-	if (!is_array($data)) {
-	    throw new Exception('insert 的參數一定要是 array');
-	}
-	$table = $this->getTable();
+        if (!is_array($data)) {
+            throw new Exception('insert 的參數一定要是 array');
+        }
+        $table = $this->getTable();
         $row = $this->createRow($this->_belongs_row);
-	$array = array_intersect_key($data, $table->_columns);
-	foreach ($array as $column => $value) {
-	    $row->{$column} = $value;
-	}
-	$array = array_intersect_key($data, $table->_relations);
-	foreach ($array as $column => $value) {
-	    if ($value instanceof Pix_Table_Row) {
-		$row->{$column} = $value;
-	    }
-	}
-	$row->save();
-	return $row;
+        $array = array_intersect_key($data, $table->_columns);
+        foreach ($array as $column => $value) {
+            $row->{$column} = $value;
+        }
+        $array = array_intersect_key($data, $table->_relations);
+        foreach ($array as $column => $value) {
+            if ($value instanceof Pix_Table_Row) {
+                $row->{$column} = $value;
+            }
+        }
+        $row->save();
+        return $row;
     }
 
     public function distinct($columns)
@@ -656,96 +656,96 @@ class Pix_Table_ResultSet extends Pix_Array // implements Pix_Array_Volumable
 
     public function shuffle()
     {
-	$ret = $this->toRowArray();
-	shuffle($ret);
-	return $ret;
+        $ret = $this->toRowArray();
+        shuffle($ret);
+        return $ret;
     }
 
     public function toRowArray()
     {
-	$ret = array();
-	foreach ($this as $row) {
-	    $ret[] = $row;
-	}
-	return $ret;
+        $ret = array();
+        foreach ($this as $row) {
+            $ret[] = $row;
+        }
+        return $ret;
     }
 
     public function toArray($column = null)
     {
-	if (is_array($column)) {
+        if (is_array($column)) {
             $this->rewind(array_unique(array_merge($column, $this->getTable()->getPrimaryColumns())));
         } elseif (is_scalar($column)) {
             $this->rewind(array_unique(array_merge(array($column), $this->getTable()->getPrimaryColumns())));
-	} else {
-	    $this->rewind();
-	}
-	$array = array();
-	$primary = $this->getTable()->getPrimaryColumns();
+        } else {
+            $this->rewind();
+        }
+        $array = array();
+        $primary = $this->getTable()->getPrimaryColumns();
 
-	if (count($primary) > 1 or !isset($this->_rowset[0][$primary[0]])) {
-	    $primary = null;
-	}
-	$primary = $primary[0];
+        if (count($primary) > 1 or !isset($this->_rowset[0][$primary[0]])) {
+            $primary = null;
+        }
+        $primary = $primary[0];
 
         if ($column == null) {
-	    foreach ($this->_rowset as $row) {
-		if ($primary) {
-		    $array[$row[$primary]] = $row;
-		} else {
-		    $array[] = $row;
-		}
-	    }
-	} elseif (is_scalar($column)) {
-	    foreach ($this->_rowset as $row) {
-		if ($primary) {
-		    $array[$row[$primary]] = $row[$column];
-		} else {
-		    $array[] = $row[$column];
-		}
-	    }
-	} elseif (is_array($column)) {
-	    foreach ($this->_rowset as $row) {
-		$t = array();
-		foreach ($column as $col) {
-		    $t[$col] = $row[$col];
-		}
-		if ($primary) {
-		    $array[$row[$primary]] = $t;
-		} else {
-		    $array[] = $t;
-		}
-	    }
-	}
-	unset($this->_rowset);
-	return $array;
+            foreach ($this->_rowset as $row) {
+                if ($primary) {
+                    $array[$row[$primary]] = $row;
+                } else {
+                    $array[] = $row;
+                }
+            }
+        } elseif (is_scalar($column)) {
+            foreach ($this->_rowset as $row) {
+                if ($primary) {
+                    $array[$row[$primary]] = $row[$column];
+                } else {
+                    $array[] = $row[$column];
+                }
+            }
+        } elseif (is_array($column)) {
+            foreach ($this->_rowset as $row) {
+                $t = array();
+                foreach ($column as $col) {
+                    $t[$col] = $row[$col];
+                }
+                if ($primary) {
+                    $array[$row[$primary]] = $t;
+                } else {
+                    $array[] = $t;
+                }
+            }
+        }
+        unset($this->_rowset);
+        return $array;
     }
 
     public function getPosition($row)
     {
-	$resultSet = clone $this;
-	$resultSet = $resultSet->limit(null)->offset(null);
-	$array = $resultSet->toArray(array());
-	$i = 0;
-	if ($row instanceof Pix_Table_Row) {
-	    $row_pk = $row->getPrimaryValues();
-	} elseif (is_scalar($row)) {
-	    $row_pk = array($row);
-	} elseif (is_array($row)) {
-	    $row_pk = $row;
-	} else {
-	    return false;
-	}
+        $resultSet = clone $this;
+        $resultSet = $resultSet->limit(null)->offset(null);
+        $array = $resultSet->toArray(array());
+        $i = 0;
+        if ($row instanceof Pix_Table_Row) {
+            $row_pk = $row->getPrimaryValues();
+        } elseif (is_scalar($row)) {
+            $row_pk = array($row);
+        } elseif (is_array($row)) {
+            $row_pk = $row;
+        } else {
+            return false;
+        }
 
-	foreach ($array as $pk => $unused) {
-	    if (is_scalar($pk)){
-		$pk = array($pk);
-	    }
-	    if ($pk == $row_pk) {
-		return $i;
-	    }
-	    $i ++;
-	}
-	return false;
+        foreach ($array as $pk => $unused) {
+            if (is_scalar($pk)){
+                $pk = array($pk);
+            }
+            if ($pk == $row_pk) {
+                return $i;
+            }
+            $i ++;
+        }
+        return false;
     }
 
     public function __call($func, $args)
@@ -756,9 +756,9 @@ class Pix_Table_ResultSet extends Pix_Array // implements Pix_Array_Volumable
         } elseif (Pix_Table::getStaticHelperManager('resultset')->hasMethod($func)) {
             array_unshift($args, $this);
             return Pix_Table::getStaticHelperManager('resultset')->callHelper($func, $args);
-	}
+        }
 
-	throw new Pix_Table_Exception("找不到 function {$func}");
+        throw new Pix_Table_Exception("找不到 function {$func}");
     }
 
     /**
@@ -769,7 +769,7 @@ class Pix_Table_ResultSet extends Pix_Array // implements Pix_Array_Volumable
      */
     public function getVolumeID()
     {
-	return null;
+        return null;
     }
 
     /**
@@ -782,14 +782,14 @@ class Pix_Table_ResultSet extends Pix_Array // implements Pix_Array_Volumable
     public function getVolumePos($row)
     {
         if (!$orders = $this->_search_object->order()) {
-	    foreach ($this->getTable()->getPrimaryColumns() as $col) {
-		$orders[$col] = 'asc';
-	    }
-	}
+            foreach ($this->getTable()->getPrimaryColumns() as $col) {
+                $orders[$col] = 'asc';
+            }
+        }
 
-	$terms = array();
+        $terms = array();
         if (is_array($row)) {
-	    $row = Pix_Array::factory($row);
+            $row = Pix_Array::factory($row);
         } elseif (is_object($row) and is_a($row, 'Pix_Table_Row')) {
             $row = $row;
         } else {
@@ -799,8 +799,8 @@ class Pix_Table_ResultSet extends Pix_Array // implements Pix_Array_Volumable
             if (!is_null($row->{$order})) {
                 $terms[$order] = $row->{$order};
             }
-	}
-	return $terms;
+        }
+        return $terms;
     }
 
     /**

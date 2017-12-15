@@ -30,11 +30,11 @@ class Pix_Table_Db_Adapter_PgSQL extends Pix_Table_Db_Adapter_SQL
     public function getSQLConditionByTerm(Pix_Table_Search_Term $term, $table = null)
     {
         switch ($term->getType()) {
-        case 'location/distance-with-in':
-            $arguments = $term->getArguments();
-            $column = $arguments[0];
-            $latlon = $arguments[1];
-            $distance = $arguments[2];
+            case 'location/distance-with-in':
+                $arguments = $term->getArguments();
+                $column = $arguments[0];
+                $latlon = $arguments[1];
+                $distance = $arguments[2];
 
             return "ST_DWithin(" . $this->column_quote($column) . ", ST_GeographyFromText('POINT(" . floatval($latlon[1]) . " " . floatval($latlon[0]) . ")'), " . intval($distance) . ")";
         }
@@ -72,20 +72,20 @@ class Pix_Table_Db_Adapter_PgSQL extends Pix_Table_Db_Adapter_SQL
             throw new Exception("SQL Error: ({$errorInfo[0]}:{$errorInfo[1]}) {$errorInfo[2]} (SQL: {$sql})");
         }
         $res = $statement->execute();
-	if (($t = Pix_Table::getLongQueryTime()) and ($delta = (microtime(true) - $starttime)) > $t) {
+        if (($t = Pix_Table::getLongQueryTime()) and ($delta = (microtime(true) - $starttime)) > $t) {
             Pix_Table::debug(sprintf("[%s]\t%s\t%40s", $this->_pdo->getAttribute(PDO::ATTR_SERVER_INFO), $delta, $sql));
-	}
+        }
 
-	if ($res === false) {
+        if ($res === false) {
             if ($errno = $this->_pdo->errorCode()) {
                 $errorInfo = $this->_pdo->errorInfo();
             }
             if ($errorInfo[2] == 'PRIMARY KEY must be unique' or
                     preg_match('/duplicate key value violates unique constraint/', $errorInfo[2])) {
-                throw new Pix_Table_DuplicateException();
+                    throw new Pix_Table_DuplicateException();
             }
             throw new Exception("SQL Error: ({$errorInfo[0]}:{$errorInfo[1]}) {$errorInfo[2]} (SQL: {$sql})");
-	}
+        }
         
         return new Pix_Table_Db_Adapter_PDO_Result($statement);
     }
@@ -104,13 +104,13 @@ class Pix_Table_Db_Adapter_PgSQL extends Pix_Table_Db_Adapter_SQL
         $primarys = is_array($table->_primary) ? $table->_primary : array($table->_primary);
         $pk_isseted = false;
 
-	foreach ($table->_columns as $name => $column) {
+        foreach ($table->_columns as $name => $column) {
             $s = $this->column_quote($name) . ' ';
             $db_type = in_array($column['type'], $types) ? $column['type'] : 'text';
 
-	    if ($column['unsigned'] and !$column['auto_increment']) {
-		$s .= 'UNSIGNED ';
-	    }
+            if ($column['unsigned'] and !$column['auto_increment']) {
+                $s .= 'UNSIGNED ';
+            }
 
             if ($column['auto_increment']) {
                 $s .= 'SERIAL';
@@ -131,12 +131,12 @@ class Pix_Table_Db_Adapter_PgSQL extends Pix_Table_Db_Adapter_SQL
                 $s .= strtoupper($db_type);
             }
 
-	    if (in_array($db_type, array('varchar', 'char'))) {
-		if (!$column['size']) {
-		    throw new Exception('you should set the option `size`');
-		}
-		$s .= '(' . $column['size'] . ')';
-	    }
+            if (in_array($db_type, array('varchar', 'char'))) {
+                if (!$column['size']) {
+                    throw new Exception('you should set the option `size`');
+                }
+                $s .= '(' . $column['size'] . ')';
+            }
 
             $s .= ' ';
 
@@ -146,14 +146,14 @@ class Pix_Table_Db_Adapter_PgSQL extends Pix_Table_Db_Adapter_SQL
                 }
                 $s .= ' PRIMARY KEY ';
                 $pk_isseted = true;
-	    }
+            }
 
             if (isset($column['default'])) {
                 $s .= 'DEFAULT ' . $this->quoteWithColumn($table, $column['default'], $name) . ' ';
-	    }
+            }
 
-	    $column_sql[] = $s;
-	}
+            $column_sql[] = $s;
+        }
 
         if (!$pk_isseted) {
             $s = 'PRIMARY KEY ' ;
@@ -165,7 +165,7 @@ class Pix_Table_Db_Adapter_PgSQL extends Pix_Table_Db_Adapter_SQL
             $column_sql[] = $s;
         }
 
-	$sql .= " (\n" . implode(", \n", $column_sql) . ") \n";
+        $sql .= " (\n" . implode(", \n", $column_sql) . ") \n";
 
         // CREATE TABLE
         $this->query($sql);
@@ -194,7 +194,7 @@ class Pix_Table_Db_Adapter_PgSQL extends Pix_Table_Db_Adapter_SQL
             throw new Pix_Table_Exception("要 DROP TABLE 前請加上 Pix_Setting::set('Table:DropTableEnable', true);");
         }
         $sql = "DROP TABLE \""  . $table->getTableName() . '"';
-	return $this->query($sql, $table);
+        return $this->query($sql, $table);
     }
 
     /**
@@ -222,11 +222,11 @@ class Pix_Table_Db_Adapter_PgSQL extends Pix_Table_Db_Adapter_SQL
 
     public function quoteWithColumn($table, $value, $column_name = null)
     {
-	if (is_null($column_name)) {
+        if (is_null($column_name)) {
             return $this->_pdo->quote($value);
-	}
-	if ($table->isNumbericColumn($column_name)) {
-	    return intval($value);
+        }
+        if ($table->isNumbericColumn($column_name)) {
+            return intval($value);
         }
         if ('geography' == $table->_columns[$column_name]['type']) {
             if ('POINT' == $table->_columns[$column_name]['modifier'][0]) {
@@ -234,9 +234,9 @@ class Pix_Table_Db_Adapter_PgSQL extends Pix_Table_Db_Adapter_SQL
             }
         }
 
-	if (!is_scalar($value)) {
+        if (!is_scalar($value)) {
             trigger_error("{$_SERVER['SERVER_NAME']}{$_SERVER['REQUEST_URI']} 的 column `{$column_name}` 格式不正確: " . gettype($value), E_USER_WARNING);
-	}
+        }
         return $this->_pdo->quote($value);
     }
 

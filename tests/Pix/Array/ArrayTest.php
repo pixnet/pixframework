@@ -19,27 +19,27 @@ class Pix_Array_ArrayTest_TestObject
 
     public function __construct($time = 0, $id = 0)
     {
-	$this->__time = $time;
-	$this->__id = $id;
+        $this->__time = $time;
+        $this->__id = $id;
     }
 
     public function __get($name)
     {
-	if ('time' == $name) {
-	    return $this->__time;
-	} elseif ('id' == $name) {
-	    return $this->__id;
-	}
+        if ('time' == $name) {
+            return $this->__time;
+        } elseif ('id' == $name) {
+            return $this->__id;
+        }
     }
 
     public function get()
     {
-	return $this->v;
+        return $this->v;
     }
 
     public function set($v)
     {
-	$this->v = $v;
+        $this->v = $v;
     }
 }
 
@@ -47,150 +47,150 @@ class Pix_Array_ArrayTest extends PHPUnit_Framework_TestCase
 {
     public function testFactoryAndCount()
     {
-	$arr = Pix_Array::factory();
-	$this->assertEquals(count($arr), 0);
+        $arr = Pix_Array::factory();
+        $this->assertEquals(count($arr), 0);
 
-	$arr = Pix_Array::factory(array(1,2));
-	$this->assertEquals(count($arr), 2);
+        $arr = Pix_Array::factory(array(1,2));
+        $this->assertEquals(count($arr), 2);
 
-	$arr = Pix_Array::factory(range(1, 100));
-	$this->assertEquals(count($arr), 100);
+        $arr = Pix_Array::factory(range(1, 100));
+        $this->assertEquals(count($arr), 100);
     }
 
     public function testOffsetGet()
     {
-	$arr = Pix_Array::factory(array(0 => 'a', 1 => 'b', 'test' => 'c', 'foo' => array(1,2,3)));
-	$this->assertEquals($arr[0], 'a');
-	$this->assertEquals($arr[1], 'b');
+        $arr = Pix_Array::factory(array(0 => 'a', 1 => 'b', 'test' => 'c', 'foo' => array(1,2,3)));
+        $this->assertEquals($arr[0], 'a');
+        $this->assertEquals($arr[1], 'b');
         $this->assertEquals(array_key_exists(2, $arr), false);
-	$this->assertEquals($arr['test'], 'c');
+        $this->assertEquals($arr['test'], 'c');
         $this->assertEquals(array_key_exists('bar', $arr), false);
-	$this->assertEquals(count($arr), 4);
-	$this->assertEquals(count($arr['foo']), 3);
+        $this->assertEquals(count($arr), 4);
+        $this->assertEquals(count($arr['foo']), 3);
         $this->assertEquals($arr->first(), 'a');
     }
 
     public function testOffsetUnset()
     {
-	$arr = Pix_Array::factory(array(0 => 'd', 1 => 'e', 'test' => 'f'));
-	$this->assertEquals($arr[0], 'd');
-	unset($arr[0]);
+        $arr = Pix_Array::factory(array(0 => 'd', 1 => 'e', 'test' => 'f'));
+        $this->assertEquals($arr[0], 'd');
+        unset($arr[0]);
         $this->assertEquals(array_key_exists(0, $arr), false);
-	$this->assertEquals($arr['test'], 'f');
-	unset($arr['test']);
+        $this->assertEquals($arr['test'], 'f');
+        unset($arr['test']);
         $this->assertEquals(array_key_exists('test', $arr), false);
-	unset($arr[0]);
+        unset($arr[0]);
         $this->assertEquals(array_key_exists(0, $arr), false);
         $this->assertEquals(array_key_exists('lala', $arr), false);
-	unset($arr['lala']);
+        unset($arr['lala']);
         $this->assertEquals(array_key_exists('lala', $arr), false);
-	$this->assertEquals(count($arr), 1);
+        $this->assertEquals(count($arr), 1);
     }
 
     public function testOffsetSet()
     {
-	$arr = Pix_Array::factory(array(0 => 'g', 1 => 'h', 'test' => 'i'));
-	$this->assertEquals($arr[0], 'g');
-	$arr[0] = 'go';
-	$this->assertEquals($arr[0], 'go');
+        $arr = Pix_Array::factory(array(0 => 'g', 1 => 'h', 'test' => 'i'));
+        $this->assertEquals($arr[0], 'g');
+        $arr[0] = 'go';
+        $this->assertEquals($arr[0], 'go');
 
-	$this->assertEquals($arr['test'], 'i');
-	$arr['test'] = 3;
-	$this->assertEquals($arr['test'], 3);
+        $this->assertEquals($arr['test'], 'i');
+        $arr['test'] = 3;
+        $this->assertEquals($arr['test'], 3);
 
-	$arr['test'] = array(1,2,3);
-	$this->assertEquals(count($arr['test']), 3);
+        $arr['test'] = array(1,2,3);
+        $this->assertEquals(count($arr['test']), 3);
 
-	$arr[] = 'lala';
-	$this->assertEquals($arr[2], 'lala');
+        $arr[] = 'lala';
+        $this->assertEquals($arr[2], 'lala');
 
-	$arr[] = 'haha';
-	$this->assertEquals($arr[3], 'haha');
+        $arr[] = 'haha';
+        $this->assertEquals($arr[3], 'haha');
 
-	$obj = new Pix_Array_ArrayTest_TestObject();
-	$obj->set('lala');
-	$arr['test'] = $obj;
-	$this->assertEquals(is_object($arr['test']), true);
-	$this->assertEquals(get_class($arr['test']), 'Pix_Array_ArrayTest_TestObject');
-	$this->assertEquals($arr['test']->get(), 'lala');
+        $obj = new Pix_Array_ArrayTest_TestObject();
+        $obj->set('lala');
+        $arr['test'] = $obj;
+        $this->assertEquals(is_object($arr['test']), true);
+        $this->assertEquals(get_class($arr['test']), 'Pix_Array_ArrayTest_TestObject');
+        $this->assertEquals($arr['test']->get(), 'lala');
     }
 
     public function testOffsetIsset()
     {
-	$arr = Pix_Array::factory(array(0 => 'd', 1 => 'e', 'test' => 'f'));
-	$this->assertEquals(isset($arr[0]), true);
-	unset($arr[0]);
-	$this->assertEquals(isset($arr[0]), false);
+        $arr = Pix_Array::factory(array(0 => 'd', 1 => 'e', 'test' => 'f'));
+        $this->assertEquals(isset($arr[0]), true);
+        unset($arr[0]);
+        $this->assertEquals(isset($arr[0]), false);
 
-	$this->assertEquals(isset($arr['test']), true);
-	unset($arr['test']);
-	$this->assertEquals(isset($arr['test']), false);
+        $this->assertEquals(isset($arr['test']), true);
+        unset($arr['test']);
+        $this->assertEquals(isset($arr['test']), false);
 
-	$this->assertEquals(isset($arr[123]), false);
+        $this->assertEquals(isset($arr[123]), false);
 
-	$this->assertEquals(isset($arr['lala']), false);
-	unset($arr['lala']);
-	$this->assertEquals(isset($arr['lala']), false);
+        $this->assertEquals(isset($arr['lala']), false);
+        unset($arr['lala']);
+        $this->assertEquals(isset($arr['lala']), false);
     }
 
     public function testOffset()
     {
-	$arr = Pix_Array::factory(array(0 => 'd', 1 => 'e', 'test' => 'f'));
-	$this->assertEquals($arr->offset(3)->getOffset(), 3);
-	$this->assertEquals($arr->offset(3)->offset(4)->getOffset(), 4);
-	$this->assertEquals($arr->offset()->getOffset(), 0);
+        $arr = Pix_Array::factory(array(0 => 'd', 1 => 'e', 'test' => 'f'));
+        $this->assertEquals($arr->offset(3)->getOffset(), 3);
+        $this->assertEquals($arr->offset(3)->offset(4)->getOffset(), 4);
+        $this->assertEquals($arr->offset()->getOffset(), 0);
 
-	$this->assertEquals($arr->limit("3")->getLimit(), 3);
-	$this->assertEquals($arr->offset(3)->limit(4)->getLimit(), 4);
-	$this->assertEquals(intval($arr->limit()->getLimit()), 0);
+        $this->assertEquals($arr->limit("3")->getLimit(), 3);
+        $this->assertEquals($arr->offset(3)->limit(4)->getLimit(), 4);
+        $this->assertEquals(intval($arr->limit()->getLimit()), 0);
     }
 
     public function testSort()
     {
-	$arr = Pix_Array::factory(
-	    array(
-		array('name' => 'alice', 'value' => 3),
-		array('name' => 'bob', 'value' => 5),
-		array('name' => 'claire', 'value' => 4),
-	    )
-	);
-	$arr = $arr->order(array('value')); // => array('value' => 'asc')
-	$order = $arr->getOrder();
-	$this->assertEquals(count($order), 1);
-	$this->assertEquals($order['value'], 'asc');
+        $arr = Pix_Array::factory(
+            array(
+                array('name' => 'alice', 'value' => 3),
+                array('name' => 'bob', 'value' => 5),
+                array('name' => 'claire', 'value' => 4),
+            )
+        );
+        $arr = $arr->order(array('value')); // => array('value' => 'asc')
+        $order = $arr->getOrder();
+        $this->assertEquals(count($order), 1);
+        $this->assertEquals($order['value'], 'asc');
 
-	$arr = $arr->order(array('value', 'name')); // => array('value' => 'asc', 'name' => 'asc')
-	$order = $arr->getOrder();
-	$this->assertEquals(count($order), 2);
-	$this->assertEquals($order['value'], 'asc');
-	$this->assertEquals($order['name'], 'asc');
-	array_shift($order);
+        $arr = $arr->order(array('value', 'name')); // => array('value' => 'asc', 'name' => 'asc')
+        $order = $arr->getOrder();
+        $this->assertEquals(count($order), 2);
+        $this->assertEquals($order['value'], 'asc');
+        $this->assertEquals($order['name'], 'asc');
+        array_shift($order);
         $this->assertEquals(array_key_exists('value', $order), false);
-	$this->assertEquals($order['name'], 'asc');
+        $this->assertEquals($order['name'], 'asc');
 
-	$arr = $arr->order(array('value', 'name' => 'DESC')); // => array('value' => 'asc', 'name' => 'desc')
-	$order = $arr->getOrder();
-	$this->assertEquals(count($order), 2);
-	$this->assertEquals($order['value'], 'asc');
-	$this->assertEquals($order['name'], 'desc');
-	array_shift($order);
+        $arr = $arr->order(array('value', 'name' => 'DESC')); // => array('value' => 'asc', 'name' => 'desc')
+        $order = $arr->getOrder();
+        $this->assertEquals(count($order), 2);
+        $this->assertEquals($order['value'], 'asc');
+        $this->assertEquals($order['name'], 'desc');
+        array_shift($order);
         $this->assertEquals(array_key_exists('value', $order), false);
-	$this->assertEquals($order['name'], 'desc');
+        $this->assertEquals($order['name'], 'desc');
 
-	$arr->order("`value`  ,  `name` DESC");
-	$order = $arr->getOrder();
-	$this->assertEquals(count($order), 2);
-	$this->assertEquals($order['value'], 'asc');
-	$this->assertEquals($order['name'], 'desc');
-	array_shift($order);
+        $arr->order("`value`  ,  `name` DESC");
+        $order = $arr->getOrder();
+        $this->assertEquals(count($order), 2);
+        $this->assertEquals($order['value'], 'asc');
+        $this->assertEquals($order['name'], 'desc');
+        array_shift($order);
         $this->assertEquals(array_key_exists('value', $order), false);
-	$this->assertEquals($order['name'], 'desc');
+        $this->assertEquals($order['name'], 'desc');
     }
 
     public function testSum()
     {
-	$arr = Pix_Array::factory(array(1,2,3));
-	$this->assertEquals($arr->sum(), 6);
+        $arr = Pix_Array::factory(array(1,2,3));
+        $this->assertEquals($arr->sum(), 6);
     }
 
     /**
@@ -203,19 +203,19 @@ class Pix_Array_ArrayTest extends PHPUnit_Framework_TestCase
             array('foo' => 3),
             array('foo' => 5),
         );
-	$array = Pix_Array::factory($items);
+        $array = Pix_Array::factory($items);
         $this->assertEquals(9, $array->sum('foo'));
     }
 
     public function testRewind()
     {
-	$test_arr = array(4 => 1,5 => 3,9 => 5,1 => 7,11 => 9,21 => 11,100 => 13,'a' => 15);
-	$keys = array_keys($test_arr);
-	$arr = Pix_Array::factory($test_arr);
-	foreach ($arr as $key => $value) {
-	    $this->assertEquals($value, $test_arr[$key]);
-	    $this->assertEquals($key, array_shift($keys));
-	}
+        $test_arr = array(4 => 1,5 => 3,9 => 5,1 => 7,11 => 9,21 => 11,100 => 13,'a' => 15);
+        $keys = array_keys($test_arr);
+        $arr = Pix_Array::factory($test_arr);
+        foreach ($arr as $key => $value) {
+            $this->assertEquals($value, $test_arr[$key]);
+            $this->assertEquals($key, array_shift($keys));
+        }
     }
 
     public function testSearch()
@@ -242,23 +242,23 @@ class Pix_Array_ArrayTest extends PHPUnit_Framework_TestCase
 
     public function testOrder()
     {
-	$objs = Pix_Array::factory();
+        $objs = Pix_Array::factory();
 
-	$obj = new Pix_Array_ArrayTest_TestObject(1321321, 3214);
-	$objs[] = $obj;
-	$obj = new Pix_Array_ArrayTest_TestObject("1321", 214);
-	$objs[] = $obj;
-	$obj = new Pix_Array_ArrayTest_TestObject(132131, "9123");
-	$objs[] = $obj;
-	$obj = new Pix_Array_ArrayTest_TestObject(8921321, 4214);
-	$objs[] = $obj;
+        $obj = new Pix_Array_ArrayTest_TestObject(1321321, 3214);
+        $objs[] = $obj;
+        $obj = new Pix_Array_ArrayTest_TestObject("1321", 214);
+        $objs[] = $obj;
+        $obj = new Pix_Array_ArrayTest_TestObject(132131, "9123");
+        $objs[] = $obj;
+        $obj = new Pix_Array_ArrayTest_TestObject(8921321, 4214);
+        $objs[] = $obj;
 
-	$objs = $objs->order('time DESC');
-	$objs->rewind();
-	$this->assertEquals($objs->current()->id, 4214);
-	$this->assertEquals($objs->next()->current()->id, 3214);
-	$this->assertEquals($objs->next()->current()->id, 9123);
-	$this->assertEquals($objs->next()->current()->id, 214);
+        $objs = $objs->order('time DESC');
+        $objs->rewind();
+        $this->assertEquals($objs->current()->id, 4214);
+        $this->assertEquals($objs->next()->current()->id, 3214);
+        $this->assertEquals($objs->next()->current()->id, 9123);
+        $this->assertEquals($objs->next()->current()->id, 214);
     }
 
     public function testIsOddFilter()

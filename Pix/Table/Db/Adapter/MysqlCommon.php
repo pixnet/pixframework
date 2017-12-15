@@ -12,49 +12,49 @@ abstract class Pix_Table_Db_Adapter_MysqlCommon extends Pix_Table_Db_Adapter_SQL
     public function createTable($table)
     {
         $sql = "CREATE TABLE " . $this->column_quote($table->getTableName());
-	$types = array('bigint', 'tinyint', 'int', 'varchar', 'char', 'text', 'float', 'double', 'binary');
+        $types = array('bigint', 'tinyint', 'int', 'varchar', 'char', 'text', 'float', 'double', 'binary');
 
-	foreach ($table->_columns as $name => $column) {
+        foreach ($table->_columns as $name => $column) {
             $s = $this->column_quote($name) . ' ';
-	    $db_type = in_array($column['type'], $types) ? $column['type'] : 'text';
-	    $s .= strtoupper($db_type);
+            $db_type = in_array($column['type'], $types) ? $column['type'] : 'text';
+            $s .= strtoupper($db_type);
 
-	    if (in_array($db_type, array('varchar', 'char', 'binary'))) {
-		if (!$column['size']) {
-		    throw new Exception('you should set the option `size`');
-		}
-		$s .= '(' . $column['size'] . ')';
-	    }
-	    $s .= ' ';
+            if (in_array($db_type, array('varchar', 'char', 'binary'))) {
+                if (!$column['size']) {
+                    throw new Exception('you should set the option `size`');
+                }
+                $s .= '(' . $column['size'] . ')';
+            }
+            $s .= ' ';
 
-	    if (isset($column['unsigned']) and $column['unsigned']) {
-		$s .= 'UNSIGNED ';
-	    }
+            if (isset($column['unsigned']) and $column['unsigned']) {
+                $s .= 'UNSIGNED ';
+            }
 
-	    if (isset($column['not-null']) and !$column['not-null']) {
-		$s .= 'NULL ';
-	    } else {
-		$s .= 'NOT NULL ';
-	    }
+            if (isset($column['not-null']) and !$column['not-null']) {
+                $s .= 'NULL ';
+            } else {
+                $s .= 'NOT NULL ';
+            }
 
-	    if (isset($column['default'])) {
+            if (isset($column['default'])) {
                 $s .= 'DEFAULT ' . $this->quoteWithColumn($table, $column['default'], $name) . ' ';
-	    }
+            }
 
-	    if (isset($column['auto_increment']) and $column['auto_increment']) {
-		$s .= 'AUTO_INCREMENT ';
-	    }
+            if (isset($column['auto_increment']) and $column['auto_increment']) {
+                $s .= 'AUTO_INCREMENT ';
+            }
 
-	    $column_sql[] = $s;
-	}
+            $column_sql[] = $s;
+        }
 
-	$s = 'PRIMARY KEY ' ;
-	$index_columns = array();
-	foreach ((is_array($table->_primary) ? $table->_primary : array($table->_primary)) as $pk) {
+        $s = 'PRIMARY KEY ' ;
+        $index_columns = array();
+        foreach ((is_array($table->_primary) ? $table->_primary : array($table->_primary)) as $pk) {
             $index_columns[] = $this->column_quote($pk);
-	}
-	$s .= '(' . implode(', ', $index_columns) . ")\n";
-	$column_sql[] = $s;
+        }
+        $s .= '(' . implode(', ', $index_columns) . ")\n";
+        $column_sql[] = $s;
 
         foreach ($table->getIndexes() as $name => $options) {
             if ('unique' == $options['type']) {
@@ -71,11 +71,11 @@ abstract class Pix_Table_Db_Adapter_MysqlCommon extends Pix_Table_Db_Adapter_SQL
             $s .= '(' . implode(', ', $index_columns) . ') ';
 
             $column_sql[] = $s;
-	}
+        }
 
-	$sql .= " (\n" . implode(", \n", $column_sql) . ") ENGINE = InnoDB\n";
+        $sql .= " (\n" . implode(", \n", $column_sql) . ") ENGINE = InnoDB\n";
 
-	return $this->query($sql, $table);
+        return $this->query($sql, $table);
     }
 
     /**
@@ -192,7 +192,7 @@ abstract class Pix_Table_Db_Adapter_MysqlCommon extends Pix_Table_Db_Adapter_SQL
             throw new Pix_Table_Exception("要 DROP TABLE 前請加上 Pix_Setting::set('Table:DropTableEnable', true);");
         }
         $sql = "DROP TABLE " . $this->column_quote($table->getTableName());
-	return $this->query($sql, $table);
+        return $this->query($sql, $table);
     }
 
     /**
@@ -223,15 +223,15 @@ abstract class Pix_Table_Db_Adapter_MysqlCommon extends Pix_Table_Db_Adapter_SQL
     {
         $link = $this->_getLink('slave', false);
 
-	if (is_null($column_name)) {
+        if (is_null($column_name)) {
             return "'" . $link->real_escape_string(strval($value)) . "'";
-	}
-	if ($table->isNumbericColumn($column_name)) {
-	    return intval($value);
-	}
-	if (!is_scalar($value)) {
+        }
+        if ($table->isNumbericColumn($column_name)) {
+            return intval($value);
+        }
+        if (!is_scalar($value)) {
             trigger_error("{$_SERVER['SERVER_NAME']}{$_SERVER['REQUEST_URI']} 的 column `{$column_name}` 格式不正確: " . gettype($value), E_USER_WARNING);
-	}
+        }
         return "'" . $link->real_escape_string(strval($value)) . "'";
     }
 

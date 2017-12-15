@@ -81,10 +81,10 @@ class Pix_Session_Adapter_Cookie extends Pix_Session_Adapter
 
         if (is_scalar($signature_method) and in_array($signature_method, array('crc32', 'hmac_sha256'))) {
             switch ($signature_method) {
-            case 'crc32':
-                return crc32($string . $secret);
-            case 'hmac_sha256':
-                return hash_hmac('sha256', $string, $secret);
+                case 'crc32':
+                    return crc32($string . $secret);
+                case 'hmac_sha256':
+                    return hash_hmac('sha256', $string, $secret);
             }
         }
 

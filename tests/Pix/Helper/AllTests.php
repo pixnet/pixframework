@@ -30,7 +30,7 @@ class Pix_Helper_AllTests
     {
         $suite = new PHPUnit_Framework_TestSuite('Pix Framework - Pix');
 
-	// Start remaining tests...
+        // Start remaining tests...
         $suite->addTestSuite('Pix_Helper_HelperTest');
 
         return $suite;

@@ -13,17 +13,17 @@ class Pix_Cache
 
     public function __construct($id = 0)
     {
-	$this->_id = $id;
+        $this->_id = $id;
     }
 
     public function __call($func, $args)
     {
-	if (!self::$_servers[$this->_id]) {
-	    trigger_error('你應該要先做 Pix_Cache::addServer()', E_USER_WARNING);
-	    return null;
-	}
-	$ret = call_user_func_array(array(self::$_servers[$this->_id], $func), $args);
-	return $ret;
+        if (!self::$_servers[$this->_id]) {
+            trigger_error('你應該要先做 Pix_Cache::addServer()', E_USER_WARNING);
+            return null;
+        }
+        $ret = call_user_func_array(array(self::$_servers[$this->_id], $func), $args);
+        return $ret;
     }
     
 
@@ -41,19 +41,19 @@ class Pix_Cache
      */
     public static function addServer($adapter, $conf = array(), $id = 0)
     {
-	if (!class_exists($adapter)) {
-	    throw new Pix_Exception('Class not found');
-	}
+        if (!class_exists($adapter)) {
+            throw new Pix_Exception('Class not found');
+        }
 
-	$server = new $adapter($conf);
-	if (!is_a($server, 'Pix_Cache_Core') and !is_a($server, 'Pix_Cache_Adapter')) {
-	    throw new Pix_Exception("$adapter is not a Pix_Cache_Adapter");
-	}
-	self::$_servers[$id] = $server;
+        $server = new $adapter($conf);
+        if (!is_a($server, 'Pix_Cache_Core') and !is_a($server, 'Pix_Cache_Adapter')) {
+            throw new Pix_Exception("$adapter is not a Pix_Cache_Adapter");
+        }
+        self::$_servers[$id] = $server;
     }
 
     public static function reset()
     {
-	self::$_servers = array();
+        self::$_servers = array();
     }
 }

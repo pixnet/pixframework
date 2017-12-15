@@ -60,7 +60,7 @@ class Pix_Table_Search
             return $this;
         }
 
-	throw new Pix_Table_Search_Exception('Unknown search type');
+        throw new Pix_Table_Search_Exception('Unknown search type');
     }
 
     public function getSearchCondictions($type = null)
@@ -90,8 +90,8 @@ class Pix_Table_Search
         if (!count($args)) {
             return $this->_order;
         }
-	$this->_order = self::getOrderArray($args[0]);
-	return $this;
+        $this->_order = self::getOrderArray($args[0]);
+        return $this;
     }
 
     public function limit()
@@ -100,8 +100,8 @@ class Pix_Table_Search
         if (!count($args)) {
             return $this->_limit;
         }
-	$this->_limit = $args[0];
-	return $this;
+        $this->_limit = $args[0];
+        return $this;
     }
 
     public function index()
@@ -110,8 +110,8 @@ class Pix_Table_Search
         if (!count($args)) {
             return $this->_index;
         }
-	$this->_index = $args[0];
-	return $this;
+        $this->_index = $args[0];
+        return $this;
     }
 
     public function offset()
@@ -120,8 +120,8 @@ class Pix_Table_Search
         if (!count($args)) {
             return $this->_offset;
         }
-	$this->_offset = $args[0];
-	return $this;
+        $this->_offset = $args[0];
+        return $this;
     }
 
     public function after()
@@ -132,10 +132,10 @@ class Pix_Table_Search
         }
         $row = $args[0];
 
-	$this->_before = null;
+        $this->_before = null;
         $this->_after = is_array($row) ? Pix_Array::factory($row) : $row;
         $this->_after_include = array_key_exists(1, $args) ? $args[1] : false;
-	return $this;
+        return $this;
     }
 
     public function afterInclude()
@@ -151,10 +151,10 @@ class Pix_Table_Search
         }
         $row = $args[0];
 
-	$this->_after = null;
-	$this->_before = is_array($row) ? Pix_Array::factory($row) : $row;
+        $this->_after = null;
+        $this->_before = is_array($row) ? Pix_Array::factory($row) : $row;
         $this->_before_include = array_key_exists(1, $args) ? $args[1] : false;
-	return $this;
+        return $this;
     }
 
     public function beforeInclude()
@@ -164,37 +164,37 @@ class Pix_Table_Search
 
     public static function reverseOrder($order)
     {
-	foreach ($order as $column => $way) {
-	    $order[$column] = ('asc' == $order[$column]) ? 'desc' : 'asc';
-	}
-	return $order;
+        foreach ($order as $column => $way) {
+            $order[$column] = ('asc' == $order[$column]) ? 'desc' : 'asc';
+        }
+        return $order;
     }
 
     public static function getOrderArray($order)
     {
-	$resultorder = array();
-	if (is_array($order)) {
-	    foreach ($order as $column => $way) {
-		if (is_int($column)) {
-		    $resultorder[$way] = 'asc';
-		    continue;
-		}
+        $resultorder = array();
+        if (is_array($order)) {
+            foreach ($order as $column => $way) {
+                if (is_int($column)) {
+                    $resultorder[$way] = 'asc';
+                    continue;
+                }
 
-		$resultorder[$column] = strtolower($way);
-		if (!in_array(strtolower($way), array('asc', 'desc'))) {
-		    $resultorder[$column] = 'asc';
-		    continue;
-		}
-	    }
-	}
+                $resultorder[$column] = strtolower($way);
+                if (!in_array(strtolower($way), array('asc', 'desc'))) {
+                    $resultorder[$column] = 'asc';
+                    continue;
+                }
+            }
+        }
 
         if (is_scalar($order)) {
             if ('RAND()' == $order) {
                 return 'RAND()';
             }
-	    $orders = explode(',', $order);
-	    $resultorder = array();
-	    foreach ($orders as $ord) {
+            $orders = explode(',', $order);
+            $resultorder = array();
+            foreach ($orders as $ord) {
                 if (preg_match('#^`?([^` ]*)`?( .*)?$#', trim($ord), $matches)) {
                     if (array_key_exists(2, $matches) and in_array(strtolower(trim($matches[2])), array('asc', 'desc'))) {
                         $way = strtolower(trim($matches[2]));
@@ -205,8 +205,8 @@ class Pix_Table_Search
                 } else {
                     throw new Pix_Array_Exception('->order($order) 的格式無法判斷');
                 }
-	    }
-	}
-	return $resultorder;
+            }
+        }
+        return $resultorder;
     }
 }

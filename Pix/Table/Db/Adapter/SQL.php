@@ -56,7 +56,7 @@ class Pix_Table_Db_Adapter_SQL extends Pix_Table_Db_Adapter_Abstract
         $res = $this->query($sql);
         $row = $res->fetch_assoc();
         $res->free_result();
-	return $row['count'];
+        return $row['count'];
     }
 
     /**
@@ -74,10 +74,10 @@ class Pix_Table_Db_Adapter_SQL extends Pix_Table_Db_Adapter_Abstract
         $sql .= ' WHERE ';
         $sql .= $this->_get_where_clause($search, $table);
 
-	$res = $this->query($sql);
+        $res = $this->query($sql);
         $row = $res->fetch_assoc();
         $res->free_result();
-	return $row['sum'];
+        return $row['sum'];
     }
 
     /**
@@ -169,18 +169,18 @@ class Pix_Table_Db_Adapter_SQL extends Pix_Table_Db_Adapter_Abstract
         $select_expression = $this->_getSelectExpression($table, $select_columns);
 
         $sql = 'SELECT ' . $select_expression . ' FROM ' . $this->column_quote($table->getTableName());
-	$sql .= ' WHERE ';
+        $sql .= ' WHERE ';
         $sql .= $this->_get_where_clause($search, $table);
         $sql .= $this->_get_clause($search);
 
-	$res = $this->query($sql);
-	$rows = array();
-	while ($row = $res->fetch_assoc()) {
+        $res = $this->query($sql);
+        $rows = array();
+        while ($row = $res->fetch_assoc()) {
             $rows[] = $this->_filterRow($row);
-	}
-	$res->free_result();
+        }
+        $res->free_result();
 
-	return $rows;
+        return $rows;
     }
 
     /**
@@ -216,7 +216,7 @@ class Pix_Table_Db_Adapter_SQL extends Pix_Table_Db_Adapter_Abstract
         $sql .= ' WHERE ';
         $sql .= $this->_get_where_clause(Pix_Table_Search::factory(array_combine($table->getPrimaryColumns(), $row->getPrimaryValues())), $table);
 
-	return $this->query($sql);
+        return $this->query($sql);
     }
 
     /**
@@ -306,17 +306,17 @@ class Pix_Table_Db_Adapter_SQL extends Pix_Table_Db_Adapter_Abstract
         $terms = array();
         foreach ($search->getSearchCondictions() as $condiction) {
             switch ($condiction[0]) {
-            case 'map':
-                $terms[] = "(" . $this->column_quote($condiction[1]) . ' = ' . $this->quoteWithColumn($table, $condiction[2], $condiction[1]) . ")";
-                break;
-            case 'string':
-                $terms[] = "(" . $condiction[1] . ")";
-                break;
-            case 'term':
-                $terms[] = $this->getSQLConditionByTerm($condiction[1], $table);
-                break;
-            default:
-                throw new Pix_Table_Exception('不知名的狀態');
+                case 'map':
+                    $terms[] = "(" . $this->column_quote($condiction[1]) . ' = ' . $this->quoteWithColumn($table, $condiction[2], $condiction[1]) . ")";
+                    break;
+                case 'string':
+                    $terms[] = "(" . $condiction[1] . ")";
+                    break;
+                case 'term':
+                    $terms[] = $this->getSQLConditionByTerm($condiction[1], $table);
+                    break;
+                default:
+                    throw new Pix_Table_Exception('不知名的狀態');
             }
         }
 
@@ -334,17 +334,17 @@ class Pix_Table_Db_Adapter_SQL extends Pix_Table_Db_Adapter_Abstract
                 $orders = Pix_Table_Search::reverseOrder($orders);
             }
 
-	    $equal_orders = array();
+            $equal_orders = array();
             $or_terms = array();
 
-	    foreach ($orders as $order => $way) {
-		$and_terms = array();
-		foreach ($equal_orders as $equal_order) {
+            foreach ($orders as $order => $way) {
+                $and_terms = array();
+                foreach ($equal_orders as $equal_order) {
                     $and_terms[] = $this->column_quote($equal_order) . " = " . $this->quoteWithColumn($table, $row->{$equal_order}, $equal_order);
-		}
+                }
                 $and_terms[] = $this->column_quote($order) . ('asc' == $way ? '>' : '<') . " " . $this->quoteWithColumn($table, $row->{$order}, $order);
-		$or_terms[] = '(' . implode(' AND ', $and_terms) . ')';
-		$equal_orders[] = $order;
+                $or_terms[] = '(' . implode(' AND ', $and_terms) . ')';
+                $equal_orders[] = $order;
             }
 
             if ($is_include) {
@@ -355,7 +355,7 @@ class Pix_Table_Db_Adapter_SQL extends Pix_Table_Db_Adapter_Abstract
                 $or_terms[] = '(' . implode(' AND ', $and_terms) . ')';
             }
             $terms[] = '(' . implode(' OR ', $or_terms) . ')';
-	}
+        }
 
         if (!$terms) {
             return '1 = 1';
@@ -373,7 +373,7 @@ class Pix_Table_Db_Adapter_SQL extends Pix_Table_Db_Adapter_Abstract
      */
     protected function _get_clause($search)
     {
-	$sql = '';
+        $sql = '';
         if ($order = $search->order()) {
             if (is_array($order)) {
                 // 如果指定 before 的話，順序要調過來
@@ -388,19 +388,19 @@ class Pix_Table_Db_Adapter_SQL extends Pix_Table_Db_Adapter_Abstract
             } else {
                 $sql .= ' ORDER BY ' . $order;
             }
-	}
+        }
 
         $limit = $search->limit();
         if (!is_null($limit)) {
             $offset = $search->offset();
             if (!is_null($offset)) {
-		$sql .= ' LIMIT ' . $offset . ', ' . $limit;
-	    } else {
-		$sql .= ' LIMIT ' . $limit;
-	    }
-	}
+                $sql .= ' LIMIT ' . $offset . ', ' . $limit;
+            } else {
+                $sql .= ' LIMIT ' . $limit;
+            }
+        }
 
-	return $sql;
+        return $sql;
     }
 
     /**
@@ -412,18 +412,18 @@ class Pix_Table_Db_Adapter_SQL extends Pix_Table_Db_Adapter_Abstract
      */
     protected function _get_set_clause($keys_values, $table)
     {
-	$sql = '';
+        $sql = '';
 
-	if (is_scalar($keys_values)) {
-	    return trim($keys_values);
-	}
+        if (is_scalar($keys_values)) {
+            return trim($keys_values);
+        }
 
-	$terms = array();
-	foreach ($keys_values as $column => $value) {
+        $terms = array();
+        foreach ($keys_values as $column => $value) {
             $terms[] = $this->column_quote($column) . " = " . $this->quoteWithColumn($table, $value, $column);
-	}
-	$sql .= implode(', ', $terms);
+        }
+        $sql .= implode(', ', $terms);
 
-	return $sql;
+        return $sql;
     }
 }
