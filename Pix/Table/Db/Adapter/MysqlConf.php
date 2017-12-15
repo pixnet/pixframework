@@ -106,7 +106,7 @@ class Pix_Table_Db_Adapter_MysqlConf extends Pix_Table_Db_Adapter_MysqlCommon
         return $this->_link_pools[$type] = $link;
     }
 
-    static public function resetConnect()
+    public static function resetConnect()
     {
         self::$_connect_version ++;
     }

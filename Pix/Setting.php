@@ -20,7 +20,7 @@ class Pix_Setting
      * @access public
      * @return void
      */
-    static public function set($key, $value)
+    public static function set($key, $value)
     {
         self::$_settings[$key] = $value;
     }
@@ -33,7 +33,7 @@ class Pix_Setting
      * @access public
      * @return string|null
      */
-    static public function get($key)
+    public static function get($key)
     {
         if (array_key_exists($key, self::$_settings)) {
             return self::$_settings[$key];

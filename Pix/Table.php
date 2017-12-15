@@ -199,7 +199,7 @@ abstract class Pix_Table
      * @access public
      * @return void
      */
-    static public function setForceMaster($enable)
+    public static function setForceMaster($enable)
     {
         self::$_force_master = intval($enable);
     }
@@ -211,7 +211,7 @@ abstract class Pix_Table
      * @access public
      * @return boolean
      */
-    static public function getForceMaster()
+    public static function getForceMaster()
     {
         return self::$_force_master;
     }
@@ -263,7 +263,7 @@ abstract class Pix_Table
      * @access public
      * @return void
      */
-    static public function getLogStatus($group)
+    public static function getLogStatus($group)
     {
         if (array_key_exists($group, self::$_log_groups)) {
             return self::$_log_groups[$group];
@@ -279,7 +279,7 @@ abstract class Pix_Table
      * @access public
      * @return void
      */
-    static public function enableCache($group)
+    public static function enableCache($group)
     {
         self::$_cache_groups[$group] = true;
     }
@@ -292,7 +292,7 @@ abstract class Pix_Table
      * @access public
      * @return void
      */
-    static public function disableCache($group)
+    public static function disableCache($group)
     {
         unset(self::$_cache_groups[$group]);
     }
@@ -305,7 +305,7 @@ abstract class Pix_Table
      * @access public
      * @return void
      */
-    static public function getCacheStatus($group)
+    public static function getCacheStatus($group)
     {
         if (array_key_exists($group, self::$_cache_groups)) {
             return self::$_cache_groups[$group];
@@ -329,7 +329,7 @@ abstract class Pix_Table
      * @access public
      * @return void
      */
-    static public function setDefaultDb($db)
+    public static function setDefaultDb($db)
     {
         if (is_null($db)) {
             self::$_default_db = null;
@@ -346,7 +346,7 @@ abstract class Pix_Table
      * @access public
      * @return void
      */
-    static public function getDefaultDb()
+    public static function getDefaultDb()
     {
         return self::$_default_db;
     }
@@ -367,7 +367,7 @@ abstract class Pix_Table
      *
      * @return Pix_Table_Db db
      **/
-    static public function getDb()
+    public static function getDb()
     {
         $table = self::getTable();
         if ($table->_db) {
@@ -386,7 +386,7 @@ abstract class Pix_Table
         return $table->_db;
     }
 
-    static public function setDb($db)
+    public static function setDb($db)
     {
         $table = self::getTable();
         $table->_db = $db;
@@ -451,7 +451,7 @@ abstract class Pix_Table
      * @access public
      * @return void
      */
-    static public function createTable()
+    public static function createTable()
     {
         $table = self::getTable();
         return $table->getDb()->createTable($table);
@@ -481,7 +481,7 @@ abstract class Pix_Table
      * @access public
      * @return void
      */
-    static public function dropTable()
+    public static function dropTable()
     {
         if (!Pix_Setting::get('Table:DropTableEnable')) {
             throw new Pix_Table_Exception("要 DROP TABLE 前請加上 Pix_Setting::set('Table:DropTableEnable', true);");
@@ -499,7 +499,7 @@ abstract class Pix_Table
      * @access public
      * @return Pix_Table_ResultSet
      */
-    static public function search($where)
+    public static function search($where)
     {
         $table = self::getTable();
         $conf = array();
@@ -520,7 +520,7 @@ abstract class Pix_Table
      * @access public
      * @return Pix_Table_Row|null
      */
-    static public function find($primary_value)
+    public static function find($primary_value)
     {
         $table = self::getTable();
 
@@ -548,7 +548,7 @@ abstract class Pix_Table
         return $row;
     }
 
-    static public function find_by($columns, $values)
+    public static function find_by($columns, $values)
     {
         $table = self::getTable();
 
@@ -563,7 +563,7 @@ abstract class Pix_Table
      * @access public
      * @return Pix_Table_Row
      */
-    static public function createRow($belong_row = null)
+    public static function createRow($belong_row = null)
     {
         $table = self::getTable();
 
@@ -603,7 +603,7 @@ abstract class Pix_Table
      * @access public
      * @return void
      */
-    static public function insert($data)
+    public static function insert($data)
     {
         $table = self::getTable();
         $row = $table->createRow();
@@ -640,7 +640,7 @@ abstract class Pix_Table
         return false;
     }
 
-    static public function __callStatic($name, $args)
+    public static function __callStatic($name, $args)
     {
         $table = self::getTable();
         return $table->__call($name, $args);
@@ -946,13 +946,13 @@ abstract class Pix_Table
      * @access public
      * @return void
      */
-    static public function addIndex($name, $columns, $type = 'index')
+    public static function addIndex($name, $columns, $type = 'index')
     {
         $table = self::getTable();
         $table->_index_datas[$name] = array('columns' => $columns, 'type' => $type);
     }
 
-    static public function getIndexColumns($name)
+    public static function getIndexColumns($name)
     {
         $table = self::getTable();
         if ('PRIMARY' == $name) {
@@ -982,7 +982,7 @@ abstract class Pix_Table
      * @access public
      * @return Pix_Table 對應的 table
      */
-    static public function getRelationForeignTable($relation)
+    public static function getRelationForeignTable($relation)
     {
         $table = self::getTable();
 
@@ -1007,7 +1007,7 @@ abstract class Pix_Table
      * @access public
      * @return array relation 的 columns
      */
-    static public function getRelationForeignKeys($relation)
+    public static function getRelationForeignKeys($relation)
     {
         $table = self::getTable();
         if (!array_key_exists($relation, $table->_relations)) {
@@ -1040,7 +1040,7 @@ abstract class Pix_Table
      * @access public
      * @return string|null 哪一組 index
      */
-    static public function findUniqueKey($columns)
+    public static function findUniqueKey($columns)
     {
         $table = self::getTable();
         $primary_columns = $table->getPrimaryColumns();
@@ -1068,7 +1068,7 @@ abstract class Pix_Table
      * @access public
      * @return string
      */
-    static public function getTableName()
+    public static function getTableName()
     {
         $table = self::getTable();
         return $table->_name;
@@ -1111,7 +1111,7 @@ abstract class Pix_Table
      * @access public
      * @return boolean
      */
-    static public function isEditableKey($key)
+    public static function isEditableKey($key)
     {
         $table = self::getTable();
         if (array_key_exists($key, $table->_columns) and $table->_columns[$key]) {

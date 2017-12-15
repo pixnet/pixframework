@@ -9,7 +9,7 @@
  */
 class Pix_Table_Db
 {
-    static public function factory($obj)
+    public static function factory($obj)
     {
         if (is_object($obj) and 'mysqli' == get_class($obj)) {
             return new Pix_Table_Db_Adapter_Mysqli($obj);

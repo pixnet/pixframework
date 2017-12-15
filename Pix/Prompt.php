@@ -17,12 +17,12 @@ class Pix_Prompt
     static public $__history_path;
     static public $_vars;
 
-    static protected function _supportedReadline()
+    protected static function _supportedReadline()
     {
         return function_exists('readline');
     }
 
-    static protected function _readline($prompt)
+    protected static function _readline($prompt)
     {
         if (self::_supportedReadline()) {
             return readline($prompt);
@@ -35,7 +35,7 @@ class Pix_Prompt
         }
     }
 
-    static public function init($paths = null, $history_path = null)
+    public static function init($paths = null, $history_path = null)
     {
         self::$_often = get_defined_functions();
         self::$_often = array_merge(self::$_often['internal'], get_declared_classes());
@@ -84,7 +84,7 @@ class Pix_Prompt
         }
     }
 
-    static public function findMatch($m)
+    public static function findMatch($m)
     {
         $terms = explode('_', $m);
         array_pop($terms);
@@ -100,7 +100,7 @@ class Pix_Prompt
         return $ret;
     }
 
-    static public function addOften($prefix = '')
+    public static function addOften($prefix = '')
     {
         if (isset(self::$_walked_prefix[$prefix]) and self::$_walked_prefix[$prefix]) {
             return;

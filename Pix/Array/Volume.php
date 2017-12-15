@@ -9,17 +9,17 @@
  */
 class Pix_Array_Volume extends Pix_Helper
 {
-    static public function getFuncs()
+    public static function getFuncs()
     {
         return array('volume', 'volumemode');
     }
 
-    static public function volumemode($array, $chunk = 100)
+    public static function volumemode($array, $chunk = 100)
     {
         return new Pix_Array_Volume_ResultSet($array, array('chunk' => $chunk, 'simple_mode' => true));
     }
 
-    static public function volume($array, $options = array())
+    public static function volume($array, $options = array())
     {
         return new Pix_Array_Volume_ResultSet($array, $options);
     }

@@ -20,7 +20,7 @@ class Pix_Table_Search
     protected $_search_conditions = array();
     protected $_search_condition_types = array('string' => 0, 'map' => 0, 'term' => 0);
 
-    static public function factory($data = null)
+    public static function factory($data = null)
     {
         if ($data instanceof Pix_Table_Search) {
             return $data;
