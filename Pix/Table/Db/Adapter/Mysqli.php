@@ -1,8 +1,8 @@
 <?php
 
 /**
- * Pix_Table_Db_Adapter_Mysqli 
- * 
+ * Pix_Table_Db_Adapter_Mysqli
+ *
  * @uses Pix_Table_Db_Adapter
  * @package Table
  * @copyright 2003-2012 PIXNET Digital Media Corporation
@@ -23,9 +23,9 @@ class Pix_Table_Db_Adapter_Mysqli extends Pix_Table_Db_Adapter_MysqlCommon
     }
 
     /**
-     * __get 為了與 MySQLi object 相容所加的 __get($name); 
-     * 
-     * @param mixed $name 
+     * __get 為了與 MySQLi object 相容所加的 __get($name);
+     *
+     * @param mixed $name
      * @access public
      * @return void
      */
@@ -36,9 +36,9 @@ class Pix_Table_Db_Adapter_Mysqli extends Pix_Table_Db_Adapter_MysqlCommon
 
     /**
      * __call 為了與 MySQLi 相容所加的 __call()
-     * 
-     * @param mixed $name 
-     * @param mixed $args 
+     *
+     * @param mixed $name
+     * @param mixed $args
      * @access public
      * @return void
      */
@@ -49,8 +49,8 @@ class Pix_Table_Db_Adapter_Mysqli extends Pix_Table_Db_Adapter_MysqlCommon
 
     /**
      * query 對 db 下 SQL query
-     * 
-     * @param mixed $sql 
+     *
+     * @param mixed $sql
      * @access protected
      * @return Mysqli result
      */
@@ -87,8 +87,8 @@ class Pix_Table_Db_Adapter_Mysqli extends Pix_Table_Db_Adapter_MysqlCommon
 
     /**
      * quote 將 $str 字串內容 quote 起來。
-     * 
-     * @param string $str 
+     *
+     * @param string $str
      * @access public
      * @return string
      */

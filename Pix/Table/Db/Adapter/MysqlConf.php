@@ -2,7 +2,7 @@
 
 /**
  * Pix_Table_Db_Adapter_MysqlConf 可以吃 PIXNET 專用 config 格式來建立 DB 的功能
- * 
+ *
  * @uses Pix_Table_Db_Adapter
  * @package Table
  * @copyright 2003-2012 PIXNET Digital Media Corporation

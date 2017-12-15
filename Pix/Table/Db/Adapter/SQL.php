@@ -2,7 +2,7 @@
 
 /**
  * Pix_Table_Db_Adapter_SQL
- * 
+ *
  * @uses Pix_Table_Db_Adapter
  * @package Table
  * @copyright 2003-2012 PIXNET Digital Media Corporation
@@ -12,11 +12,11 @@ class Pix_Table_Db_Adapter_SQL extends Pix_Table_Db_Adapter_Abstract
 {
     /**
      * fetchOne 從 $table 找出符合 $primary_values 條件的一筆
-     * 
-     * @param Pix_Table $table 
+     *
+     * @param Pix_Table $table
      * @param array $primary_values
      * @access public
-     * @return array or null 
+     * @return array or null
      */
     public function fetchOne($table, $primary_values, $select_columns = '*')
     {
@@ -157,10 +157,10 @@ class Pix_Table_Db_Adapter_SQL extends Pix_Table_Db_Adapter_Abstract
 
     /**
      * fetch 從 $table 找出符合 $search 的所有 column
-     * 
-     * @param Pix_Table $table 
-     * @param Pix_Table_Search $search 
-     * @param string $select_columns 
+     *
+     * @param Pix_Table $table
+     * @param Pix_Table_Search $search
+     * @param string $select_columns
      * @access public
      * @return array
      */
@@ -185,8 +185,8 @@ class Pix_Table_Db_Adapter_SQL extends Pix_Table_Db_Adapter_Abstract
 
     /**
      * deleteOne 從 db 上刪除一個 Row
-     * 
-     * @param Pix_Table_Row $row 
+     *
+     * @param Pix_Table_Row $row
      * @access public
      * @return void
      */
@@ -202,8 +202,8 @@ class Pix_Table_Db_Adapter_SQL extends Pix_Table_Db_Adapter_Abstract
 
     /**
      * updateOne 從 db 上更新一個 $row 的 data
-     * 
-     * @param Pix_Table_Row $row 
+     *
+     * @param Pix_Table_Row $row
      * @param array|string $data
      * @access public
      * @return void
@@ -245,9 +245,9 @@ class Pix_Table_Db_Adapter_SQL extends Pix_Table_Db_Adapter_Abstract
 
     /**
      * insertOne 從 db 上增加一筆資料
-     * 
-     * @param Pix_Table $table 
-     * @param array|string $keys_values 
+     *
+     * @param Pix_Table $table
+     * @param array|string $keys_values
      * @access public
      * @return void
      */
@@ -278,8 +278,8 @@ class Pix_Table_Db_Adapter_SQL extends Pix_Table_Db_Adapter_Abstract
 
     /**
      * column_quote 把 $a 字串加上 quote
-     * 
-     * @param string $a 
+     *
+     * @param string $a
      * @access public
      * @return string
      */
@@ -294,10 +294,10 @@ class Pix_Table_Db_Adapter_SQL extends Pix_Table_Db_Adapter_Abstract
     }
 
     /**
-     * _get_where_clause 依照 $search 條件以及指定的 $table 回傳 WHERE 的 SQL 
-     * 
-     * @param Pix_Table_Search $search 
-     * @param Pix_Table $table 
+     * _get_where_clause 依照 $search 條件以及指定的 $table 回傳 WHERE 的 SQL
+     *
+     * @param Pix_Table_Search $search
+     * @param Pix_Table $table
      * @access protected
      * @return string
      */
@@ -366,8 +366,8 @@ class Pix_Table_Db_Adapter_SQL extends Pix_Table_Db_Adapter_Abstract
 
     /**
      * _get_clause 從 $search 條件中，回傳 ORDER BY ... LIMIT ...
-     * 
-     * @param Pix_Table_Search $search 
+     *
+     * @param Pix_Table_Search $search
      * @access protected
      * @return string
      */
@@ -405,8 +405,8 @@ class Pix_Table_Db_Adapter_SQL extends Pix_Table_Db_Adapter_Abstract
 
     /**
      * _get_set_clause 從 $keys_values 條件中，回傳 SET 後面的 SQL
-     * 
-     * @param mixed $keys_values 
+     *
+     * @param mixed $keys_values
      * @access protected
      * @return string
      */

@@ -1,8 +1,8 @@
 <?php
 
 /**
- * Pix_Cache 
- * 
+ * Pix_Cache
+ *
  * @package Cache
  * @copyright 2003-2012 PIXNET Digital Media Corporation
  * @license http://framework.pixnet.net/license BSD License
@@ -31,10 +31,10 @@ class Pix_Cache
 
     /**
      * addServer 增加 Cache Server 設定。
-     * 
+     *
      * @param mixed $adapter Pix_Cache 使用的 Adapter 的 class name (Ex: Pix_Cache_Adapter_Memcache)
-     * @param array $conf  
-     * @param int $id 
+     * @param array $conf
+     * @param int $id
      * @static
      * @access public
      * @return void

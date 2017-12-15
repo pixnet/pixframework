@@ -2,7 +2,7 @@
 
 /**
  * Pix_Array_Merger merge many pix_array
- * 
+ *
  * @copyright 2003-2012 PIXNET Digital Media Corporation
  * @license http://framework.pixnet.net/license BSD License
  * @author Shang-Rung Wang <srwang@pixnet.tw>
@@ -18,8 +18,8 @@ class Pix_Array_Merger implements Iterator
     protected $_chunk_size = 10;
 
     /**
-     * __construct 
-     * 
+     * __construct
+     *
      * @param $array... arrays you want to merge
      * @access public
      */
@@ -30,7 +30,7 @@ class Pix_Array_Merger implements Iterator
 
     /**
      * set the order of merged array
-     * 
+     *
      * @param $order or $orders for each array
      * @access public
      * @return Pix_Array_Merger

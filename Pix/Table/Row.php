@@ -1,8 +1,8 @@
 <?php
 
 /**
- * Pix_Table_Row 
- * 
+ * Pix_Table_Row
+ *
  * @package Table
  * @copyright 2003-2012 PIXNET Digital Media Corporation
  * @license http://framework.pixnet.net/license BSD License
@@ -105,7 +105,7 @@ class Pix_Table_Row
 
     /**
      * delete 刪除這個 row
-     * 
+     *
      * @param mixed $follow_relation 當設為 false 時，就不會順便刪除 delete=true 的 relation
      * @access public
      * @return void
@@ -630,7 +630,7 @@ class Pix_Table_Row
 
     /**
      * getUniqueID 取得這個 row 的 UNIQUE ID, 由 model name + primary value 的 string 組合，任兩個 row 一定不重覆
-     * 
+     *
      * @access public
      * @return string
      */

@@ -58,7 +58,7 @@ class Pix_Helper_HelperTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * test not exists helper class name 
+     * test not exists helper class name
      * @expectedException Pix_Helper_Exception
      */
     public function testNotExistedHelperClass()

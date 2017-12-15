@@ -1,8 +1,8 @@
 <?php
 
 /**
- * Pix_Table_Search_Exception 
- * 
+ * Pix_Table_Search_Exception
+ *
  * @uses Pix_Table_Exception
  * @package Table
  * @copyright 2003-2012 PIXNET Digital Media Corporation

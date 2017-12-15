@@ -1,9 +1,9 @@
 <?php
 
 /**
- * Pix_Array_Array 
+ * Pix_Array_Array
  * 這是傳入一個 array ，會把他生成 Pix_Array class
- * 
+ *
  * @uses Pix
  * @uses _Array
  * @package Array
@@ -20,10 +20,10 @@ class Pix_Array_Array extends Pix_Array
     protected $_row_count = 0;
 
     /**
-     * __construct 
+     * __construct
      * 傳一個 array $data 進來
-     * 
-     * @param array $data 
+     *
+     * @param array $data
      * @access public
      * @return void
      */

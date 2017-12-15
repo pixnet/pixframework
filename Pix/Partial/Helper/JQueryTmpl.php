@@ -75,7 +75,7 @@ class Pix_Partial_Helper_JQueryTmpl extends Pix_Helper
 			$token['each_index'] = 'index';
 			$token['each_value'] = 'value';
 		    }
-		} elseif ('/each' == $command) { 
+		} elseif ('/each' == $command) {
 		    $top = array_pop($stack);
 		    array_push($stack, $top);
 
@@ -133,7 +133,7 @@ class Pix_Partial_Helper_JQueryTmpl extends Pix_Helper
     {
 	for ($i = $start; $i < $end; $i ++) {
 	    $token = $tokens[$i];
-	    if ($token['type'] == 'text') { 
+	    if ($token['type'] == 'text') {
 		echo $token['text'];
 		continue;
 	    }
@@ -144,7 +144,7 @@ class Pix_Partial_Helper_JQueryTmpl extends Pix_Helper
 	    }
 
 	    if ($token['type'] == 'each') {
-		foreach ($data->{$token['variable']} as $index => $value) { 
+		foreach ($data->{$token['variable']} as $index => $value) {
 		    $new_data = clone $data;
 		    $new_data->{$token['each_index']} = $index;
 		    $new_data->{$token['each_value']} = $value;

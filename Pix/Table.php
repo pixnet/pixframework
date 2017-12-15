@@ -1,10 +1,10 @@
 <?php
 
 /**
- * Pix_Table 
+ * Pix_Table
  * 相關 Setting
  * Table:DropTableEnable 是否允許可以透過 Pix_Table dropTable, 預設 disable
- * 
+ *
  * @package Table
  * @copyright 2003-2012 PIXNET Digital Media Corporation
  * @license http://framework.pixnet.net/license BSD License
@@ -23,7 +23,7 @@ abstract class Pix_Table
 
     /**
      * _columns 這個 Table 有哪些 column
-     * 
+     *
      * @var array  key: column name, value: array('type' => 'int', 'unsigned' => true, 'size' => 10, 'default' => 3)
      * @access public
      */
@@ -31,11 +31,11 @@ abstract class Pix_Table
 
     /**
      * _relations 這個 Table 有哪些 relation
-     * 
+     *
      * @var array key: relation name, value: array('rel' => 'has_one|has_many', 'type' => 'Model', 'foreign_key' => 'column');
      * @access public
      */
-    public $_relations = array(); 
+    public $_relations = array();
 
     /**
      * _aliases 建立 relation 的 aliases
@@ -54,8 +54,8 @@ abstract class Pix_Table
     public $_hooks = array();
 
     /**
-     * _rowClass 這個 Table 的 Row class 
-     * 
+     * _rowClass 這個 Table 的 Row class
+     *
      * @var string
      * @access public
      */
@@ -63,7 +63,7 @@ abstract class Pix_Table
 
     /**
      * _resultSetClass 這個 Table 的 ResultSet class
-     * 
+     *
      * @var string
      * @access public
      */
@@ -71,7 +71,7 @@ abstract class Pix_Table
 
     /**
      * _name 這個 Table 在 Db 上面的名稱是什麼
-     * 
+     *
      * @var string
      * @access public
      */
@@ -79,7 +79,7 @@ abstract class Pix_Table
 
     /**
      * _primary Primary key, 可以是
-     * 
+     *
      * @var string|array
      * @access public
      */
@@ -87,7 +87,7 @@ abstract class Pix_Table
 
     /**
      * _indexes 該 Table 用到的 index
-     * 
+     *
      * @deprecated use Table->addIndex instead
      * @var array
      * @access public
@@ -127,8 +127,8 @@ abstract class Pix_Table
 
     /**
      * setQueryComment 在 Db 下 Query 時，自動加上註解
-     * 
-     * @param null/string $comment 
+     *
+     * @param null/string $comment
      * @static
      * @access public
      * @return void
@@ -140,7 +140,7 @@ abstract class Pix_Table
 
     /**
      * getQueryComment 取得要在 db 下 query 時所加上的註解
-     * 
+     *
      * @static
      * @access public
      * @return null|string
@@ -152,8 +152,8 @@ abstract class Pix_Table
 
     /**
      * setLongQueryTime 當 Query 時間超過這個時間時，會噴出 Warning log
-     * 
-     * @param int $second 
+     *
+     * @param int $second
      * @static
      * @access public
      * @return void
@@ -165,10 +165,10 @@ abstract class Pix_Table
 
     /**
      * getLongQueryTime 取得 Slow query 的設定秒數
-     * 
+     *
      * @static
      * @access public
-     * @return 
+     * @return
      */
     public static function getLongQueryTime()
     {
@@ -368,7 +368,7 @@ abstract class Pix_Table
      * @return Pix_Table_Db db
      **/
     static public function getDb()
-    { 
+    {
         $table = self::getTable();
         if ($table->_db) {
 	    return $table->_db;
@@ -446,7 +446,7 @@ abstract class Pix_Table
 
     /**
      * createTable 在資料庫上建立新 Table
-     * 
+     *
      * @static
      * @access public
      * @return void
@@ -476,7 +476,7 @@ abstract class Pix_Table
 
     /**
      * dropTable 刪除這個 table
-     * 
+     *
      * @static
      * @access public
      * @return void
@@ -493,8 +493,8 @@ abstract class Pix_Table
 
     /**
      * search 搜尋特定條件
-     * 
-     * @param mixed $where 
+     *
+     * @param mixed $where
      * @static
      * @access public
      * @return Pix_Table_ResultSet
@@ -514,14 +514,14 @@ abstract class Pix_Table
 
     /**
      * find 透過 $primary_value 這個 pk 取得一筆 row
-     * 
-     * @param mixed $primary_value 
+     *
+     * @param mixed $primary_value
      * @static
      * @access public
      * @return Pix_Table_Row|null
      */
-    static public function find($primary_value) 
-    { 
+    static public function find($primary_value)
+    {
 	$table = self::getTable();
 
 	if (is_scalar($primary_value)) {
@@ -557,7 +557,7 @@ abstract class Pix_Table
 
     /**
      * createRow 新增加一個未被存入資料庫內的 row
-     * 
+     *
      * @param Pix_Table_Row|null $belong_row 是從哪個 Row 被 create 出來的，Pix_Table 不會用到，但是先預留
      * @static
      * @access public
@@ -597,8 +597,8 @@ abstract class Pix_Table
 
     /**
      * insert 新增一筆資料進資料庫(立刻會存進資料庫)
-     * 
-     * @param mixed $data 
+     *
+     * @param mixed $data
      * @static
      * @access public
      * @return void

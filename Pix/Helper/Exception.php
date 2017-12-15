@@ -2,7 +2,7 @@
 
 /**
  * Pix_Helper_Exception
- * 
+ *
  * @package Helper
  * @copyright 2003-2012 PIXNET Digital Media Corporation
  * @license http://framework.pixnet.net/license BSD License

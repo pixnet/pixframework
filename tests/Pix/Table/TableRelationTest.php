@@ -111,7 +111,7 @@ class Pix_Table_TableRelationTest extends PHPUnit_Framework_TestCase
 
     /**
      * testDelete 測試 relation 的 delete = true 要可以 work
-     * 
+     *
      * @access public
      * @return void
      */

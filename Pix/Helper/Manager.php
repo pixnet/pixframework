@@ -2,7 +2,7 @@
 
 /**
  * Pix_Helper_Manager Helper manager for all Pix Framework class
- * 
+ *
  * @package Helper
  * @copyright 2003-2012 PIXNET Digital Media Corporation
  * @license http://framework.pixnet.net/license BSD License

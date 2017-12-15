@@ -2,7 +2,7 @@
 
 /**
  * Pix_Table_Db_Adapter_PgSQL
- * 
+ *
  * @uses Pix_Table_Db_Adapter
  * @package Table
  * @copyright 2003-2012 PIXNET Digital Media Corporation
@@ -92,8 +92,8 @@ class Pix_Table_Db_Adapter_PgSQL extends Pix_Table_Db_Adapter_SQL
 
     /**
      * createTable 將 $table 建立進資料庫內
-     * 
-     * @param Pix_Table $table 
+     *
+     * @param Pix_Table $table
      * @access public
      * @return void
      */
@@ -199,8 +199,8 @@ class Pix_Table_Db_Adapter_PgSQL extends Pix_Table_Db_Adapter_SQL
 
     /**
      * column_quote 把 $a 字串加上 quote
-     * 
-     * @param string $a 
+     *
+     * @param string $a
      * @param Pix_Table $table
      * @access public
      * @return string

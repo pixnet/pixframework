@@ -4,8 +4,8 @@ abstract class Pix_Table_Db_Adapter_MysqlCommon extends Pix_Table_Db_Adapter_SQL
 {
     /**
      * createTable 將 $table 建立進資料庫內
-     * 
-     * @param Pix_Table $table 
+     *
+     * @param Pix_Table $table
      * @access public
      * @return void
      */
@@ -214,8 +214,8 @@ abstract class Pix_Table_Db_Adapter_MysqlCommon extends Pix_Table_Db_Adapter_SQL
 
     /**
      * quote 將 $str 字串內容 quote 起來。
-     * 
-     * @param string $str 
+     *
+     * @param string $str
      * @access public
      * @return string
      */

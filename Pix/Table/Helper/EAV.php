@@ -1,8 +1,8 @@
 <?php
 
 /**
- * Pix_Table_Helper_EAV 
- * 
+ * Pix_Table_Helper_EAV
+ *
  * @uses Pix
  * @options relation => relation name (default eavs)
  * @package Table

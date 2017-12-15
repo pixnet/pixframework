@@ -2,7 +2,7 @@
 
 /**
  * Pix_Table_Helper_CacheTime
- * 
+ *
  * @uses Pix
  * @uses _Table_Helper
  * @options cache => Pix_Cache object(default null), depends relation_name array

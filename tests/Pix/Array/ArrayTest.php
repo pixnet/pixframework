@@ -149,7 +149,7 @@ class Pix_Array_ArrayTest extends PHPUnit_Framework_TestCase
     {
 	$arr = Pix_Array::factory(
 	    array(
-		array('name' => 'alice', 'value' => 3), 
+		array('name' => 'alice', 'value' => 3),
 		array('name' => 'bob', 'value' => 5),
 		array('name' => 'claire', 'value' => 4),
 	    )

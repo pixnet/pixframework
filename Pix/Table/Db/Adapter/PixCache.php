@@ -2,7 +2,7 @@
 
 /**
  * Pix_Table_Db_Adapter_PixCache
- * 
+ *
  * @uses Pix_Table_Db_Adapter
  * @package Table
  * @copyright 2003-2012 PIXNET Digital Media Corporation
@@ -21,8 +21,8 @@ class Pix_Table_Db_Adapter_PixCache extends Pix_Table_Db_Adapter_Abstract
 
     /**
      * createTable 將 $table 建立進資料庫內
-     * 
-     * @param Pix_Table $table 
+     *
+     * @param Pix_Table $table
      * @access public
      * @return void
      */
@@ -32,8 +32,8 @@ class Pix_Table_Db_Adapter_PixCache extends Pix_Table_Db_Adapter_Abstract
 
     /**
      * dropTable 從資料庫內移除 $table 這個 Table
-     * 
-     * @param Pix_Table $table 
+     *
+     * @param Pix_Table $table
      * @access public
      * @return void
      */

@@ -2,7 +2,7 @@
 
 /**
  * Pix_Array_Volume_Row Row of Pix_Array_Volume_
- * 
+ *
  * @package Array
  * @copyright 2003-2012 PIXNET Digital Media Corporation
  * @license http://framework.pixnet.net/license BSD License

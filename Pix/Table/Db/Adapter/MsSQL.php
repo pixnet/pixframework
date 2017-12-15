@@ -2,7 +2,7 @@
 
 /**
  * Pix_Table_Db_Adapter_MsSQL
- * 
+ *
  * @uses Pix_Table_Db_Adapter
  * @package Table
  * @copyright 2003-2012 PIXNET Digital Media Corporation
@@ -23,9 +23,9 @@ class Pix_Table_Db_Adapter_MsSQL extends Pix_Table_Db_Adapter_MysqlCommon
     }
 
     /**
-     * query 
-     * 
-     * @param string $sql 
+     * query
+     *
+     * @param string $sql
      * @access protected
      * @return mssql result
      */
@@ -58,8 +58,8 @@ class Pix_Table_Db_Adapter_MsSQL extends Pix_Table_Db_Adapter_MysqlCommon
 
     /**
      * create table on db
-     * 
-     * @param Pix_Table $table 
+     *
+     * @param Pix_Table $table
      * @access public
      * @return void
      */
@@ -134,8 +134,8 @@ class Pix_Table_Db_Adapter_MsSQL extends Pix_Table_Db_Adapter_MysqlCommon
 
     /**
      * quote $str with column type
-     * 
-     * @param string $str 
+     *
+     * @param string $str
      * @access public
      * @return string
      */
@@ -144,7 +144,7 @@ class Pix_Table_Db_Adapter_MsSQL extends Pix_Table_Db_Adapter_MysqlCommon
         if (is_null($column_name)) {
             // from http://php.net/manual/en/function.mssql-query.php vollmer at ampache dot org
             $value = str_replace("'", "''", $value);
-            $value = str_replace("\0", "[NULL]", $value); 
+            $value = str_replace("\0", "[NULL]", $value);
             return "'" . strval($value) . "'";
 	}
 	if ($table->isNumbericColumn($column_name)) {

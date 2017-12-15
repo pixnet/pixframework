@@ -3,7 +3,7 @@
 /**
  * Pix_Prompt 增加提示字元操作的功能
  *     用法: Pix_Prompt::init($loading_paths);
- * 
+ *
  * @copyright 2003-2012 PIXNET Digital Media Corporation
  * @license http://framework.pixnet.net/license BSD License
  */

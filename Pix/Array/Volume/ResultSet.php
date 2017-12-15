@@ -2,7 +2,7 @@
 
 /**
  * Pix_Array_Volume_ResultSet
- * 
+ *
  * @uses Iterator
  * @package Array
  * @copyright 2003-2012 PIXNET Digital Media Corporation
@@ -18,9 +18,9 @@ class Pix_Array_Volume_ResultSet implements Iterator, countable
 
     /**
      * __construct 設定一次要取多少筆
-     * 
+     *
      * @param Pix_Array $array
-     * @param int $chunk 
+     * @param int $chunk
      * @access public
      */
     public function __construct($array, $options = array())
@@ -75,7 +75,7 @@ class Pix_Array_Volume_ResultSet implements Iterator, countable
     public function valid()
     {
         if (!is_null($this->_limit) and ($this->_pos >= $this->_offset + $this->_limit)) {
-	    return false; 
+	    return false;
 	}
         return $this->_array->valid();
     }
@@ -119,8 +119,8 @@ class Pix_Array_Volume_ResultSet implements Iterator, countable
     }
 
     /**
-     * getPos 取得一個 string ，之後可以當作 after 來用。 
-     * 
+     * getPos 取得一個 string ，之後可以當作 after 來用。
+     *
      * @access public
      * @return void
      */

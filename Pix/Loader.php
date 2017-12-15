@@ -2,7 +2,7 @@
 
 /**
  * Pix_Loader 處理 PHP AutoLoad Class 的功能
- * 
+ *
  * @package Loader
  * @copyright 2003-2012 PIXNET Digital Media Corporation
  * @license http://framework.pixnet.net/license BSD License
@@ -32,7 +32,7 @@ class Pix_Loader
 
     /**
      * registerAutoload 呼叫這 function 就會讓 PHP 在 Load Foo_Bar 的 class 時，會去 include path 找 Foo/Bar.php
-     * 
+     *
      * @static
      * @access public
      * @return void

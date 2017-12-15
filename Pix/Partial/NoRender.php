@@ -1,7 +1,7 @@
 <?php
 /**
- * Pix_Partial_NoRender 
- * 
+ * Pix_Partial_NoRender
+ *
  * @uses Pix
  * @uses _Exception
  * @package Partial

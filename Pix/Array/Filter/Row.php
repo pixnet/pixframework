@@ -2,7 +2,7 @@
 
 /**
  * Pix_Array_Filter_Row Row of Pix_Array_Filter_
- * 
+ *
  * @copyright 2003-2012 PIXNET Digital Media Corporation
  * @license http://framework.pixnet.net/license BSD License
  */

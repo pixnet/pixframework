@@ -1,8 +1,8 @@
 <?php
 
 /**
- * Pix_Table_Row_InvalidFormatException 
- * 
+ * Pix_Table_Row_InvalidFormatException
+ *
  * @uses Exception
  * @package Table
  * @copyright 2003-2012 PIXNET Digital Media Corporation

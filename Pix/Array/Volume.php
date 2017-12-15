@@ -2,7 +2,7 @@
 
 /**
  * Pix_Array_Volume VolumnMode 的加強版，順便修掉當初的錯字 XD
- * 
+ *
  * @package Array
  * @copyright 2003-2012 PIXNET Digital Media Corporation
  * @license http://framework.pixnet.net/license BSD License

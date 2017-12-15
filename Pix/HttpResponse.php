@@ -2,7 +2,7 @@
 
 /**
  * Pix_HttpResponse rewrite some PHP HTTP method for adding hooks
- * 
+ *
  * @package HttpResponse
  * @copyright 2003-2012 PIXNET Digital Media Corporation
  * @license http://framework.pixnet.net/license BSD License

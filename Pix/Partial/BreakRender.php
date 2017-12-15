@@ -1,7 +1,7 @@
 <?php
 /**
- * Pix_Partial_BreakRender 
- * 
+ * Pix_Partial_BreakRender
+ *
  * @uses Pix
  * @uses _Exception
  * @package Partial

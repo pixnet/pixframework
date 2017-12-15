@@ -1,8 +1,8 @@
 <?php
 
 /**
- * Pix_Partial_Helper_Html 
- * 
+ * Pix_Partial_Helper_Html
+ *
  * @package Partial
  * @copyright 2003-2012 PIXNET Digital Media Corporation
  * @license http://framework.pixnet.net/license BSD License

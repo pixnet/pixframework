@@ -206,7 +206,7 @@ class Pix_Table_TableRowTest extends PHPUnit_Framework_TestCase
             ->method('fetchOne');
         Pix_Table_TableRowTest_Table::setDb($db);
 
-        // 未修改的情況下，Save 無效 
+        // 未修改的情況下，Save 無效
         $row->save();
         // preSave return $this->stop(), save 無效
         $row->value = 'preSave_stop';

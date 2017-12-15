@@ -2,7 +2,7 @@
 
 /**
  * Pix_Table_Db_Adapter_Abstract
- * 
+ *
  * @abstract
  * @package Table
  * @copyright 2003-2012 PIXNET Digital Media Corporation

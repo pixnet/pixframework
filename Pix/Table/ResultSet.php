@@ -1,11 +1,11 @@
 <?php
 
 /**
- * Pix_Table_ResultSet 
+ * Pix_Table_ResultSet
  * 用來存 Pix_Table 的 ResultSet
  * XXX: 無法 implements 是因為 Pix_Array 和 Pix_Array_Volumable 都有 limit, rewind
  *      PHP 不給同時 abstract 一個 function 兩次
- * 
+ *
  * @package Table
  * @copyright 2003-2012 PIXNET Digital Media Corporation
  * @license http://framework.pixnet.net/license BSD License
@@ -43,10 +43,10 @@ class Pix_Table_ResultSet extends Pix_Array // implements Pix_Array_Volumable
     }
 
     /**
-     * getRand 
+     * getRand
      * 從 $resultSet 中取得隨機 $count 個 $row
-     * 
-     * @param mixed $count 
+     *
+     * @param mixed $count
      * @access public
      * @return Pix_Array
      */
@@ -173,9 +173,9 @@ class Pix_Table_ResultSet extends Pix_Array // implements Pix_Array_Volumable
 
     /**
      * searchIn 搜尋 $column 的值是在 $values 裡面
-     * 
-     * @param mixed $column 
-     * @param mixed $values 
+     *
+     * @param mixed $column
+     * @param mixed $values
      * @access public
      * @return void
      */
@@ -187,7 +187,7 @@ class Pix_Table_ResultSet extends Pix_Array // implements Pix_Array_Volumable
 
 	$terms = array();
         $db = $this->getResultSetDb();
-	foreach ($values as $v) { 
+	foreach ($values as $v) {
             $terms[] = $db->quoteWithColumn($this->getTable(), $v, $column);
         }
         return $this->search($db->column_quote($column) . " IN (" . implode(', ', $terms) . ")");
@@ -218,8 +218,8 @@ class Pix_Table_ResultSet extends Pix_Array // implements Pix_Array_Volumable
 
     /**
      * getOrderArray 把 order 字串轉成 array('column' => 'asc|desc') 格式
-     * 
-     * @param mixed $order 
+     *
+     * @param mixed $order
      * @static
      * @access public
      * @return void
@@ -411,7 +411,7 @@ class Pix_Table_ResultSet extends Pix_Array // implements Pix_Array_Volumable
     /**
      * _cacheRow 將 rewind 時取到的資料 cache 到 Pix_Table 的 memory cache
      *
-     * @param array $data 
+     * @param array $data
      * @access protected
      * @return void
      */
