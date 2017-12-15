@@ -1,6 +1,7 @@
 <?php
 
-class Row {
+class Row
+{
     public $num;
     public function __construct($num)
     {
