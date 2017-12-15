@@ -19,7 +19,7 @@ class Pix_Session_Adapter_Default extends Pix_Session_Adapter
             ini_set('session.save_handler', $config['save_handler']);
         }
 
-        if (!session_id()){
+        if (!session_id()) {
             session_start();
         }
     }

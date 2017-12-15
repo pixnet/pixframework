@@ -54,7 +54,7 @@ class Pix_Prompt
                 }
             }
 
-            if (self::$__history_path = $history_path){
+            if (self::$__history_path = $history_path) {
                 readline_read_history(self::$__history_path);
             }
         }
@@ -63,7 +63,7 @@ class Pix_Prompt
         unset($history_path);
         unset($home);
 
-        while(self::$__l = self::_readline(">> ")) {
+        while (self::$__l = self::_readline(">> ")) {
             if (self::_supportedReadline()) {
                 if (is_null(self::$__last) or self::$__l != self::$__last) {
                     readline_add_history(self::$__l);

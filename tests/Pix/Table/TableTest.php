@@ -345,7 +345,7 @@ class Pix_Table_TableTest extends PHPUnit_Framework_TestCase
 
         $row = Pix_Table_TableTest_Table::search(1)->first();
 
-        $this->assertEquals($row->t1_id , 3);
+        $this->assertEquals($row->t1_id, 3);
         $this->assertEquals($row->value, 'abc');
 
         // search(array())
@@ -360,7 +360,7 @@ class Pix_Table_TableTest extends PHPUnit_Framework_TestCase
 
         $row = Pix_Table_TableTest_Table::search(array('value' => 5))->first();
 
-        $this->assertEquals($row->t1_id , 5);
+        $this->assertEquals($row->t1_id, 5);
         $this->assertEquals($row->value, '5');
 
         // search(string)

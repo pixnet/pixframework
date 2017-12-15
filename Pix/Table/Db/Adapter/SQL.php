@@ -233,8 +233,8 @@ class Pix_Table_Db_Adapter_SQL extends Pix_Table_Db_Adapter_Abstract
         $sql = 'INSERT INTO ' . $this->column_quote($table->getTableName());
         $sql .= ' (' . implode(',', array_map(array($this, 'column_quote'), $keys)) . ')';
         $sql .= ' VALUES ';
-        $sql .= implode(',', array_map(function($values) use ($table, $keys){
-            return '(' . implode(',', array_map(function($value, $key) use ($table){
+        $sql .= implode(',', array_map(function ($values) use ($table, $keys) {
+            return '(' . implode(',', array_map(function ($value, $key) use ($table) {
                 return $this->quoteWithColumn($table, $value, $key);
             }, $values, $keys)) . ')';
         }, $values_list));

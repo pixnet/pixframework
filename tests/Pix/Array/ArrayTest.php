@@ -275,7 +275,7 @@ class Pix_Array_ArrayTest extends PHPUnit_Framework_TestCase
     public function testIsOddFilter()
     {
         $array = Pix_Array::factory(range(0, 10));
-        $isOdd = function($num) {
+        $isOdd = function ($num) {
             return ($num & 1) == 1;
         };
         foreach ($array->filter($isOdd) as $num) {
@@ -285,7 +285,7 @@ class Pix_Array_ArrayTest extends PHPUnit_Framework_TestCase
 
     public function testIsEvenFilter()
     {
-        $isEven = function($num) {
+        $isEven = function ($num) {
             return !($num & 1) == 0;
         };
 
@@ -297,7 +297,7 @@ class Pix_Array_ArrayTest extends PHPUnit_Framework_TestCase
 
     public function testIsOddFilterWithOffset()
     {
-        $isOdd = function($num) {
+        $isOdd = function ($num) {
             return ($num & 1) == 1;
         };
 
@@ -312,7 +312,7 @@ class Pix_Array_ArrayTest extends PHPUnit_Framework_TestCase
 
     public function testIsOddFilterWithLimit()
     {
-        $isOdd = function($num) {
+        $isOdd = function ($num) {
             return ($num & 1) == 1;
         };
 
@@ -328,7 +328,7 @@ class Pix_Array_ArrayTest extends PHPUnit_Framework_TestCase
 
     public function testIsOddFilterWithOffsetAndLimit()
     {
-        $isOdd = function($num) {
+        $isOdd = function ($num) {
             return ($num & 1) == 1;
         };
 

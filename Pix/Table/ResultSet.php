@@ -81,7 +81,7 @@ class Pix_Table_ResultSet extends Pix_Array // implements Pix_Array_Volumable
             $used = array();
             $res = array();
 
-            for ($i = 0; $i < $count; ) {
+            for ($i = 0; $i < $count;) {
                 if (!$row = $this->search("$primary >= " . rand($min, $max))->order(array($primary => 'asc'))->first()) {
                     continue;
                 }
@@ -736,7 +736,7 @@ class Pix_Table_ResultSet extends Pix_Array // implements Pix_Array_Volumable
         }
 
         foreach ($array as $pk => $unused) {
-            if (is_scalar($pk)){
+            if (is_scalar($pk)) {
                 $pk = array($pk);
             }
             if ($pk == $row_pk) {

@@ -158,12 +158,12 @@ class Pix_Table_Db_Adapter_MysqlConf extends Pix_Table_Db_Adapter_MysqlCommon
 
             if ($res === false) {
                 if ($errno = $link->errno) {
-                    $message = (is_null($table) ? '': "Table: {$table->getClass()}") . "SQL Error: ({$errno}){$link->error} " . substr($sql, 0, 128);
+                    $message = (is_null($table) ? '' : "Table: {$table->getClass()}") . "SQL Error: ({$errno}){$link->error} " . substr($sql, 0, 128);
                     switch ($errno) {
                         case 1146:
                             throw new Pix_Table_TableNotFoundException($message);
                         case 1062:
-                            throw new Pix_Table_DuplicateException((is_null($table) ? '': "(Table: {$table->getClass()})") . $link->error, $errno);
+                            throw new Pix_Table_DuplicateException((is_null($table) ? '' : "(Table: {$table->getClass()})") . $link->error, $errno);
                         case 1406:
                             throw new Pix_Table_DataTooLongException($message);
 
@@ -187,7 +187,7 @@ class Pix_Table_Db_Adapter_MysqlConf extends Pix_Table_Db_Adapter_MysqlCommon
                     if (Pix_Table::$_throw_incorrect_string_exception and 1366 == $e->errno) {
                         throw new Pix_Table_IncorrectStringException($e->message);
                     }
-                    trigger_error("Pix_Table " . (is_null($table) ? '': "Table: {$table->getClass()}") . "SQL Warning: ({$e->errno}){$e->message} " . substr($sql, 0, 128), E_USER_WARNING);
+                    trigger_error("Pix_Table " . (is_null($table) ? '' : "Table: {$table->getClass()}") . "SQL Warning: ({$e->errno}){$e->message} " . substr($sql, 0, 128), E_USER_WARNING);
                 } while ($e->next());
             }
             return $res;

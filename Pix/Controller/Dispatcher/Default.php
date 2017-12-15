@@ -21,10 +21,10 @@ class Pix_Controller_Dispatcher_Default extends Pix_Controller_Dispatcher
         $actionName = $actionName ? $actionName : 'index';
         $controllerName = $controllerName ? $controllerName : 'index';
 
-        if (!preg_match('/^([A-Za-z]{1,})$/' , $controllerName)) {
+        if (!preg_match('/^([A-Za-z]{1,})$/', $controllerName)) {
             return null;
         }
-        if (!preg_match('/^([A-Za-z][A-Za-z0-9]*)$/' , $actionName)) {
+        if (!preg_match('/^([A-Za-z][A-Za-z0-9]*)$/', $actionName)) {
             return array($controllerName, null);
         }
         return array($controllerName, $actionName, $args);
