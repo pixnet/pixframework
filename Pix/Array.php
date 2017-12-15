@@ -109,7 +109,9 @@ abstract class Pix_Array implements Countable, SeekableIterator, ArrayAccess
         foreach ($settings as $key => $val) {
             $$key = $val;
         }
-        if ($per_page <= 0) $per_page = $default_per_page;
+        if ($per_page <= 0) {
+            $per_page = $default_per_page;
+        }
         $this->total_page = ceil(count($this) / $per_page);
         $this->per_page = $per_page;
         $this->now_page = $page;

@@ -226,11 +226,20 @@ class Pix_Array_ArrayTest extends PHPUnit_Framework_TestCase
         }
 
         // limit 不要影響到後面
-        $c = 0; foreach ($users as $u) { $c ++; }
+        $c = 0;
+        foreach ($users as $u) {
+            $c ++;
+        }
         $this->assertEquals($c, 100);
-        $c = 0; foreach ($users->limit(20) as $u) { $c ++; }
+        $c = 0;
+        foreach ($users->limit(20) as $u) {
+            $c ++;
+        }
         $this->assertEquals($c, 20);
-        $c = 0; foreach ($users as $u) { $c ++; }
+        $c = 0;
+        foreach ($users as $u) {
+            $c ++;
+        }
         $this->assertEquals($c, 100);
 
         // order 不要影響後面

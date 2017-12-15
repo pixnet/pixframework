@@ -311,8 +311,9 @@ class Pix_Table_Row
     {
         while (Pix_Table::$_verify) {
             $column = $this->getTable()->_columns[$name];
-            if ($value === null)
-            break;
+            if ($value === null) {
+                break;
+            }
             switch ($column['type']) {
                 case 'int':
                 case 'smallint':
@@ -526,8 +527,9 @@ class Pix_Table_Row
     public function __isset($name)
     {
         $table = $this->getTable();
-        if (isset($table->_columns[$name]) or isset($table->_aliases[$name]))
-        return true;
+        if (isset($table->_columns[$name]) or isset($table->_aliases[$name])) {
+            return true;
+        }
 
         if ('has_many' == $table->_relations[$name]['rel']) {
             return true;
@@ -535,10 +537,11 @@ class Pix_Table_Row
 
         if ($table->_relations[$name]) {
             $row = $this->getRelation($name);
-            if ($row)
-            return true;
-            else
-            return false;
+            if ($row) {
+                return true;
+            } else {
+                return false;
+            }
         }
 
         if ($name[0] == '_') {
@@ -575,8 +578,9 @@ class Pix_Table_Row
     public function createRelation($relation, $values = array())
     {
         $table = $this->getTable();
-        if (!$table->_relations[$relation])
+        if (!$table->_relations[$relation]) {
             throw new Exception($relation . ' 不是 relation name ，不能 create_' . $relation);
+        }
 
         if (!is_array($values)) {
             $values = array();

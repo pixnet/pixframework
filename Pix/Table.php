@@ -830,8 +830,12 @@ abstract class Pix_Table
                 return null;
             }
         } else {
-            if (!$this->_table_cache) return false;
-            if (!$cache = $this->getCache()) return false;
+            if (!$this->_table_cache) {
+                return false;
+            }
+            if (!$cache = $this->getCache()) {
+                return false;
+            }
 
             $table_class = $this->getClass();
             $cache_key = "Pix_Table_Cache:{$table_class}:{$this->_table_cache_prefix}:" . implode('-', $primary_values);
@@ -893,8 +897,12 @@ abstract class Pix_Table
         }
 
         // table cache
-        if (!$this->_table_cache) return false;
-        if (!$cache = $this->getCache()) return false;
+        if (!$this->_table_cache) {
+            return false;
+        }
+        if (!$cache = $this->getCache()) {
+            return false;
+        }
 
         $table_class = $this->getClass();
         $cache_key = "Pix_Table_Cache:{$table_class}:{$this->_table_cache_prefix}:" . implode('-', $primary_values);
