@@ -276,4 +276,14 @@ class Pix_Array_Array extends Pix_Array
     {
         return array_reverse($this->_data, $preserve_keys);
     }
+
+    /**
+     * search 尚未實作
+     * @param mixed $options
+     * @throws Pix_Array_Exception
+     */
+    public function search($options)
+    {
+        throw new Pix_Array_Exception('search is not implemented');
+    }
 }
