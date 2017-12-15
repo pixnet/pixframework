@@ -36,7 +36,7 @@ class Pix_Table_Db_Adapter_PgSQL extends Pix_Table_Db_Adapter_SQL
                 $latlon = $arguments[1];
                 $distance = $arguments[2];
 
-            return "ST_DWithin(" . $this->column_quote($column) . ", ST_GeographyFromText('POINT(" . floatval($latlon[1]) . " " . floatval($latlon[0]) . ")'), " . intval($distance) . ")";
+                return "ST_DWithin(" . $this->column_quote($column) . ", ST_GeographyFromText('POINT(" . floatval($latlon[1]) . " " . floatval($latlon[0]) . ")'), " . intval($distance) . ")";
         }
 
         throw new Pix_Table_Exception('Unsupport Pix_Table_Search_Term: ' . $term->getType());

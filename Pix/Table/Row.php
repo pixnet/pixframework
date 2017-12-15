@@ -360,7 +360,7 @@ class Pix_Table_Row
                     if (is_array($column['list']) and !in_array($value, $column['list'])) {
                         throw new Pix_Table_Row_InvalidFormatException($name, $column, $this);
                     }
-                break;
+                    break;
                 case 'varchar':
                 case 'char':
         /*          if (strlen($value) > $column['size'])
