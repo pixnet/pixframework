@@ -174,7 +174,7 @@ abstract class Pix_Array implements Countable, SeekableIterator, ArrayAccess
                 }
             }
         }
-        return TRUE;
+        return true;
     }
 
     protected function getFilters()

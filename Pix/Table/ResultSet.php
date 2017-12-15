@@ -316,7 +316,7 @@ class Pix_Table_ResultSet extends Pix_Array // implements Pix_Array_Volumable
         return true;
     }
 
-    public function delete($where = NULL)
+    public function delete($where = null)
     {
         $count = 0;
         if ($where) {

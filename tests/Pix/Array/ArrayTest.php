@@ -453,7 +453,7 @@ class Pix_Array_ArrayTest extends PHPUnit_Framework_TestCase
     public function testGetPosition()
     {
         $array = Pix_Array::factory(range(0, 10));
-        $array->getPosition(NULL);
+        $array->getPosition(null);
     }
 
     /**

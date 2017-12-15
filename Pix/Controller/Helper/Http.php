@@ -57,10 +57,10 @@ class Pix_Controller_Helper_Http extends Pix_Helper
     public function isGet($controller)
     {
         if ('GET' == $_SERVER['REQUEST_METHOD']) {
-            return TRUE;
+            return true;
         }
 
-        return FALSE;
+        return false;
     }
 
     /**
@@ -70,44 +70,44 @@ class Pix_Controller_Helper_Http extends Pix_Helper
     public function isDelete($controller)
     {
         if ('DELETE' == $_SERVER['REQUEST_METHOD']) {
-            return TRUE;
+            return true;
         }
 
         if ('POST' == $_SERVER['REQUEST_METHOD'] and array_key_exists('_method', $_POST) and 'delete' == strtolower($_POST['_method'])) {
-            return TRUE;
+            return true;
         }
 
-        return FALSE;
+        return false;
     }
 
     /**
      * isPost 判斷是否為 POST
      *
      */
-    public function isPost($controller, $raw = FALSE)
+    public function isPost($controller, $raw = false)
     {
         // 不是 POST HTTP method 的一定不會是 POST
         if ('POST' != $_SERVER['REQUEST_METHOD']) {
-            return FALSE;
+            return false;
         }
 
         // 如果表示只看 raw status，加上這邊一定會是 POST HTTP method，就直接傳回 TRUE
         if ($raw) {
-            return TRUE;
+            return true;
         }
 
         // 如果沒有 _method (表示不是 convention)，傳回 TRUE
         if (!array_key_exists('_method', $_POST)) {
-            return TRUE;
+            return true;
         }
 
         // 如果有 _method，就要判斷裡面是不是 post
         if ('post' == strtolower($_POST['_method'])) {
-            return TRUE;
+            return true;
         }
 
         // 剩下都是 FALSE
-        return FALSE;
+        return false;
     }
 
     /**
@@ -117,13 +117,13 @@ class Pix_Controller_Helper_Http extends Pix_Helper
     public function isPut($controller)
     {
         if ('PUT' == $_SERVER['REQUEST_METHOD']) {
-            return TRUE;
+            return true;
         }
 
         if ('POST' == $_SERVER['REQUEST_METHOD'] and array_key_exists('_method', $_POST) and 'put' == strtolower($_POST['_method'])) {
-            return TRUE;
+            return true;
         }
 
-        return FALSE;
+        return false;
     }
 }

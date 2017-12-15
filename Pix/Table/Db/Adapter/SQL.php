@@ -95,7 +95,7 @@ class Pix_Table_Db_Adapter_SQL extends Pix_Table_Db_Adapter_Abstract
         $return_row = array();
 
         foreach ($row as $col => $value) {
-            if (FALSE === strpos($col, ':')) {
+            if (false === strpos($col, ':')) {
                 $return_row[$col] = $value;
                 continue;
             }
