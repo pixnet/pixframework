@@ -17,7 +17,7 @@ class Pix_Controller
 
     public function __construct()
     {
-        $this->view = new Pix_Partial(null, array('cache_prefix' => crc32($_SERVER['HTTP_HOST'])));;
+        $this->view = new Pix_Partial(null, array('cache_prefix' => crc32($_SERVER['HTTP_HOST'])));
     }
 
     public function init()
