@@ -152,7 +152,9 @@ class Pix_Table_TableRowTest extends PHPUnit_Framework_TestCase
 
     public function testUpdate()
     {
-        $db = $this->getMock('Pix_Table_Db_Adapter_Abstract', array('updateOne'));
+        $db = $this->getMockBuilder('Pix_Table_Db_Adapter_Abstract')
+            ->setMethods(['updateOne'])
+            ->getMock();
         $table = Pix_Table::getTable('Pix_Table_TableRowTest_Table');
 
         $row = new Pix_Table_Row(array(
@@ -172,7 +174,9 @@ class Pix_Table_TableRowTest extends PHPUnit_Framework_TestCase
         $this->assertEquals($row->value, '9');
 
         // string
-        $db = $this->getMock('Pix_Table_Db_Adapter_Abstract', array('updateOne', 'fetchOne', 'support'));
+        $db = $this->getMockBuilder('Pix_Table_Db_Adapter_Abstract')
+            ->setMethods(['updateOne', 'fetchOne', 'support'])
+            ->getMock();
 
         $db->expects($this->any())
             ->method('support')
@@ -197,7 +201,9 @@ class Pix_Table_TableRowTest extends PHPUnit_Framework_TestCase
 
     public function testUpdateStop()
     {
-        $db = $this->getMock('Pix_Table_Db_Adapter_Abstract', array('updateOne', 'fetchOne'));
+        $db = $this->getMockBuilder('Pix_Table_Db_Adapter_Abstract')
+            ->setMethods(['fetchOne', 'updateOne'])
+            ->getMock();
 
         $row = new Pix_Table_TableRowTest_TableRow(array(
             'tableClass' => 'Pix_Table_TableRowTest_Table',
@@ -224,7 +230,9 @@ class Pix_Table_TableRowTest extends PHPUnit_Framework_TestCase
 
     public function testInsertStop()
     {
-        $db = $this->getMock('Pix_Table_Db_Adapter_Abstract', array('insertOne'));
+        $db = $this->getMockBuilder('Pix_Table_Db_Adapter_Abstract')
+            ->setMethods(['insertOne'])
+            ->getMock();
         $db->expects($this->never())
             ->method('insertOne');
 
@@ -236,7 +244,9 @@ class Pix_Table_TableRowTest extends PHPUnit_Framework_TestCase
 
     public function testDelete()
     {
-        $db = $this->getMock('Pix_Table_Db_Adapter_Abstract', array('deleteOne'));
+        $db = $this->getMockBuilder('Pix_Table_Db_Adapter_Abstract')
+            ->setMethods(['deleteOne'])
+            ->getMock();
 
         $row = new Pix_Table_TableRowTest_TableRow(array(
             'tableClass' => 'Pix_Table_TableRowTest_Table',
@@ -254,7 +264,9 @@ class Pix_Table_TableRowTest extends PHPUnit_Framework_TestCase
 
     public function testDeleteStop()
     {
-        $db = $this->getMock('Pix_Table_Db_Adapter_Abstract', array('deleteOne', 'fetchOne'));
+        $db = $this->getMockBuilder('Pix_Table_Db_Adapter_Abstract')
+            ->setMethods(['deleteOne', 'fetchOne'])
+            ->getMock();
 
         $row = new Pix_Table_TableRowTest_TableRow(array(
             'tableClass' => 'Pix_Table_TableRowTest_Table',

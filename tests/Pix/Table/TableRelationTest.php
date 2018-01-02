@@ -63,7 +63,9 @@ class Pix_Table_TableRelationTest extends PHPUnit_Framework_TestCase
 
     public function testCreateRelationHasOne()
     {
-        $db = $this->getMock('Pix_Table_Db_Adapter_Abstract', array('insertOne'));
+        $db = $this->getMockBuilder('Pix_Table_Db_Adapter_Abstract')
+            ->setMethods(['insertOne'])
+            ->getMock();
         Pix_Table_TableRelationTest_Table2::setDb($db);
 
         $db->expects($this->once())
@@ -81,7 +83,9 @@ class Pix_Table_TableRelationTest extends PHPUnit_Framework_TestCase
         $this->assertEquals($row2->value, 't2_value');
 
         // has_many
-        $db = $this->getMock('Pix_Table_Db_Adapter_Abstract', array('insertOne'));
+        $db = $this->getMockBuilder('Pix_Table_Db_Adapter_Abstract')
+            ->setMethods(['insertOne'])
+            ->getMock();
         Pix_Table_TableRelationTest_Table3::setDb($db);
 
         $db->expects($this->once())
@@ -95,7 +99,9 @@ class Pix_Table_TableRelationTest extends PHPUnit_Framework_TestCase
         $this->assertEquals($row3->value, 'on');
 
         // has_many empty
-        $db = $this->getMock('Pix_Table_Db_Adapter_Abstract', array('insertOne'));
+        $db = $this->getMockBuilder('Pix_Table_Db_Adapter_Abstract')
+            ->setMethods(['insertOne'])
+            ->getMock();
         Pix_Table_TableRelationTest_Table3::setDb($db);
 
         $db->expects($this->once())
@@ -117,7 +123,9 @@ class Pix_Table_TableRelationTest extends PHPUnit_Framework_TestCase
      */
     public function testDelete()
     {
-        $db = $this->getMock('Pix_Table_Db_Adapter_Abstract', array('deleteOne', 'fetchOne', 'fetch'));
+        $db = $this->getMockBuilder('Pix_Table_Db_Adapter_Abstract')
+            ->setMethods(['deleteOne', 'fetchOne', 'fetch'])
+            ->getMock();
 
         $row = new Pix_Table_Row(array(
             'tableClass' => 'Pix_Table_TableRelationTest_Table',
@@ -153,7 +161,9 @@ class Pix_Table_TableRelationTest extends PHPUnit_Framework_TestCase
             'data' => array('t1_id' => 1001, 'value' => 'delete_me')
         ));
 
-        $db = $this->getMock('Pix_Table_Db_Adapter_Abstract', array('fetchOne'));
+        $db = $this->getMockBuilder('Pix_Table_Db_Adapter_Abstract')
+            ->setMethods(['fetchOne'])
+            ->getMock();
 
         $db->expects($this->once())
             ->method('fetchOne')
@@ -172,7 +182,9 @@ class Pix_Table_TableRelationTest extends PHPUnit_Framework_TestCase
             'data' => array('t1_id' => 1001, 'value' => 'delete_me')
         ));
 
-        $db = $this->getMock('Pix_Table_Db_Adapter_Abstract', array('fetchOne', 'updateOne'));
+        $db = $this->getMockBuilder('Pix_Table_Db_Adapter_Abstract')
+            ->setMethods(['fetchOne', 'updateOne'])
+            ->getMock();
 
         $db->expects($this->once())
             ->method('fetchOne')
@@ -207,7 +219,9 @@ class Pix_Table_TableRelationTest extends PHPUnit_Framework_TestCase
             'data' => array('t3_id' => 4567, 't3_t1id' => 1, 'value' => 'delete_me')
         ));
 
-        $db = $this->getMock('Pix_Table_Db_Adapter_Abstract', array('fetchOne', 'updateOne'));
+        $db = $this->getMockBuilder('Pix_Table_Db_Adapter_Abstract')
+            ->setMethods(['fetchOne', 'updateOne'])
+            ->getMock();
 
         $db->expects($this->once())
             ->method('fetchOne')

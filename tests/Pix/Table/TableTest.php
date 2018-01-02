@@ -214,7 +214,8 @@ class Pix_Table_TableTest extends PHPUnit_Framework_TestCase
      */
     public function testGetDb()
     {
-        $db = $this->getMock('Pix_Table_Db_Adapter_Abstract');
+        $db = $this->getMockBuilder('Pix_Table_Db_Adapter_Abstract')
+            ->getMock();
         Pix_Table::setDefaultDb($db);
 
         $this->assertEquals(Pix_Table::getTable('Pix_Table_TableTest_Table2')->getDb(), $db);
@@ -275,7 +276,9 @@ class Pix_Table_TableTest extends PHPUnit_Framework_TestCase
      */
     public function testCreateTable()
     {
-        $db = $this->getMock('Pix_Table_Db_Adapter_Abstract', array('createTable'));
+        $db = $this->getMockBuilder('Pix_Table_Db_Adapter_Abstract')
+            ->setMethods(['createTable'])
+            ->getMock();
         Pix_Table_TableTest_Table::setDb($db);
         $db->expects($this->once())
             ->method('createTable')
@@ -285,7 +288,9 @@ class Pix_Table_TableTest extends PHPUnit_Framework_TestCase
 
     public function testCheckTable()
     {
-        $db = $this->getMock('Pix_Table_Db_Adapter_Abstract', array('checkTable', 'support'));
+        $db = $this->getMockBuilder('Pix_Table_Db_Adapter_Abstract')
+            ->setMethods(['checkTable', 'support'])
+            ->getMock();
         Pix_Table_TableTest_Table::setDb($db);
         $db->expects($this->once())
             ->method('checkTable')
@@ -300,7 +305,9 @@ class Pix_Table_TableTest extends PHPUnit_Framework_TestCase
 
     public function testDropTable()
     {
-        $db = $this->getMock('Pix_Table_Db_Adapter_Abstract', array('dropTable'));
+        $db = $this->getMockBuilder('Pix_Table_Db_Adapter_Abstract')
+            ->setMethods(['dropTable'])
+            ->getMock();
         Pix_Table_TableTest_Table::setDb($db);
 
         $old_value = Pix_Setting::get('Table:DropTableEnable');
@@ -335,7 +342,9 @@ class Pix_Table_TableTest extends PHPUnit_Framework_TestCase
         $table = Pix_Table::getTable('Pix_Table_TableTest_Table');
 
         // search(all)
-        $db = $this->getMock('Pix_Table_Db_Adapter_Abstract', array('fetch'));
+        $db = $this->getMockBuilder('Pix_Table_Db_Adapter_Abstract')
+            ->setMethods(['fetch'])
+            ->getMock();
         Pix_Table_TableTest_Table::setDb($db);
         $search = Pix_Table_Search::factory()->limit(1);
         $db->expects($this->at(0))
@@ -349,7 +358,9 @@ class Pix_Table_TableTest extends PHPUnit_Framework_TestCase
         $this->assertEquals($row->value, 'abc');
 
         // search(array())
-        $db = $this->getMock('Pix_Table_Db_Adapter_Abstract', array('fetch'));
+        $db = $this->getMockBuilder('Pix_Table_Db_Adapter_Abstract')
+            ->setMethods(['fetch'])
+            ->getMock();
         Pix_Table_TableTest_Table::setDb($db);
         $search = Pix_Table_Search::factory()->limit(1);
         $search = $search->search(array('value' => 5));
@@ -364,7 +375,9 @@ class Pix_Table_TableTest extends PHPUnit_Framework_TestCase
         $this->assertEquals($row->value, '5');
 
         // search(string)
-        $db = $this->getMock('Pix_Table_Db_Adapter_Abstract', array('fetch'));
+        $db = $this->getMockBuilder('Pix_Table_Db_Adapter_Abstract')
+            ->setMethods(['fetch'])
+            ->getMock();
         Pix_Table_TableTest_Table::setDb($db);
         $search = Pix_Table_Search::factory();
         $search = $search->search("t1_id > 3");
@@ -384,7 +397,9 @@ class Pix_Table_TableTest extends PHPUnit_Framework_TestCase
         ));
 
         // search PK
-        $db = $this->getMock('Pix_Table_Db_Adapter_Abstract', array('fetchOne'));
+        $db = $this->getMockBuilder('Pix_Table_Db_Adapter_Abstract')
+            ->setMethods(['fetchOne'])
+            ->getMock();
         Pix_Table_TableTest_Table::setDb($db);
         $db->expects($this->once())
             ->method('fetchOne')
@@ -395,7 +410,9 @@ class Pix_Table_TableTest extends PHPUnit_Framework_TestCase
         $this->assertEquals($row->t1_id, 6);
         $this->assertEquals($row->value, 'abc');
 
-        $db = $this->getMock('Pix_Table_Db_Adapter_Abstract', array('fetchOne'));
+        $db = $this->getMockBuilder('Pix_Table_Db_Adapter_Abstract')
+            ->setMethods(['fetchOne'])
+            ->getMock();
         Pix_Table_TableTest_Table::setDb($db);
         $search = Pix_Table_Search::factory();
         $search = $search->search(array("t1_id" => 7, "value" => "def"));
@@ -410,7 +427,9 @@ class Pix_Table_TableTest extends PHPUnit_Framework_TestCase
 
     public function testFind()
     {
-        $db = $this->getMock('Pix_Table_Db_Adapter_Abstract', array('fetchOne'));
+        $db = $this->getMockBuilder('Pix_Table_Db_Adapter_Abstract')
+            ->setMethods(['fetchOne'])
+            ->getMock();
         Pix_Table_TableTest_Table::setDb($db);
         $table = Pix_Table::getTable('Pix_Table_TableTest_Table');
 
@@ -439,7 +458,9 @@ class Pix_Table_TableTest extends PHPUnit_Framework_TestCase
     {
         $table = Pix_Table::getTable('Pix_Table_TableTest_Table');
 
-        $db = $this->getMock('Pix_Table_Db_Adapter_Abstract', array('fetch'));
+        $db = $this->getMockBuilder('Pix_Table_Db_Adapter_Abstract')
+            ->setMethods(['fetch'])
+            ->getMock();
         Pix_Table_TableTest_Table::setDb($db);
         $search = Pix_Table_Search::factory()->limit(1);
         $search = $search->search(array('value' => '999'));
@@ -459,7 +480,9 @@ class Pix_Table_TableTest extends PHPUnit_Framework_TestCase
     {
         $table = Pix_Table::getTable('Pix_Table_TableTest_Table');
 
-        $db = $this->getMock('Pix_Table_Db_Adapter', array('insertOne', 'support'));
+        $db = $this->getMockBuilder('Pix_Table_Db_Adapter')
+            ->setMethods(['insertOne', 'support'])
+            ->getMock();
         Pix_Table_TableTest_Table::setDb($db);
 
         $db->expects($this->once())
@@ -474,7 +497,9 @@ class Pix_Table_TableTest extends PHPUnit_Framework_TestCase
         $this->assertEquals($row->t1_id, 10);
         $this->assertEquals($row->value, 3);
 
-        $db = $this->getMock('Pix_Table_Db_Adapter', array('insertOne', 'support'));
+        $db = $this->getMockBuilder('Pix_Table_Db_Adapter')
+            ->setMethods(['insertOne', 'support'])
+            ->getMock();
         Pix_Table_TableTest_Table::setDb($db);
 
         $db->expects($this->once())
@@ -493,7 +518,9 @@ class Pix_Table_TableTest extends PHPUnit_Framework_TestCase
     {
         $table = Pix_Table::getTable('Pix_Table_TableTest_Table');
 
-        $db = $this->getMock('Pix_Table_Db_Adapter_Abstract', array('insertOne'));
+        $db = $this->getMockBuilder('Pix_Table_Db_Adapter_Abstract')
+            ->setMethods(['insertOne'])
+            ->getMock();
         Pix_Table_TableTest_Table::setDb($db);
 
         $db->expects($this->once())

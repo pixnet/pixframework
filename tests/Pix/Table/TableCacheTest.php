@@ -58,7 +58,9 @@ class Pix_Table_TableCacheTest extends PHPUnit_Framework_TestCase
     {
         Pix_Table::$_save_memory = true;
 
-        $cache = $this->getMock('Pix_Cache', array('load'));
+        $cache = $this->getMockBuilder('Pix_Cache')
+            ->setMethods(['load'])
+            ->getMock();
         $cache->expects($this->never())
             ->method('load');
         Pix_Table::setCache($cache);
