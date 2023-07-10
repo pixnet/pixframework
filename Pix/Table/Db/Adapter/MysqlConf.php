@@ -71,7 +71,7 @@ class Pix_Table_Db_Adapter_MysqlConf extends Pix_Table_Db_Adapter_MysqlCommon
             $starttime = microtime(true);
             @$link->real_connect($conf->host, $conf->username, $conf->password, $conf->dbname);
             $delta = microtime(true) - $starttime;
-            if ($delta > 0.5) {
+            if ($delta > 3) {
                 trigger_error("{$_SERVER['HTTP_HOST']}{$_SERVER['REQUEST_URI']} connect to {$conf->host} time: $delta", E_USER_NOTICE);
             }
 
